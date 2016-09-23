@@ -12,3 +12,5 @@ In this project we are investigating and analyzing the Speed Dating Kaggle datas
 The full project proposal can be found in proposal.tex
 
 Thanks for reading!
+
+Updated September 22, 2016
