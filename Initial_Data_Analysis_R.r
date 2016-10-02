@@ -52,5 +52,34 @@ wave_1_gender_0_train<-return_list$train
 #on their scorecard within that wave.
 #i.e. for persons 1 and 2 to like each other, person 1 has to circle "yes" for person 2 and person 2 has to circle "yes" for person 1
 #The person filling it out has their id within the wave in column "id" while their partner is in "pid"
+#Creating a function that, when given a wave, and the ids, determine if it's a match, the male said they would date and the 
+#female did not, and if the male said they would not and female said that they would.
+match_results<-function(w,p1,p2,data_source){
 
+	#figure out gender--only have to do this for one and then the other one is expected to the the other gender.
+	p1_gender<-data_source[data_source$wave==w & data_source$id==p1 & !is.na(data_source$iid) & data_source$pid==p2,]$gender
+
+	p1_decision<-data_source[data_source$wave==w & data_source$id==p1 & !is.na(data_source$iid) & data_source$pid==p2,]$dec
+	p2_decision<-data_source[data_source$wave==w & data_source$id==p2 & !is.na(data_source$iid) & data_source$pid==p1,]$dec
+	
+	both_match<-p1_decision & p2_decision
+	
+	if(p1_gender==0){
+		female_decision<-p1_decision
+		male_decision<-p2_decision
+	}else{
+		male_decision<-p1_decision
+		female_decision<-p2_decision
+	}
+	
+	return_list<-list("both_match"=both_match,"female_decision"=female_decision,"male_decision"=male_decision)
+	
+	return (return_list)
+}
+
+#Test function
+return_list<-match_results(1,1,11,full_data)
+return_list$both_match #Returns False or 0 since both of them did not put true
+return_list$female_decision #Returns True or 1
+return_list$male_decision #Returns False or 0
 
