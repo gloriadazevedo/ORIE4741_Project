@@ -21,3 +21,4 @@ for i in range(1,len(data)):
 
 
 #Want to look at ranges of predictors and figure out which ones are important
+
