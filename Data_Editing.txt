@@ -1,5 +1,26 @@
 Fields that were edited:
+Noted that some cities and jobs had commas in them, so had to remove all those otherwise the comma delimiter
+would break up all those fields and not import the correct value per column
+
+Also removing apostrophe's since that could cause errors or rewrote the word so that it wouldn't need to be 
+shortened with an apostrophe such as changing "Int'l" to "International" 
+
 positin1 has blank values for Waves #1-5 so for these waves, we input 0 as the values
 
 Blanks in pid for some of the id's in Wave #5. It's the 7th female who didn't complete their responses. 
 Thus we assume that she did not match with anyone and assign the dec and dec_0 to be 0
+We don't want to delete these rows entirely since they do tell us about the male preferences for not matching with her
+
+For int_corr which is the correlation between the participant and the partner's ratings of interesting Time 1,
+we substitute the blanks for 0's to indicate that there is no correlation as we are not sure how it's calculated
+If we figure out the calculation of them, then we can recalculate the whole column or we can insert a new
+"correlation" column at the end of the data where we know the calculation deterministically.
+
+Some fields are inter-related so if we don't have values in one of them, then we most likely can't look up
+the value in the other. For example, there are two columns age_o and age. Age is the self-reported age
+of the student and is asked when they signup. Age_o is the age of the partner during that round.
+The problem with age is that there are many possibilities that people did not report their age such as they
+think that they're too old or too young.  For example, men tend to like young women, so women may report a lower
+age than the true value.  On the other hand, women prefer mature men as a measure of stability so men may 
+report a higher age than the true value.  Thus, for now we won't edit or add any of the age or age_o values.
+

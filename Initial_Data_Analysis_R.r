@@ -3,7 +3,7 @@
 #Also want to develop functions/routines to subset the data into training and test sets
 
 #Import data
-full_data<-read.table("Speed Dating Data.csv",header=TRUE,sep=",",fill=TRUE)
+full_data<-read.table("data_excel.csv",header=TRUE,sep=",")
 #When importing we ran into a few issues such as some lines not having the correct number of elements, so added fill=TRUE for the blanks.
 
 #Data editing
@@ -23,6 +23,10 @@ full_data<-read.table("Speed Dating Data.csv",header=TRUE,sep=",",fill=TRUE)
 #General statistics
 #How many waves
 num_waves<-max(full_data[!is.na(full_data$wave),]$wave)
+
+#Frequency of each wave, total and by gender
+wave_freq<-table(full_data$wave)
+wave_gender_freq<-table(full_data$wave,full_data$gender)
 
 #Bootstrap function that creates training data and test data from the data, given a wave and gender
 #Note that we can subset data as so: full_data[full_data$wave==1&full_data$gender==0,][1,]
