@@ -20,6 +20,43 @@ full_data<-read.table("data_excel.csv",header=TRUE,sep=",")
 #that there is no overlap between the two sessions in a day.  In other words, we assume that the sets of people attending
 #each session in one day is mutually exclusive.
 
+#Adding the actual day number to the data
+#First we create a function, then we're going to copy over the wave column into the new date column,
+#then we will peform the function on the new date column and overwrite it.
+#w is an integer between 1 and 21, inclusive
+check_date<-function(w){
+	d=0
+	if(w==1){d=1}
+	else if(w==2){d=2}
+	else if(w==3 |w==4){d=3}
+	else if(w==5){d=4}
+	else if(w==6|w==7){d=5}
+	else if(w==8 | w==9){d=6}
+	else if(w==10 |w==11){d=7}
+	else if(w==12){d=8}
+	else if(w==13|w==14){d=9}
+	else if(w==15){d=10}
+	else if(w==16|w==17){d=11}
+	else if(w==18|w==19){d=12}
+	else if(w==20|w==21){d=13}
+	
+	return (d)
+}
+
+#Test the function
+test_vector<-1:21
+for (i in 1:21){
+	test_vector[i]<-check_date(i)
+}
+
+#Create a temporary vector of the wave to date
+date_vector<-1:length(full_data$wave)
+for(i in 1:length(date_vector)){
+	date_vector[i]<-check_date(full_data$wave[i])
+}
+#Assign the temporary vector to a new column in the data
+full_data$day_num<-date_vector
+
 #General statistics
 #How many waves
 num_waves<-max(full_data[!is.na(full_data$wave),]$wave)
@@ -98,7 +135,7 @@ return_list$male_decision #Returns False or 0
 
 
 #Looking at initial percentiles to answer questions like:
-#1. What percentage of matches are between same ethnicity couples?
+#1. What percentage of matches are between same ethnicity couples? (Aggregated and by wave)
 #2. What percentage of matches have the same field of study?
 #3. What percentage of matches have the same or similar goals when participating in the event? 
 #		Will look at squared differences.
@@ -109,3 +146,5 @@ return_list$male_decision #Returns False or 0
 #		If they do change their mind, what were some characteristics of the people they saw "in the meantime" 
 #			before the end of the night?
 
+#Question 1: What percentage of matches are between same ethnicity couples overall?
+#For each wave we have to add up the number of matches
