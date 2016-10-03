@@ -6,6 +6,11 @@
 full_data<-read.table("Speed Dating Data.csv",header=TRUE,sep=",",fill=TRUE)
 #When importing we ran into a few issues such as some lines not having the correct number of elements, so added fill=TRUE for the blanks.
 
+#Data editing
+#For ease of use and not using the Fill in feature which seems to be adding NA's everywhere, 
+#we are going to edit the data by hand in Excel just so there are no blanks in the csv.
+#The fields that are edited are documented in another .txt (Data_Editing.txt) file
+
 #When creating the test and training data sets, we want to separate them out by wave, so that any inter-wave effects are gone
 #We also note that we want to subdivide the test and training set by male/female so we can see if there are different variables
 #that are strong predictors for men and women.
@@ -14,6 +19,10 @@ full_data<-read.table("Speed Dating Data.csv",header=TRUE,sep=",",fill=TRUE)
 #waves on each day, so it could be beneficial to combine the waves and treat them on a "per-day" basis as we hypothesize 
 #that there is no overlap between the two sessions in a day.  In other words, we assume that the sets of people attending
 #each session in one day is mutually exclusive.
+
+#General statistics
+#How many waves
+num_waves<-max(full_data[!is.na(full_data$wave),]$wave)
 
 #Bootstrap function that creates training data and test data from the data, given a wave and gender
 #Note that we can subset data as so: full_data[full_data$wave==1&full_data$gender==0,][1,]
@@ -82,4 +91,17 @@ return_list<-match_results(1,1,11,full_data)
 return_list$both_match #Returns False or 0 since both of them did not put true
 return_list$female_decision #Returns True or 1
 return_list$male_decision #Returns False or 0
+
+
+#Looking at initial percentiles to answer questions like:
+#1. What percentage of matches are between same ethnicity couples?
+#2. What percentage of matches have the same field of study?
+#3. What percentage of matches have the same or similar goals when participating in the event? 
+#		Will look at squared differences.
+#4. What percentage of matches have the same or similar going out habits (not necessarily on dates)? 
+#		Hopefully this is a measure of social-ness
+#5. What percentage of people change their mind before the end of the night about the people they would date?
+#		Note that preferences can change throughout the night if they see people they would prefer more or less
+#		If they do change their mind, what were some characteristics of the people they saw "in the meantime" 
+#			before the end of the night?
 

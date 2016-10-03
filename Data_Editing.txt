@@ -1,0 +1,5 @@
+Fields that were edited:
+positin1 has blank values for Waves #1-5 so for these waves, we input 0 as the values
+
+Blanks in pid for some of the id's in Wave #5. It's the 7th female who didn't complete their responses. 
+Thus we assume that she did not match with anyone and assign the dec and dec_0 to be 0
