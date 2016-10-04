@@ -73,24 +73,46 @@ wave_gender_freq<-table(full_data$wave,full_data$gender)
 #However, we have on exception, in Wave 5 where there's a note that they're all undergrads, we have different
 #numbers of rows between the wave 5 females and males.  Thus we predict that one of the females did not 
 #have her data recorded for the 10 males.
-bootstrap_wave_gender<-function(w,g,data_source){
-	#Determine the number of people in this wave_gender pair
-	#Also need to make sure we don't pick up any of the filled data with NA's for the iid
-	num_total<-length(data_source[data_source$wave==w & data_source$gender==g & !is.na(data_source$iid),1])
+# bootstrap_wave_gender<-function(w,g,data_source){
+	# #Determine the number of people in this wave_gender pair
+	# #Also need to make sure we don't pick up any of the filled data with NA's for the iid
+	# num_total<-length(data_source[data_source$wave==w & data_source$gender==g & !is.na(data_source$iid),1])
 	
-	#For the best bootstrapping technique, we need to resample the data the same number of times as the number we have
-	#Use 20% of the training data size for the test data
-	range_total<-1:num_total
-	training_ind<-sample(range_total, num_total, replace=TRUE,prob=NULL)
-	test_ind<-sample(range_total,floor(num_total/5),replace=TRUE,prob=NULL)
+	# #For the best bootstrapping technique, we need to resample the data the same number of times as the number we have
+	# #First we need to divide the data into training and test
+	# range_total<-1:num_total
+	# training_ind<-sample(range_total, num_total, replace=TRUE,prob=NULL)
+	# test_ind<-sample(range_total,floor(num_total/5),replace=TRUE,prob=NULL)
 	
-	test_data<-data_source[data_source$wave==w & data_source$gender==g & !is.na(data_source$iid),][test_ind,]
-	train_data<-data_source[data_source$wave==w & data_source$gender==g & !is.na(data_source$iid),][training_ind,]
+	# test_data<-data_source[data_source$wave==w & data_source$gender==g & !is.na(data_source$iid),][test_ind,]
+	# train_data<-data_source[data_source$wave==w & data_source$gender==g & !is.na(data_source$iid),][training_ind,]
 	
-	#Create a list to return the values
-	return_list<-list('test' = test_data,'train' = train_data)
+	# #Create a list to return the values
+	# return_list<-list('test' = test_data,'train' = train_data)
 	
-	return (return_list)
+	# return (return_list)
+# }
+
+#initially divide the data in to training and test data (20% size of the total data) before 
+#we can resample it using the boostrap method
+indices_list<-list()
+
+for (w in 1:num_waves){
+	for (g in 0:1){
+		#Find the total number of rows in this category
+		num_total<-length(full_data[full_data$wave==w & full_data$gender==g,1])
+
+		#Sample the data indices to determine disjoint sets for training and test
+		range_total<-1:num_total
+		training_ind<-sample(range_total, floor(0.8*num_total), replace=FALSE,prob=NULL)
+		test_ind<-range_total[-training_ind]
+
+		#append the vector into the list
+		name<-paste(w,paste(g,"training",sep="_"),sep="_")
+		indices_list[[name]]<-training_ind
+		name<-paste(w,paste(g,"test",sep="_"),sep="_")
+		indices_list[[name]]<-test_ind
+	}
 }
 
 #Test function
