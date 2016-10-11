@@ -122,6 +122,8 @@ wave_1_gender_0_test<-bootstrap_wave_gender(1,0,"test")
 #The person filling it out has their id within the wave in column "id" while their partner is in "pid"
 #Creating a function that, when given a wave, and the ids, determine if it's a match, the male said they would date and the 
 #female did not, and if the male said they would not and female said that they would.
+
+#Turns out there's a match column that says whether or not the two people have matched
 match_results<-function(w,p1,p2,data_source){
 
 	#figure out gender--only have to do this for one and then the other one is expected to the the other gender.
@@ -153,7 +155,7 @@ return_list$male_decision #Returns False or 0
 
 
 #Looking at initial percentiles to answer questions like:
-#1. What percentage of matches are between same ethnicity couples? (Aggregated and by wave)
+#1. What percentage of matches are between same ethnicity couples? (Aggregated by wave)
 #2. What percentage of matches have the same field of study?
 #3. What percentage of matches have the same or similar goals when participating in the event? 
 #		Will look at squared differences.
@@ -165,4 +167,30 @@ return_list$male_decision #Returns False or 0
 #			before the end of the night?
 
 #Question 1: What percentage of matches are between same ethnicity couples overall?
-#For each wave we have to add up the number of matches
+#For each wave we have to add up the number of matches. Have to be careful not to double
+#count the people, so we pick one gender and then add up the matches for that
+#Note that match is in quotes to not overload or get confused with the match function from R
+num_match_and_race<-0
+total_match<-0
+for (w in 1:num_waves){
+	#Use gender==0
+	g<-0
+	female_race<-full_data[full_data$wave==w & full_data$gender==g,]$race
+	male_race<-full_data[full_data$wave==w & full_data$gender==!g,]$race
+	match_1<-full_data[full_data$wave==w & full_data$gender==g,]$"match"
+	for(i in 1:length(female_race)){
+		if((female_race[i]==male_race[i]) & (match_1[i]==1) & female_race[i]!="NA" & male_race[i]!="NA"){
+			num_match_and_race<-num_match_and_race+1
+		}
+		if(match_1[i]==1 & female_race[i]!="NA" & male_race[i]!="NA"){
+			total_match<-total_match+1
+		}
+	}
+	
+}
+#Don't need to break up by wave
+proportion_match_and_race<-num_match_and_race/total_match
+proportion_match_and_race
+#Output : 0.3685504
+
+#What if there's a difference by race?
