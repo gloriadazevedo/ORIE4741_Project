@@ -24,3 +24,8 @@ think that they're too old or too young.  For example, men tend to like young wo
 age than the true value.  On the other hand, women prefer mature men as a measure of stability so men may 
 report a higher age than the true value.  Thus, for now we won't edit or add any of the age or age_o values.
 
+Note that there are some NA values in the field_cd (the field of study that each person has, coded) so we 
+assign those NA values to be 18, which is the "Other" field
+
+We also found that in some of the values in the race field is "NA" so we code those to be 6 which 
+corresponds to the Other field

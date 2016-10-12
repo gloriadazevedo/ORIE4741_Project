@@ -170,6 +170,14 @@ return_list$male_decision #Returns False or 0
 #For each wave we have to add up the number of matches. Have to be careful not to double
 #count the people, so we pick one gender and then add up the matches for that
 #Note that match is in quotes to not overload or get confused with the match function from R
+
+#First we need to recode values of "NA" in male or female race to be 6
+for (i in 1:length(full_data$race)){
+	if (is.na(full_data$race[i])){
+			full_data$race[i]<-6
+	}
+}
+
 num_match_and_race<-0
 total_match<-0
 for (w in 1:num_waves){
@@ -179,10 +187,10 @@ for (w in 1:num_waves){
 	male_race<-full_data[full_data$wave==w & full_data$gender==!g,]$race
 	match_1<-full_data[full_data$wave==w & full_data$gender==g,]$"match"
 	for(i in 1:length(female_race)){
-		if((female_race[i]==male_race[i]) & (match_1[i]==1) & female_race[i]!="NA" & male_race[i]!="NA"){
+		if((female_race[i]==male_race[i]) & (match_1[i]==1)){
 			num_match_and_race<-num_match_and_race+1
 		}
-		if(match_1[i]==1 & female_race[i]!="NA" & male_race[i]!="NA"){
+		if(match_1[i]==1 ){
 			total_match<-total_match+1
 		}
 	}
@@ -191,7 +199,7 @@ for (w in 1:num_waves){
 #Don't need to break up by wave
 proportion_match_and_race<-num_match_and_race/total_match
 proportion_match_and_race
-#Output : 0.3685504
+#Output : 0.3565217
 
 #What if there's a difference by race? (Total of 6 races)
 num_match_and_race<-1:6
@@ -207,10 +215,10 @@ for (w in num_waves){
 		num_match_and_race[r]<-0
 		total_match[r]<-0
 		for(i in 1:length(female_race)){
-			if(female_race[i]==r & male_race[i]==r &match_1[i]==1 & female_race[i]!="NA" & male_race[i]!="NA"){
+			if(female_race[i]==r & male_race[i]==r &match_1[i]==1 ){
 				num_match_and_race[r]<-num_match_and_race[r]+1
 			}
-			if(match_1[i]==1 & female_race[i]!="NA" & male_race[i]!="NA"){
+			if(match_1[i]==1 ){
 				total_match[r]<-total_match[r]+1
 			}
 		}
@@ -218,19 +226,27 @@ for (w in num_waves){
 }
 #check proportions--don't see a strong link between race and matching
 black_african_american_proportion<-if(total_match[1]>0){num_match_and_race[1]/total_match[1]}
+black_african_american_proportion
 #Output = 0
 
 european_caucasian_american_proportion<-if(total_match[2]>0){num_match_and_race[2]/total_match[2]}
+european_caucasian_american_proportion
 #Output = 1/6
 
 latino_hispanic_american_proportion<-if(total_match[3]>0){num_match_and_race[3]/total_match[3]}
+latino_hispanic_american_proportion
 #Output = 0
 
 asian_american_proportion<-if(total_match[4]>0){num_match_and_race[4]/total_match[4]}
+asian_american_proportion
 #Output = 1/12
 
 native_american_proportion<-if(total_match[5]>0){num_match_and_race[5]/total_match[5]}
+native_american_proportion
 #Output = 0
 
 other_race_proportion<-if(total_match[6]>0){num_match_and_race[6]/total_match[6]}
+other_race_proportion
 #Output = 0
+
+#Question 2: What percentage of matches will have the same field of study?
