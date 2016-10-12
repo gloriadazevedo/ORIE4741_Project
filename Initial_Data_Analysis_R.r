@@ -193,4 +193,44 @@ proportion_match_and_race<-num_match_and_race/total_match
 proportion_match_and_race
 #Output : 0.3685504
 
-#What if there's a difference by race?
+#What if there's a difference by race? (Total of 6 races)
+num_match_and_race<-1:6
+total_match<-1:6
+for (w in num_waves){
+	#Use gender==0
+	g<-0
+	female_race<-full_data[full_data$wave==w & full_data$gender==g,]$race
+	male_race<-full_data[full_data$wave==w & full_data$gender==!g,]$race
+	match_1<-full_data[full_data$wave==w & full_data$gender==g,]$"match"
+	for(r in 1:6){
+		#Need to reset the value in the output vector
+		num_match_and_race[r]<-0
+		total_match[r]<-0
+		for(i in 1:length(female_race)){
+			if(female_race[i]==r & male_race[i]==r &match_1[i]==1 & female_race[i]!="NA" & male_race[i]!="NA"){
+				num_match_and_race[r]<-num_match_and_race[r]+1
+			}
+			if(match_1[i]==1 & female_race[i]!="NA" & male_race[i]!="NA"){
+				total_match[r]<-total_match[r]+1
+			}
+		}
+	}
+}
+#check proportions--don't see a strong link between race and matching
+black_african_american_proportion<-if(total_match[1]>0){num_match_and_race[1]/total_match[1]}
+#Output = 0
+
+european_caucasian_american_proportion<-if(total_match[2]>0){num_match_and_race[2]/total_match[2]}
+#Output = 1/6
+
+latino_hispanic_american_proportion<-if(total_match[3]>0){num_match_and_race[3]/total_match[3]}
+#Output = 0
+
+asian_american_proportion<-if(total_match[4]>0){num_match_and_race[4]/total_match[4]}
+#Output = 1/12
+
+native_american_proportion<-if(total_match[5]>0){num_match_and_race[5]/total_match[5]}
+#Output = 0
+
+other_race_proportion<-if(total_match[6]>0){num_match_and_race[6]/total_match[6]}
+#Output = 0
