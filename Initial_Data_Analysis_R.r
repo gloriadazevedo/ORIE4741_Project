@@ -178,75 +178,143 @@ for (i in 1:length(full_data$race)){
 	}
 }
 
+#Already have a way to get the relevant wave and gender information--need to get the partner IDs (id and pid)
+
 num_match_and_race<-0
 total_match<-0
 for (w in 1:num_waves){
-	#Use gender==0
-	g<-0
-	female_race<-full_data[full_data$wave==w & full_data$gender==g,]$race
-	male_race<-full_data[full_data$wave==w & full_data$gender==!g,]$race
-	match_1<-full_data[full_data$wave==w & full_data$gender==g,]$"match"
-	for(i in 1:length(female_race)){
-		if((female_race[i]==male_race[i]) & (match_1[i]==1)){
-			num_match_and_race<-num_match_and_race+1
-		}
-		if(match_1[i]==1 ){
-			total_match<-total_match+1
-		}
-	}
-	
+	#unique list of female and male ids if we use id/partner which is better than iid since we can't get iid per row of partner
+	#changes by wave
+	female_id<-unique(full_data[full_data$wave==w & full_data$gender==0,]$id)
+	male_id<-unique(full_data[full_data$wave==w & full_data$gender==1,]$id)
+
+	for(i in 1:length(female_id)){
+		for (j in 1:length(male_id)){
+			#female_race and male_race will each return a vector of hopefully the same race, 
+			#so we pick the first value in that vector
+			female_race<-full_data[full_data$wave==w & full_data$gender==0 & full_data$id==female_id[i],]$race[1]
+			male_race<-full_data[full_data$wave==w & full_data$gender==1 & full_data$id==male_id[j],]$race[1]
+			match_value<-full_data[full_data$wave==w & full_data$gender==0 & 
+				full_data$id==female_id[i] & full_data$partner==male_id[j], ]$"match"
+			
+			#check if the races match
+			if(female_race==male_race & match_value==1){
+				num_match_and_race<-num_match_and_race+1
+			}
+			#Whether or not races match
+			if(match_value==1){
+				total_match<-total_match+1
+			}
+		}				
+	}	
 }
 #Don't need to break up by wave
 proportion_match_and_race<-num_match_and_race/total_match
+num_match_and_race
+total_match
 proportion_match_and_race
-#Output : 0.3565217
+#Of all the matches, around 40% of matches had the same race
+#Output : 0.4101449
 
 #What if there's a difference by race? (Total of 6 races)
-num_match_and_race<-1:6
-total_match<-1:6
-for (w in num_waves){
-	#Use gender==0
-	g<-0
-	female_race<-full_data[full_data$wave==w & full_data$gender==g,]$race
-	male_race<-full_data[full_data$wave==w & full_data$gender==!g,]$race
-	match_1<-full_data[full_data$wave==w & full_data$gender==g,]$"match"
-	for(r in 1:6){
-		#Need to reset the value in the output vector
-		num_match_and_race[r]<-0
-		total_match[r]<-0
-		for(i in 1:length(female_race)){
-			if(female_race[i]==r & male_race[i]==r &match_1[i]==1 ){
-				num_match_and_race[r]<-num_match_and_race[r]+1
+#Want a break down of all the same race couples, how are they distributed across the races
+break_down_race<-rep(0,6)
+for (w in 1:num_waves){
+	#unique list of female and male ids if we use id/partner which is better than iid since we can't get iid per row of partner
+	#changes by wave
+	female_id<-unique(full_data[full_data$wave==w & full_data$gender==0,]$id)
+	male_id<-unique(full_data[full_data$wave==w & full_data$gender==1,]$id)
+	
+	for(i in 1:length(female_id)){
+		for (j in 1:length(male_id)){
+			#female_race and male_race will each return a vector of hopefully the same race, 
+			#so we pick the first value in that vector
+			female_race<-full_data[full_data$wave==w & full_data$gender==0 & full_data$id==female_id[i],]$race[1]
+			male_race<-full_data[full_data$wave==w & full_data$gender==1 & full_data$id==male_id[j],]$race[1]
+			match_value<-full_data[full_data$wave==w & full_data$gender==0 & 
+				full_data$id==female_id[i] & full_data$partner==male_id[j], ]$"match"
+			
+			#check if the races match; the races are the same so just use the female one
+			if(female_race==male_race & match_value==1){
+				break_down_race[female_race]<-break_down_race[female_race]+1
 			}
-			if(match_1[i]==1 ){
-				total_match[r]<-total_match[r]+1
-			}
-		}
-	}
+		}				
+	}	
 }
-#check proportions--don't see a strong link between race and matching
-black_african_american_proportion<-if(total_match[1]>0){num_match_and_race[1]/total_match[1]}
+
+#Reuse total_match from the other loop for any race equal to each other
+total_match
+#Output = 690
+
+total_same_race_match<-sum(break_down_race)
+total_same_race_match
+#Output = 283
+
+#% of total matches
+black_african_american_proportion<-break_down_race[1]/total_match
 black_african_american_proportion
-#Output = 0
+#Output = 0.007246377
 
-european_caucasian_american_proportion<-if(total_match[2]>0){num_match_and_race[2]/total_match[2]}
+#% of same race matches
+black_african_american_proportion_2<-break_down_race[1]/total_same_race_match
+black_african_american_proportion_2
+#Output = 0.01766784
+
+#% of total matches
+european_caucasian_american_proportion<-break_down_race[2]/total_match
 european_caucasian_american_proportion
-#Output = 1/6
+#Output = 0.3463768
 
-latino_hispanic_american_proportion<-if(total_match[3]>0){num_match_and_race[3]/total_match[3]}
+#% of same race matches
+european_caucasian_american_proportion_2<-break_down_race[2]/total_same_race_match
+european_caucasian_american_proportion_2
+#Output = 0.844523
+
+#% of total matches
+latino_hispanic_american_proportion<-break_down_race[3]/total_match
 latino_hispanic_american_proportion
-#Output = 0
+#Output = 0.008695652
 
-asian_american_proportion<-if(total_match[4]>0){num_match_and_race[4]/total_match[4]}
+#% of same race matches
+latino_hispanic_american_proportion_2<-break_down_race[3]/total_same_race_match
+latino_hispanic_american_proportion_2
+#Output = 0.02120141
+
+#% of total matches
+asian_american_proportion<-break_down_race[4]/total_match
 asian_american_proportion
-#Output = 1/12
+#Output =  0.04492754
 
-native_american_proportion<-if(total_match[5]>0){num_match_and_race[5]/total_match[5]}
+#% of same race matches
+asian_american_proportion_2<-break_down_race[4]/total_same_race_match
+asian_american_proportion_2
+#Output = 0.1095406
+
+#% of total matches = % of same race matches
+native_american_proportion<-break_down_race[5]/total_match
 native_american_proportion
 #Output = 0
 
-other_race_proportion<-if(total_match[6]>0){num_match_and_race[6]/total_match[6]}
+#% of total matches
+other_race_proportion<-break_down_race[6]/total_match
 other_race_proportion
-#Output = 0
+#Output = 0.002898551
+
+#% of same race matches
+other_race_proportion_2<-break_down_race[6]/total_same_race_match
+other_race_proportion_2
+#Output = 0.007067138
+
 
 #Question 2: What percentage of matches will have the same field of study?
+#First we need to recode the values that have an "NA" in their field_cd to have a field_cd of 
+#18 which corresponds to the Other field
+for(i in 1:length(full_data$field_cd)){
+	if(is.na(full_data$field_cd[i])){
+		full_data$field_cd[i]<-18
+	}
+}
+
+for(w in 1:num_waves){
+
+}
