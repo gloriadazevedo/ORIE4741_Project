@@ -244,6 +244,7 @@ other_race_proportion_2
 #Question 2: What percentage of matches will have the same field of study?
 #Loop to figure out proportions
 num_same_field<-0
+num_same_field_vector<-rep(0,18)
 for(w in 1:num_waves){
 	#Figure out the ids in each wave
 	female_id<-unique(full_data[full_data$wave==w & full_data$gender==0,]$id)
@@ -261,6 +262,7 @@ for(w in 1:num_waves){
 			#check if the races match; the races are the same so just use the female one
 			if(female_field==male_field & match_value==1){
 				num_same_field<-num_same_field+1
+				num_same_field_vector[female_field]<-num_same_field_vector[female_field]+1
 			}
 		}				
 	}	
@@ -271,3 +273,6 @@ for(w in 1:num_waves){
 same_field_match_prop<-num_same_field/total_match
 same_field_match_prop
 #Output = 0.1594203
+
+#breakdown by field of match
+
