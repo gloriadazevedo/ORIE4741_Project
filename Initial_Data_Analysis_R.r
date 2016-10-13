@@ -274,5 +274,10 @@ same_field_match_prop<-num_same_field/total_match
 same_field_match_prop
 #Output = 0.1594203
 
-#breakdown by field of match
-
+#breakdown of field matches by field 
+total_same_field_match<-sum(num_same_field_vector)
+num_same_field_vector
+#Highest values are field_cd 1, field_cd 8, and field_cd 10
+#which correspond to Law, Business/Econ/Finance , and  Biological Sciences/Chemistry/Physics
+#These proportions may be skewed since Columbia is primarily known for its Law, Business schools
+#as well as a strong programs in science.
