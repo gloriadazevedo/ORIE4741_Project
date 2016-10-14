@@ -1,5 +1,5 @@
 #Import data after you change into the directory where the data is stored
-full_data<-read.table("data_excel.csv",header=TRUE,sep=",")
+full_data<-read.table("data_excel.csv",header=TRUE,sep=",",stringsAsFactors=FALSE)
 #When importing we ran into a few issues such as some lines not having the correct number of elements, so added fill=TRUE for the blanks.
 
 #Data editing
@@ -53,7 +53,30 @@ for(i in 1:length(date_vector)){
 #Assign the temporary vector to a new column in the data
 full_data$day_num<-date_vector
 
-#General statistics
+#Add whether or not the school that they went to for undergraduate is an Ivy League school or other classification
+#First get a unique list of the schools that they went to for undergraduate
+undergraduate<-unique(full_data$undergra)
+
+#First change all NA values to "Other"
+for (i in 1:length(full_data$undergra)){
+	if (is.na(full_data$undergra[i])){
+		full_data$undergra[i]<-"Other"
+		}
+}
+
+#Then change all blanks to "Other"
+for (i in 1:length(full_data$undergra)){
+	if (full_data$undergra[i]==""){
+		full_data$undergra[i]<-"Other"
+		}
+}
+
+#Then we get a list of 242 universities although note that some of them are the same but typed in differently
+#i.e. "GW" should mean "George Washington University"
+
+
+
+##################General statistics##################
 #How many waves
 num_waves<-max(full_data[!is.na(full_data$wave),]$wave)
 

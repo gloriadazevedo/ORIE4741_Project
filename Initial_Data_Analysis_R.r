@@ -111,8 +111,6 @@ return_list$male_decision #Returns False or 0
 #count the people, so we pick one gender and then add up the matches for that
 #Note that match is in quotes to not overload or get confused with the match function from R
 
-
-
 #Already have a way to get the relevant wave and gender information--need to get the partner IDs (id and pid)
 
 num_match_and_race<-0

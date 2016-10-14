@@ -29,3 +29,8 @@ assign those NA values to be 18, which is the "Other" field
 
 We also found that in some of the values in the race field is "NA" so we code those to be 6 which 
 corresponds to the Other field
+
+A suggestion from an outside source suggested that we create a field that groups the institutions that the students
+went to for their undergraduate degree together and see if that is a significant factor to whether or not two people 
+will match.  We note that this field is pretty messy and has many blanks or NA's (around 40% overall) so we don't think
+that we can reliably use this field as a predictor but potentially it can give insights about tiebreaking
