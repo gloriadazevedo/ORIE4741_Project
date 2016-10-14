@@ -34,3 +34,9 @@ A suggestion from an outside source suggested that we create a field that groups
 went to for their undergraduate degree together and see if that is a significant factor to whether or not two people 
 will match.  We note that this field is pretty messy and has many blanks or NA's (around 40% overall) so we don't think
 that we can reliably use this field as a predictor but potentially it can give insights about tiebreaking
+
+We note that for some of the fields, they ask the participant to what extent other people perceive as important traits.
+However, it may not be that important to know what other people think--it's better to look at actual proof of what 
+people like based on the people that they said they would match with them.  May also be useful to look at what traits 
+that their partner had, if the participant has expressed preference for them (they liked the other person, 
+regardless of whether or the other person actually liked them back)

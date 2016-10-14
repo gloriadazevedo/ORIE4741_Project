@@ -73,6 +73,7 @@ for (i in 1:length(full_data$undergra)){
 
 #Then we get a list of 242 universities although note that some of them are the same but typed in differently
 #i.e. "GW" should mean "George Washington University"
+#Still have a lot fo blanks or "Other" so we don't think that this is a reliable predictor for compatibility
 
 
 
@@ -94,7 +95,6 @@ for (i in 1:length(full_data$race)){
 			full_data$race[i]<-6
 	}
 }
-
 
 #First we need to recode the values that have an "NA" in their field_cd to have a field_cd of 
 #18 which corresponds to the Other field
