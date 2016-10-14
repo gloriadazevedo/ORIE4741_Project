@@ -141,7 +141,9 @@ for (w in 1:num_waves){
 		}				
 	}	
 }
-#Don't need to break up by wave
+#Don't need to break up proportions by wave but had to look at each wave separately
+#since some of the id's and the partner id's are the same in each wave 
+#i.e each wave has a female "id 1" and a male "id 1"
 proportion_match_and_race<-num_match_and_race/total_match
 num_match_and_race
 total_match

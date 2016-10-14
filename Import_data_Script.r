@@ -53,7 +53,38 @@ for(i in 1:length(date_vector)){
 #Assign the temporary vector to a new column in the data
 full_data$day_num<-date_vector
 
-#Add whether or not the school that they went to for undergraduate is an Ivy League school or other classification
+
+
+
+##################General statistics##################
+#How many waves
+num_waves<-max(full_data[!is.na(full_data$wave),]$wave)
+
+#Frequency of each wave, total and by gender
+wave_freq<-table(full_data$wave)
+wave_gender_freq<-table(full_data$wave,full_data$gender)
+
+#How many matches 
+#Need to divide by 2 to not double count for the "female" view and the "male" view
+total_match<-sum(full_data$"match")/2
+
+#Need to recode values of "NA" in male or female race to be 6
+for (i in 1:length(full_data$race)){
+	if (is.na(full_data$race[i])){
+			full_data$race[i]<-6
+	}
+}
+
+#First we need to recode the values that have an "NA" in their field_cd to have a field_cd of 
+#18 which corresponds to the Other field
+for(i in 1:length(full_data$field_cd)){
+	if(is.na(full_data$field_cd[i])){
+		full_data$field_cd[i]<-18
+	}
+}
+
+#Consider adding a field denoting whether or not the school that they went to 
+#for undergraduate is an Ivy League school or other classification
 #First get a unique list of the schools that they went to for undergraduate
 undergraduate<-unique(full_data$undergra)
 
@@ -75,31 +106,44 @@ for (i in 1:length(full_data$undergra)){
 #i.e. "GW" should mean "George Washington University"
 #Still have a lot fo blanks or "Other" so we don't think that this is a reliable predictor for compatibility
 
+#Since we are considering using race as a predictor, we also want to know the breakdown
+#of the number of people in race overall and by gender
+total_race_vector<-rep(0,6)
+female_race_vector<-rep(0,6)
+male_race_vector<-rep(0,6)
 
-
-##################General statistics##################
-#How many waves
-num_waves<-max(full_data[!is.na(full_data$wave),]$wave)
-
-#Frequency of each wave, total and by gender
-wave_freq<-table(full_data$wave)
-wave_gender_freq<-table(full_data$wave,full_data$gender)
-
-#How many matches
-total_match<-sum(full_data$"match")/2
-
-
-#Need to recode values of "NA" in male or female race to be 6
-for (i in 1:length(full_data$race)){
-	if (is.na(full_data$race[i])){
-			full_data$race[i]<-6
+#For each wave, we get the male and female ids
+#then for each of those, get the first value in the race vector and then increment
+for (w in 1:num_waves){
+	#List of female and male ids
+	female_id<-unique(full_data[full_data$wave==w & full_data$gender==0,]$id)
+	male_id<-unique(full_data[full_data$wave==w & full_data$gender==1,]$id)
+	
+	#Run through all the female ids first. 
+	#Can do the female and male ids in separate loops since we're not comparing their race
+	#Also the number of females can be different than the number of males in a wave
+	for(i in 1:length(female_id)){
+		race<-full_data[full_data$wave==w & full_data$gender==0 & full_data$id==female_id[i],]$race[1]
+		total_race_vector[race]<-total_race_vector[race]+1
+		female_race_vector[race]<-female_race_vector[race]+1
+	}
+	
+	for (i in 1:length(male_id)){
+		race<-full_data[full_data$wave==w & full_data$gender==1 & full_data$id==male_id[i],]$race[1]
+		total_race_vector[race]<-total_race_vector[race]+1
+		male_race_vector[race]<-male_race_vector[race]+1
 	}
 }
 
-#First we need to recode the values that have an "NA" in their field_cd to have a field_cd of 
-#18 which corresponds to the Other field
-for(i in 1:length(full_data$field_cd)){
-	if(is.na(full_data$field_cd[i])){
-		full_data$field_cd[i]<-18
-	}
-}
+#Look at outputs
+#race=5 corresponds to Native American
+#race=3 corresponds to Hispanic--also historically a minority in higher education, unfortunately
+#Thankfully if we add the female_race_vector and the male_race_vector we get the total_race_vector
+total_race_vector
+#Output: [1]  26 304  42 136   0  37
+
+female_race_vector
+#Output: [1]  16 142  25  71   0  16
+
+male_race_vector
+#Output: [1]  10 162  17  65   0  21
