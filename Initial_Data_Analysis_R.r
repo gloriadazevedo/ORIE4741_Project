@@ -281,3 +281,10 @@ num_same_field_vector
 #which correspond to Law, Business/Econ/Finance , and  Biological Sciences/Chemistry/Physics
 #These proportions may be skewed since Columbia is primarily known for its Law, Business schools
 #as well as a strong programs in science.
+
+
+#######Activity vector error calculation######
+#Want to calculate the difference vector between two participant's interests in different activities
+#then we can use the 2-norm, squared or the 1-norm between the two vectors so that it will be a measure
+#of the difference in two people's interests.  The hypothesis is, if two people have similar interests,
+#then they are more likely to match with each other and have followup conversations

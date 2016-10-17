@@ -40,3 +40,17 @@ However, it may not be that important to know what other people think--it's bett
 people like based on the people that they said they would match with them.  May also be useful to look at what traits 
 that their partner had, if the participant has expressed preference for them (they liked the other person, 
 regardless of whether or the other person actually liked them back)
+
+Importance of activities: 
+Note that there are around 17 different activities that participants are asked to 
+write their amount of interest in them.  These values are integer values from 1 to 10.  If they have similar
+amounts of interest in the activity, then we assume that they will both rank the activity similarly and
+we exclude the possibility that the participants mis-rank the interest level (rule: 1-10, 1 being not at all important,
+10 being extremely important) 
+
+What if we consider the error vector as the norm squared of the difference between the female's level of interest
+in an activity with the male's level of interest in an activity?  Using the norm squared versus another error measure
+such as absolute value will penalize larger differences more, although the maximum amount is 81 in this case for each activity.
+Using the absolute value (or the 1-norm) will penalize at most 9 for each activity.  
+Then later on, maybe we can use this value as another field in the data. 
+ 
