@@ -68,6 +68,10 @@ wave_gender_freq<-table(full_data$wave,full_data$gender)
 #Need to divide by 2 to not double count for the "female" view and the "male" view
 total_match<-sum(full_data$"match")/2
 
+#Want to find the total number of interactions between people
+#Neeed to divide by 2 to avoid double counting
+total_interactions<-length(full_data$wave)/2 
+
 #Need to recode values of "NA" in male or female race to be 6
 for (i in 1:length(full_data$race)){
 	if (is.na(full_data$race[i])){
