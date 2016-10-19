@@ -6,6 +6,8 @@ speeddating=read.csv("data_excel.csv")
 
 #selecting all the participants that are male
 mendata<- subset(speeddating, gender==1)
+#OR
+mendata<-subset(full_data,gender==1)
 
 #seeing all the women they said yes to
 menlike<- subset(mendata, dec==1)
@@ -57,3 +59,48 @@ summary(mentotalattr)
 # 3rd Qu.: 8.00   3rd Qu.: 8.00   3rd Qu.: 8.000   3rd Qu.: 7.00  
 # Max.   :10.00   Max.   :10.00   Max.   :10.000   Max.   :10.00  
 # NA's   :149     NA's   :167     NA's   :350      NA's   :491   
+
+#From the summary statistics we note that there are a lot of NA values in several of the predictors.
+#We can either ignore these values or investigate whether or not all the attributes are not filled in
+#(i.e. someone did not fill out an entire section of the survey) or they were genuinely not interested 
+#in the female which would imply that their value would be the lowest possible (1).  Thus we should 
+#consider overwriting all NA values and 0's to be 1's since that was technically the lowest scale 
+#that the inputted values were allowed to take.
+
+#[Code to overwrite 0's and NA's are in the Import_data_Script.r file]
+
+#Also want to run a linear regression to see whether or not these factors are significant
+#to a linear model with the classification 
+men_pref_lm<-lm(dec~samerace+int_corr+attr+sinc+intel+fun+amb+shar,data=mendata)
+summary(men_pref_lm)
+
+#Below is the output of the linear model with all the above predictors.
+#We can see that the intercept, attr level, sinc level, fun, ambitious, and sharing in the same interests
+#are all statistically significant predictors to the decision factor (whether or not a male will like a female)
+
+# Call:
+# lm(formula = dec ~ samerace + int_corr + attr + sinc + intel + 
+    # fun + amb + shar, data = mendata)
+
+# Residuals:
+     # Min       1Q   Median       3Q      Max 
+# -1.09270 -0.34890  0.03239  0.35224  1.25873 
+
+# Coefficients:
+             # Estimate Std. Error t value Pr(>|t|)    
+# (Intercept) -0.372314   0.038558  -9.656  < 2e-16 ***
+# samerace    -0.008968   0.014233  -0.630    0.529    
+# int_corr     0.001285   0.022993   0.056    0.955    
+# attr         0.113255   0.004688  24.158  < 2e-16 ***
+# sinc        -0.024752   0.005963  -4.151 3.38e-05 ***
+# intel       -0.004253   0.007039  -0.604    0.546    
+# fun          0.040311   0.005529   7.291 3.76e-13 ***
+# amb         -0.024421   0.005438  -4.491 7.33e-06 ***
+# shar         0.043795   0.004286  10.217  < 2e-16 ***
+# ---
+# Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+# Residual standard error: 0.415 on 3574 degrees of freedom
+  # (611 observations deleted due to missingness)
+# Multiple R-squared:  0.3126,    Adjusted R-squared:  0.3111 
+# F-statistic: 203.2 on 8 and 3574 DF,  p-value: < 2.2e-16

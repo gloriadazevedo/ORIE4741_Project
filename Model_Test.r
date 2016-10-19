@@ -18,8 +18,11 @@
 
 column_vector<-c(race,field_cd)
 
+#Use an external counter for the subset data matrix and result vector to explicitly
+#assign data to the corresponding rows instead of "append" 
 result_vector<-rep(0,total_interactions)
 return_matrix<-matrix(rep(0,length(column_vector)*total_interactions),ncol=length(column_vector),nrow=total_interactions)
+counter<-1
 
 #Need to iterate through each wave to get the id's of males and females
 scrape_data<-function(column_vector){
@@ -27,5 +30,16 @@ scrape_data<-function(column_vector){
 		#Figure out the ids in each wave
 		female_id<-unique(full_data[full_data$wave==w & full_data$gender==0,]$id)
 		male_id<-unique(full_data[full_data$wave==w & full_data$gender==1,]$id)
+		
+		#Data extraction by match
+		for (i in 1:length(female_id)){
+			for (j in 1:length(male_id)){
+				
+				
+				#Update the resulting classification vector
+				result_vector[counter]<-match_value
+				counter<-counter+1
+			}
+		}
 	}
 }
