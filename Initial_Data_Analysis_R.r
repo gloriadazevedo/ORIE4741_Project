@@ -405,6 +405,9 @@ summary(lm_fit)
 # Multiple R-squared:  0.02648,   Adjusted R-squared:  0.01836 
 # F-statistic:  3.26 on 34 and 4075 DF,  p-value: 6.58e-10
 
+#Significant predictors at 0.05 are:
+#X2, X9, X13, X14, X21, X22, X23, X26, X27 but there are many other correlated variables in the model
+
 #Also want to use forward and backward selection and the AIC to determine which predictors should be in the model
 library(MASS)
 step_lm<-stepAIC(lm_fit,direction="both")
@@ -412,3 +415,8 @@ step_lm<-stepAIC(lm_fit,direction="both")
 #Partial output:
 # result ~ X1 + X2 + X6 + X9 + X11 + X13 + X14 + X15 + X18 + X21 + 
     # X22 + X23 + X26 + X27 + X30 + X32 + X33 + X34
+#The coefficients for these variables are
+#Female:
+	#Sports, TV Sports, Art, Dancing/Clubbing, Watching TV, Theater, Movies, Going to concerts
+#Male:
+	#Sports, Dining Out, Museums, Art, Dancing/Clubbing, Reading, Movies, Music,Shopping, Yoga
