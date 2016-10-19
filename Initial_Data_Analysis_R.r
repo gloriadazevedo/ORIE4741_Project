@@ -404,3 +404,11 @@ summary(lm_fit)
   # (79 observations deleted due to missingness)
 # Multiple R-squared:  0.02648,   Adjusted R-squared:  0.01836 
 # F-statistic:  3.26 on 34 and 4075 DF,  p-value: 6.58e-10
+
+#Also want to use forward and backward selection and the AIC to determine which predictors should be in the model
+library(MASS)
+step_lm<-stepAIC(lm_fit,direction="both")
+
+#Partial output:
+# result ~ X1 + X2 + X6 + X9 + X11 + X13 + X14 + X15 + X18 + X21 + 
+    # X22 + X23 + X26 + X27 + X30 + X32 + X33 + X34
