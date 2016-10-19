@@ -24,6 +24,8 @@ return_matrix<-matrix(rep(0,length(column_vector)*total_interactions),ncol=lengt
 #Need to iterate through each wave to get the id's of males and females
 scrape_data<-function(column_vector){
 	for (w in 1:num_waves){
-		
+		#Figure out the ids in each wave
+		female_id<-unique(full_data[full_data$wave==w & full_data$gender==0,]$id)
+		male_id<-unique(full_data[full_data$wave==w & full_data$gender==1,]$id)
 	}
 }

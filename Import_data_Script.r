@@ -1,4 +1,6 @@
 #Import data after you change into the directory where the data is stored
+setwd("/Users/glori/Documents/GitHub")
+
 full_data<-read.table("data_excel.csv",header=TRUE,sep=",",stringsAsFactors=FALSE)
 #When importing we ran into a few issues such as some lines not having the correct number of elements, so added fill=TRUE for the blanks.
 
