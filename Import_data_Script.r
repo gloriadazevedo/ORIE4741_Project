@@ -71,8 +71,18 @@ wave_gender_freq<-table(full_data$wave,full_data$gender)
 total_match<-sum(full_data$"match")/2
 
 #Want to find the total number of interactions between people
-#Neeed to divide by 2 to avoid double counting
-total_interactions<-length(full_data$wave)/2 
+#Need to do this manually for some reason
+check<-0
+for (w in 1:num_waves){
+	female_id<-unique(full_data[full_data$wave==w & full_data$gender==0,]$id)
+	male_id<-unique(full_data[full_data$wave==w & full_data$gender==1,]$id)
+	for (i in 1:length(female_id)){
+		for (j in 1:length(male_id)){
+			check<-check+1
+		}
+	}
+}
+total_interactions<-check
 
 #Need to recode values of "NA" in male or female race to be 6
 for (i in 1:length(full_data$race)){
