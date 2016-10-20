@@ -16,17 +16,12 @@
 #match data to test it on the other disjoint half or use bootstrap or k-fold cross validation,
 #then we will divide the total matrix up.
 
-column_vector<-c("race","field_cd")
-
-#Use an external counter for the subset data matrix and result vector to explicitly
-#assign data to the corresponding rows instead of "append" 
-#Thus we have to have twice the number of columns in the matrix than in the vector of column names that we want
-result_vector<-rep(0,total_interactions)
-return_matrix<-matrix(rep(0,2*length(column_vector)*total_interactions),ncol=2*length(column_vector),nrow=total_interactions)
-counter<-1
-
 #Need to iterate through each wave to get the id's of males and females
 scrape_data<-function(column_vector){
+	result_vector<-rep(0,total_interactions)
+	return_matrix<-matrix(rep(0,2*length(column_vector)*total_interactions),ncol=2*length(column_vector),nrow=total_interactions)
+
+	counter<-1
 	for (w in 1:num_waves){
 		#Figure out the ids in each wave
 		female_id<-unique(full_data[full_data$wave==w & full_data$gender==0,]$id)
@@ -55,4 +50,12 @@ scrape_data<-function(column_vector){
 			}
 		}
 	}
+	return_list<-list(return_matrix=return_matrix,result_vector=result_vector)
+	return(return_list)
 }
+
+#Call the function
+#Seems to work now, only there are 5 empty rows at the end of the matrix 
+#potentially implying that we may have too many interactions
+column_vector<-c("race","field_cd","yoga")
+result_list<-scrape_data(column_vector)
