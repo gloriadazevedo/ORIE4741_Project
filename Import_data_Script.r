@@ -204,6 +204,31 @@ for (i in 1:length(full_data$"attr")){
 	}
 }
 
+#Clean attributes that a participant writes halfway through the speed dating event
+#that weights their views of importance of the attribute in a partner (similar to the 1_1 attributes)
+#Relevant columns: attr1_s, sinc1_s, intel1_s, fun1_s,amb1_s, shar1_s
+
+for (i in 1:length(full_data$attr1_s)){
+	if (is.na(full_data[i,]$attr1_s)){
+		full_data[i,]$attr1_s<-0
+	}
+	if(is.na(full_data[i,]$sinc1_s)){
+		full_data[i,]$sinc1_s<-0
+	}
+	if(is.na(full_data[i,]$intel1_s)){
+		full_data[i,]$intel1_s<-0
+	}
+	if(is.na(full_data[i,]$fun1_s)){
+		full_data[i,]$fun1_s<-0
+	}
+	if(is.na(full_data[i,]$amb1_s)){
+		full_data[i,]$amb1_s<-0
+	}
+	if(is.na(full_data[i,]$shar1_s)){
+		full_data[i,]$shar1_s<-0
+	}
+}
+
 #Since we are considering using race as a predictor, we also want to know the breakdown
 #of the number of people in race overall and by gender
 total_race_vector<-rep(0,6)
