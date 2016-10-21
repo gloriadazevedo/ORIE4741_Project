@@ -229,6 +229,34 @@ for (i in 1:length(full_data$attr1_s)){
 	}
 }
 
+#Clean attributes that a participant writes during the first followup after the speed dating event 
+#that distributes weights onto the 6 attributes that they thought were important to their decisions 
+#during the event
+#Relevant columns: attr7_2, sinc7_2, intl7_2, fun7_2, amb7_2, shar7_2
+
+for (i in 1:length(full_data$attr7_2)){
+	if(is.na(full_data[i,]$attr7_2)){
+		full_data[i,]$attr7_2<-0
+	}
+	if(is.na(full_data[i,]$sinc7_2)){
+		full_data[i,]$sinc7_2<-0
+	}
+	if(is.na(full_data[i,]$intel7_2)){
+		full_data[i,]$intel7_2<-0
+	}
+	if(is.na(full_data[i,]$fun7_2)){
+		full_data[i,]$fun7_2<-0
+	}
+	if(is.na(full_data[i,]$amb7_2)){
+		full_data[i,]$amb7_2<-0
+	}
+	if(is.na(full_data[i,]$shar7_2)){
+		full_data[i,]$shar7_2<-0
+	}
+}
+
+
+
 #Since we are considering using race as a predictor, we also want to know the breakdown
 #of the number of people in race overall and by gender
 total_race_vector<-rep(0,6)
