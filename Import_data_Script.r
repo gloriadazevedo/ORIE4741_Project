@@ -129,56 +129,80 @@ for (i in 1:length(full_data$undergra)){
 #We also need to reassign the NA values to be 0's so that they don't skew the data when trying to perform functions on the fields
 #Suspect that for waves 6-9 they have weighted their values by 100
 
-attr1_1_temp_vector<-rep(0,length(full_data$attr1_1))
-sinc1_1_temp_vector<-rep(0,length(full_data$sinc1_1))
-intel1_1_temp_vector<-rep(0,length(full_data$intel1_1))
-fun1_1_temp_vector<-rep(0,length(full_data$fun1_1))
-amb1_1_temp_vector<-rep(0,length(full_data$amb1_1))
-shar1_1_temp_vector<-rep(0,length(full_data$shar1_1))
+# attr1_1_temp_vector<-rep(0,length(full_data$attr1_1))
+# sinc1_1_temp_vector<-rep(0,length(full_data$sinc1_1))
+# intel1_1_temp_vector<-rep(0,length(full_data$intel1_1))
+# fun1_1_temp_vector<-rep(0,length(full_data$fun1_1))
+# amb1_1_temp_vector<-rep(0,length(full_data$amb1_1))
+# shar1_1_temp_vector<-rep(0,length(full_data$shar1_1))
 
 #Clean all the first section at the same time
 for (i in 1:length(full_data$attr1_1)){
-	wave_num<-full_data[i,]$wave
+	#wave_num<-full_data[i,]$wave
 	
 	#Also need a check for NA values
 	#Change the original one and also change it in the temporary vector
 	if(is.na(full_data[i,]$attr1_1)){
 		full_data[i,]$attr1_1<-0
-		attr1_1_temp_vector[i]<-0
+		#attr1_1_temp_vector[i]<-0
 	}
 	if(is.na(full_data[i,]$sinc1_1)){
 		full_data[i,]$sinc1_1<-0
-		sinc1_1_temp_vector[i]<-0
+		#sinc1_1_temp_vector[i]<-0
 	}
 	if(is.na(full_data[i,]$intel1_1)){
 		full_data[i,]$intel1_1<-0
-		intel1_1_temp_vector[i]<-0
+		#intel1_1_temp_vector[i]<-0
 	}
 	if(is.na(full_data[i,]$fun1_1)){
 		full_data[i,]$fun1_1<-0
-		fun1_1_temp_vector[i]<-0
+		#fun1_1_temp_vector[i]<-0
 	}
 	if(is.na(full_data[i,]$amb1_1)){
 		full_data[i,]$amb1_1<-0
-		amb1_1_temp_vector[i]<-0
+		#amb1_1_temp_vector[i]<-0
 	}
 	if(is.na(full_data[i,]$shar1_1)){
 		full_data[i,]$shar1_1<-0
-		shar1_1_temp_vector[i]<-0
+		#shar1_1_temp_vector[i]<-0
 	}
 	
+	#Commenting out for now since they're all weighted the same
 	#Check wave values
-	if(wave_num>=1 & wave_num<=5){
-		attr1_1_temp_vector[i]<-(full_data[i,]$attr1_1)/10
-	}
-	if(wave_num>=6 & wave_num<=9){
-		attr1_1_temp_vector[i]<-(full_data[i,]$attr1_1)/10
-	}
-	if(wave_num>=10 & wave_num<=21){
-		attr1_1_temp_vector[i]<-(full_data[i,]$attr1_1)/10
-	}
+	# if(wave_num>=1 & wave_num<=5){
+		# attr1_1_temp_vector[i]<-(full_data[i,]$attr1_1)/10
+		# sinc1_1_temp_vector[i]<-(full_data[i,]$attr1_1)/10
+	# }
+	# if(wave_num>=6 & wave_num<=9){
+		# attr1_1_temp_vector[i]<-(full_data[i,]$attr1_1)/10
+	# }
+	# if(wave_num>=10 & wave_num<=21){
+		# attr1_1_temp_vector[i]<-(full_data[i,]$attr1_1)/10
+	# }
 }
 
+#Clean the attributes that a participant assigns to a partner on their scorecard to remove NAs
+#relevant columsn: attr, sinc, intel, fun, amb, shar
+for (i in 1:length(full_data$"attr")){
+	if(is.na(full_data[i,]$"attr")){
+		full_data[i,]$"attr"<-0
+	}
+	if(is.na(full_data[i,]$sinc)){
+		full_data[i,]$sinc<-0
+	}
+	if(is.na(full_data[i,]$intel)){
+		full_data[i,]$intel<-0
+	}
+	if(is.na(full_data[i,]$fun)){
+		full_data[i,]$fun<-0
+	}
+	if(is.na(full_data[i,]$amb)){
+		full_data[i,]$amb<-0
+	}
+	if(is.na(full_data[i,]$shar)){
+		full_data[i,]$shar<-0
+	}
+}
 
 #Since we are considering using race as a predictor, we also want to know the breakdown
 #of the number of people in race overall and by gender
