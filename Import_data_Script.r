@@ -279,6 +279,31 @@ for (i in 1:length(full_data$attr1_2)){
 	}
 }
 
+#Participants were asked during a second followup survey to rank the importance of certain attributes in
+#the opposite sex
+#Relevant columns: attr1_3, sinc1_3, intel1_3, fun1_3, amb1_3, shar1_3
+for (i in 1:length(full_data$attr1_3)){
+	if(is.na(full_data[i,]$attr1_3)){
+		full_data[i,]$attr1_3<-0
+	}
+	if(is.na(full_data[i,]$sinc1_3)){
+		full_data[i,]$sinc1_3<-0
+	}
+	if(is.na(full_data[i,]$intel1_3)){
+		full_data[i,]$intel1_3<-0
+	}
+	if(is.na(full_data[i,]$fun1_3)){
+		full_data[i,]$fun1_3<-0
+	}
+	if(is.na(full_data[i,]$amb1_3)){
+		full_data[i,]$amb1_3<-0
+	}
+	if(is.na(full_data[i,]$shar1_3)){
+		full_data[i,]$shar1_3<-0
+	}
+}
+
+
 
 #Since we are considering using race as a predictor, we also want to know the breakdown
 #of the number of people in race overall and by gender
