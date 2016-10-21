@@ -54,8 +54,20 @@ scrape_data<-function(column_vector){
 	return(return_list)
 }
 
-#Call the function
-#Seems to work now, only there are 5 empty rows at the end of the matrix 
-#potentially implying that we may have too many interactions
+#Call the function to test
 column_vector<-c("race","field_cd","yoga")
 result_list<-scrape_data(column_vector)
+return_matrix<-result_list$return_matrix
+result_vector<-result_list$result_vector
+
+#Run a linear model to test
+test_lm<-lm(result_vector~.,data=data.frame(return_matrix))
+summary(test_lm)
+
+#Some other issues that we've encountered when looking at the data are that,
+#even though we're using coded values for race and field_cd, it's more important
+#that the races and field_cds are the same for the two individuals, not the
+#difference in magnitude, since they are still categorical variables.
+#For race there's already a column called "samerace" but there isn't one for field_cd
+#Also then if we wanted to pull those columns, we would get them twice (in two columns)
+#in this current setup.
