@@ -230,8 +230,8 @@ for (i in 1:length(full_data$attr1_s)){
 }
 
 #Clean attributes that a participant writes during the first followup after the speed dating event 
-#that distributes weights onto the 6 attributes that they thought were important to their decisions 
-#during the event
+#that distributes weights onto the 6 attributes that they thought were important to their DECISIONS
+#DURING THE EVENT
 #Relevant columns: attr7_2, sinc7_2, intl7_2, fun7_2, amb7_2, shar7_2
 
 for (i in 1:length(full_data$attr7_2)){
@@ -255,6 +255,29 @@ for (i in 1:length(full_data$attr7_2)){
 	}
 }
 
+#Participants were asked during the first followup survey to weight different attributes that
+#they thought were IMPORTANT IN THE OPPOSITE SEX IN GENERAL
+#Relevant columns: attr 1_2, sinc1_2, intel1_2, fun1_2, amb1_2, shar1_2
+for (i in 1:length(full_data$attr1_2)){
+	if(is.na(full_data[i,]$attr1_2)){
+		full_data[i,]$attr1_2<-0
+	}
+	if(is.na(full_data[i,]$sinc1_2)){
+		full_data[i,]$sinc1_2<-0
+	}
+	if(is.na(full_data[i,]$intel1_2)){
+		full_data[i,]$intel1_2<-0
+	}
+	if(is.na(full_data[i,]$fun1_2)){
+		full_data[i,]$fun1_2<-0
+	}
+	if(is.na(full_data[i,]$amb1_2)){
+		full_data[i,]$amb1_2<-0
+	}
+	if(is.na(full_data[i,]$shar1_2)){
+		full_data[i,]$shar1_2<-0
+	}
+}
 
 
 #Since we are considering using race as a predictor, we also want to know the breakdown
