@@ -303,6 +303,29 @@ for (i in 1:length(full_data$attr1_3)){
 	}
 }
 
+#During the second follow up survey, they were asked to think back on the traits that
+#they thought were the most important but we need to clean these values as well for NA's
+#Relevant columns: attr7_3, sinc7_3, intel7_3, fun7_3, amb7_3,shar7_3
+for(i in 1:length(full_data$attr7_3)){
+	if(is.na(full_data[i,]$attr7_3)){
+		full_data[i,]$attr7_3<-0
+	}
+	if(is.na(full_data[i,]$sinc7_3)){
+		full_data[i,]$sinc7_3<-0
+	}
+	if(is.na(full_data[i,]$intel7_3)){
+		full_data[i,]$intel7_3<-0
+	}
+	if(is.na(full_data[i,]$fun7_3)){
+		full_data[i,]$fun7_3<-0
+	}
+	if(is.na(full_data[i,]$amb7_3)){
+		full_data[i,]$amb7_3<-0
+	}
+	if(is.na(full_data[i,]$shar7_3)){
+		full_data[i,]$shar7_3<-0
+	}
+}
 
 
 #Since we are considering using race as a predictor, we also want to know the breakdown
