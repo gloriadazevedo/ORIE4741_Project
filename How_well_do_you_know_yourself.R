@@ -30,7 +30,7 @@ for(i in 1:length(full_data$field_cd)){
 
 #This analysis aims to determine how much the values of what people said they were looking for in a partner, correlate with the attributes of the people they said 'yes' to
 
-#only considering the data where a person said yes to that partner, since this will help us see if the qualities they rate their partner highly at are the same ones they prioritize as being important to them
+#only considering the data where a person said yes to that partner, since this will help us see if the qualities they rate their partner highly in are the same ones they prioritize as being important to them
 yesdata<- subset(full_data, dec==1)
 yesdataimp<-subset(yesdata, select=c(attr1_1,sinc1_1,intel1_1,fun1_1,amb1_1,shar1_1,attr,sinc,intel,fun,amb,shar, imprace, samerace, int_corr))
 
