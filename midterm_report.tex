@@ -7,6 +7,7 @@
  top=20mm,
  }
 
+ \linespread{1.5}
 \title{ORIE 4741 Project Midterm Report}
 
 \author{
@@ -20,6 +21,10 @@
 
 \begin{document}
 \maketitle
+
+\section{Executive Summary}
+
+\section{Introduction}
 
 \section{Data Cleaning Remarks}
 During the following report we will take on the convention that a "participant" is the female and the "partner" is the male.  These conventions are used when scraping data and analyzing the coefficients of the predictors in the model so that the data is not double counted.  All females have interacted with each male once and vice versa so this is not a problem.  There is only one incident of a person not completing her survey, and we address that issue below.
@@ -40,7 +45,7 @@ Notice that there are a lot of non-responses for ranking attributes during the f
 
 For several waves (1-5, 12-14, and 21), there are no responses on the halfway point of the speed dating event where participants are asked to weight the importance of attributes in the opposite sex. In other waves there are several instances where there is no response but the majority of the others in those waves had responded.
 
-\section{Initial Findings and Ideas}
+\section{Initial Analysis}
 A suggestion from an outside source suggested that we create a field that groups the institutions that the students attended for their undergraduate degree together and see if that is a significant factor to whether or not two people will match.  We note that this field is pretty messy and has many blanks or NA's (around 40\% overall) so we do not think that we can reliably use this field as a predictor but potentially it can be used as a tie breaker when testing the model on new data.\\
 
 We note that for some of the fields, they ask the participant to what extent other people perceive as important traits. However, it may not be that important to know what other people think--it's better to look at actual proof of what people like based on the people that they said they would match with them.  It may also be useful to look at what traits that they liked or preferred in their partner, regardless of whether or the other person actually liked them back.\\
@@ -50,13 +55,16 @@ Note that there are around 17 different activities that participants are asked t
 write their amount of interest in them.  These values are integer values from 1 to 10.  If they have similar amounts of interest in the activity, then we assume that they will both rank the activity similarly and we exclude the possibility that the participants mis-rank the interest level (range of ranks are from 1 to 10, 1 being not at all important, 10 being extremely important).\\
 
 We consider a norm of a vector of differences in interest that a participant and her partner have in an activity.  Using the norm squared versus another error measure such as absolute value will penalize larger differences more, although the maximum amount is 81 in this case for each activity. Using the absolute value (or the 1-norm) will penalize at most 9 for each activity. Then later on, maybe we can use this value as another field in the data instead of using the activities separately. \\
- 
- \section{Testing Initial Models}
- 
-\section{Initial Data Analysis}
+
 Prior to formulating our main compatibility prediction model, we decided to have fun with the data. And studied it to identify patterns, that may later help in developing our final prediction model. 
 
 The 'What_do_men_want.R' file, that sounds like it came straight out of \textit{Cosmo}, aims to identify which of the parameters amongst attractiveness, sincerity, intelligence, 'fun-ness', ambition and having shared interests, men value the most. We also use the parameters samerace (which identifies whether the partner is of the same race) and int_corr (which gives a correlation between the actual interests of the participant and the partner) to do this analyis. Rather than considering the priorities assigned to the individual parameters, we choose to compare the values of scores given to partners they said 'yes' to with the scores of all the partners. Initially we computed the summary statistics to get a broad idea of the difference between the two. Following this we performed a linear regression on the decision variable (dec) to determine which of the different parameters had the greatest impact on its value. The results of the regression suggest that while perceived attractiveness, sincerity, 'fun-ness', ambition and shared interests do play a role in deciding a man's decision, other factors such as intelligence, the partner being of the same race and actual shared interests do not play a major role.
 
 The 'How_well_do_you_know_yourself.R' file, does an analysis that, like its name suggests aims to understand the 
+
+ 
+\section{Model Development}
+ 
+\section{Results and Key Findings}
+
 \end{document}
