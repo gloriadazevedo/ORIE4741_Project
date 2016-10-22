@@ -99,6 +99,28 @@ for(i in 1:length(full_data$field_cd)){
 	}
 }
 
+#Need to recode NA values in some of the importance rankings and also in 
+#the goals [of the speed dating event], how often they go out, and how often they go on dates
+#Relevant columns:
+#imprace, imprelig, goal, date, go_out
+for(i in 1:length(full_data$imprace)){
+	if (is.na(full_data[i,]$imprace)){
+		full_data[i,]$imprace<-0
+	}
+	if (is.na(full_data[i,]$imprelig)){
+		full_data[i,]$imprelig<-0
+	}
+	if (is.na(full_data[i,]$goal)){
+		full_data[i,]$goal<-6
+	}
+	if (is.na(full_data[i,]$"date")){
+		full_data[i,]$"date"<-7
+	}
+	if (is.na(full_data[i,]$go_out)){
+		full_data[i,]$go_out<-7
+	}
+}
+
 #Consider adding a field denoting whether or not the school that they went to 
 #for undergraduate is an Ivy League school or other classification
 #First get a unique list of the schools that they went to for undergraduate
@@ -125,6 +147,59 @@ for (i in 1:length(full_data$undergra)){
 #Section to clean activity columns to change NA's to 0's and say that the person had no interest in the activities
 #Relevant columns:
 #sports, tvsports, exercise, dining, museums, art, hiking, gaming, clubbing, reading, tv, theater, movies, concerts, music, shopping, and yoga
+for (i in 1:length(full_data$sports)){
+	if(is.na(full_data[i,]$sports)){
+		full_data[i,]$sports<-0
+	}
+	if(is.na(full_data[i,]$tvsports)){
+		full_data[i,]$tvsports<-0
+	}
+	if(is.na(full_data[i,]$exercise)){
+		full_data[i,]$exercise<-0
+	}
+	if(is.na(full_data[i,]$dining)){
+		full_data[i,]$dining<-0
+	}
+	if(is.na(full_data[i,]$museums)){
+		full_data[i,]$museums<-0
+	}
+	if(is.na(full_data[i,]$art)){
+		full_data[i,]$art<-0
+	}
+	if(is.na(full_data[i,]$hiking)){
+		full_data[i,]$hiking<-0
+	}
+	if(is.na(full_data[i,]$gaming)){
+		full_data[i,]$gaming<-0
+	}
+	if(is.na(full_data[i,]$clubbing)){
+		full_data[i,]$clubbing<-0
+	}
+	if(is.na(full_data[i,]$reading)){
+		full_data[i,]$reading<-0
+	}
+	if(is.na(full_data[i,]$tv)){
+		full_data[i,]$tv<-0
+	}
+	if(is.na(full_data[i,]$theater)){
+		full_data[i,]$theater<-0
+	}
+	if(is.na(full_data[i,]$movies)){
+		full_data[i,]$movies<-0
+	}
+	if(is.na(full_data[i,]$concerts)){
+		full_data[i,]$concerts<-0
+	}
+	if(is.na(full_data[i,]$music)){
+		full_data[i,]$music<-0
+	}
+	if(is.na(full_data[i,]$shopping)){
+		full_data[i,]$shopping<-0
+	}
+	if(is.na(full_data[i,]$yoga)){
+		full_data[i,]$yoga<-0
+	}
+}
 
 
 ##Section of code to normalize the different rankings of categories that either a male or female prefers in a partner##
