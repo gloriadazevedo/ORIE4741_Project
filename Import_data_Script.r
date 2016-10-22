@@ -122,6 +122,11 @@ for (i in 1:length(full_data$undergra)){
 #i.e. "GW" should mean "George Washington University"
 #Still have a lot of blanks or "Other" so we don't think that this is a reliable predictor for compatibility
 
+#Section to clean activity columns to change NA's to 0's and say that the person had no interest in the activities
+#Relevant columns:
+#sports, tvsports, exercise, dining, museums, art, hiking, gaming, clubbing, reading, tv, theater, movies, concerts, music, shopping, and yoga
+
+
 ##Section of code to normalize the different rankings of categories that either a male or female prefers in a partner##
 #For waves 1-5 and 10-21, the participant is asked to reassign weights that add up to 100 into 6 different categories
 #while the participants in waves 6-9 are asked to give each attribute a rank from 1 to 10 where 1 implies that the 
