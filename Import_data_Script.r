@@ -1,4 +1,6 @@
 #Import data after you change into the directory where the data is stored
+setwd("/Users/glori/Documents/GitHub")
+
 full_data<-read.table("data_excel.csv",header=TRUE,sep=",",stringsAsFactors=FALSE)
 #When importing we ran into a few issues such as some lines not having the correct number of elements, so added fill=TRUE for the blanks.
 
@@ -68,6 +70,20 @@ wave_gender_freq<-table(full_data$wave,full_data$gender)
 #Need to divide by 2 to not double count for the "female" view and the "male" view
 total_match<-sum(full_data$"match")/2
 
+#Want to find the total number of interactions between people
+#Need to do this manually for some reason
+check<-0
+for (w in 1:num_waves){
+	female_id<-unique(full_data[full_data$wave==w & full_data$gender==0,]$id)
+	male_id<-unique(full_data[full_data$wave==w & full_data$gender==1,]$id)
+	for (i in 1:length(female_id)){
+		for (j in 1:length(male_id)){
+			check<-check+1
+		}
+	}
+}
+total_interactions<-check
+
 #Need to recode values of "NA" in male or female race to be 6
 for (i in 1:length(full_data$race)){
 	if (is.na(full_data$race[i])){
@@ -80,6 +96,28 @@ for (i in 1:length(full_data$race)){
 for(i in 1:length(full_data$field_cd)){
 	if(is.na(full_data$field_cd[i])){
 		full_data$field_cd[i]<-18
+	}
+}
+
+#Need to recode NA values in some of the importance rankings and also in 
+#the goals [of the speed dating event], how often they go out, and how often they go on dates
+#Relevant columns:
+#imprace, imprelig, goal, date, go_out
+for(i in 1:length(full_data$imprace)){
+	if (is.na(full_data[i,]$imprace)){
+		full_data[i,]$imprace<-0
+	}
+	if (is.na(full_data[i,]$imprelig)){
+		full_data[i,]$imprelig<-0
+	}
+	if (is.na(full_data[i,]$goal)){
+		full_data[i,]$goal<-6
+	}
+	if (is.na(full_data[i,]$"date")){
+		full_data[i,]$"date"<-7
+	}
+	if (is.na(full_data[i,]$go_out)){
+		full_data[i,]$go_out<-7
 	}
 }
 
@@ -104,7 +142,271 @@ for (i in 1:length(full_data$undergra)){
 
 #Then we get a list of 242 universities although note that some of them are the same but typed in differently
 #i.e. "GW" should mean "George Washington University"
-#Still have a lot fo blanks or "Other" so we don't think that this is a reliable predictor for compatibility
+#Still have a lot of blanks or "Other" so we don't think that this is a reliable predictor for compatibility
+
+#Section to clean activity columns to change NA's to 0's and say that the person had no interest in the activities
+#Relevant columns:
+#sports, tvsports, exercise, dining, museums, art, hiking, gaming, clubbing, reading, tv, theater, movies, concerts, music, shopping, and yoga
+for (i in 1:length(full_data$sports)){
+	if(is.na(full_data[i,]$sports)){
+		full_data[i,]$sports<-0
+	}
+	if(is.na(full_data[i,]$tvsports)){
+		full_data[i,]$tvsports<-0
+	}
+	if(is.na(full_data[i,]$exercise)){
+		full_data[i,]$exercise<-0
+	}
+	if(is.na(full_data[i,]$dining)){
+		full_data[i,]$dining<-0
+	}
+	if(is.na(full_data[i,]$museums)){
+		full_data[i,]$museums<-0
+	}
+	if(is.na(full_data[i,]$art)){
+		full_data[i,]$art<-0
+	}
+	if(is.na(full_data[i,]$hiking)){
+		full_data[i,]$hiking<-0
+	}
+	if(is.na(full_data[i,]$gaming)){
+		full_data[i,]$gaming<-0
+	}
+	if(is.na(full_data[i,]$clubbing)){
+		full_data[i,]$clubbing<-0
+	}
+	if(is.na(full_data[i,]$reading)){
+		full_data[i,]$reading<-0
+	}
+	if(is.na(full_data[i,]$tv)){
+		full_data[i,]$tv<-0
+	}
+	if(is.na(full_data[i,]$theater)){
+		full_data[i,]$theater<-0
+	}
+	if(is.na(full_data[i,]$movies)){
+		full_data[i,]$movies<-0
+	}
+	if(is.na(full_data[i,]$concerts)){
+		full_data[i,]$concerts<-0
+	}
+	if(is.na(full_data[i,]$music)){
+		full_data[i,]$music<-0
+	}
+	if(is.na(full_data[i,]$shopping)){
+		full_data[i,]$shopping<-0
+	}
+	if(is.na(full_data[i,]$yoga)){
+		full_data[i,]$yoga<-0
+	}
+}
+
+
+##Section of code to normalize the different rankings of categories that either a male or female prefers in a partner##
+#For waves 1-5 and 10-21, the participant is asked to reassign weights that add up to 100 into 6 different categories
+#while the participants in waves 6-9 are asked to give each attribute a rank from 1 to 10 where 1 implies that the 
+#trait is not at all important while a rank of 10 implies that the trait is extremely important
+#We also need to reassign the NA values to be 0's so that they don't skew the data when trying to perform functions on the fields
+#Suspect that for waves 6-9 they have weighted their values by 100
+
+# attr1_1_temp_vector<-rep(0,length(full_data$attr1_1))
+# sinc1_1_temp_vector<-rep(0,length(full_data$sinc1_1))
+# intel1_1_temp_vector<-rep(0,length(full_data$intel1_1))
+# fun1_1_temp_vector<-rep(0,length(full_data$fun1_1))
+# amb1_1_temp_vector<-rep(0,length(full_data$amb1_1))
+# shar1_1_temp_vector<-rep(0,length(full_data$shar1_1))
+
+#Clean all the first section at the same time
+for (i in 1:length(full_data$attr1_1)){
+	#wave_num<-full_data[i,]$wave
+	
+	#Also need a check for NA values
+	#Change the original one and also change it in the temporary vector
+	if(is.na(full_data[i,]$attr1_1)){
+		full_data[i,]$attr1_1<-0
+		#attr1_1_temp_vector[i]<-0
+	}
+	if(is.na(full_data[i,]$sinc1_1)){
+		full_data[i,]$sinc1_1<-0
+		#sinc1_1_temp_vector[i]<-0
+	}
+	if(is.na(full_data[i,]$intel1_1)){
+		full_data[i,]$intel1_1<-0
+		#intel1_1_temp_vector[i]<-0
+	}
+	if(is.na(full_data[i,]$fun1_1)){
+		full_data[i,]$fun1_1<-0
+		#fun1_1_temp_vector[i]<-0
+	}
+	if(is.na(full_data[i,]$amb1_1)){
+		full_data[i,]$amb1_1<-0
+		#amb1_1_temp_vector[i]<-0
+	}
+	if(is.na(full_data[i,]$shar1_1)){
+		full_data[i,]$shar1_1<-0
+		#shar1_1_temp_vector[i]<-0
+	}
+	
+	#Commenting out for now since they're all weighted the same
+	#Check wave values
+	# if(wave_num>=1 & wave_num<=5){
+		# attr1_1_temp_vector[i]<-(full_data[i,]$attr1_1)/10
+		# sinc1_1_temp_vector[i]<-(full_data[i,]$attr1_1)/10
+	# }
+	# if(wave_num>=6 & wave_num<=9){
+		# attr1_1_temp_vector[i]<-(full_data[i,]$attr1_1)/10
+	# }
+	# if(wave_num>=10 & wave_num<=21){
+		# attr1_1_temp_vector[i]<-(full_data[i,]$attr1_1)/10
+	# }
+}
+
+#Clean the attributes that a participant assigns to a partner on their scorecard to remove NAs
+#relevant columsn: attr, sinc, intel, fun, amb, shar
+for (i in 1:length(full_data$"attr")){
+	if(is.na(full_data[i,]$"attr")){
+		full_data[i,]$"attr"<-0
+	}
+	if(is.na(full_data[i,]$sinc)){
+		full_data[i,]$sinc<-0
+	}
+	if(is.na(full_data[i,]$intel)){
+		full_data[i,]$intel<-0
+	}
+	if(is.na(full_data[i,]$fun)){
+		full_data[i,]$fun<-0
+	}
+	if(is.na(full_data[i,]$amb)){
+		full_data[i,]$amb<-0
+	}
+	if(is.na(full_data[i,]$shar)){
+		full_data[i,]$shar<-0
+	}
+}
+
+#Clean attributes that a participant writes halfway through the speed dating event
+#that weights their views of importance of the attribute in a partner (similar to the 1_1 attributes)
+#Relevant columns: attr1_s, sinc1_s, intel1_s, fun1_s,amb1_s, shar1_s
+
+for (i in 1:length(full_data$attr1_s)){
+	if (is.na(full_data[i,]$attr1_s)){
+		full_data[i,]$attr1_s<-0
+	}
+	if(is.na(full_data[i,]$sinc1_s)){
+		full_data[i,]$sinc1_s<-0
+	}
+	if(is.na(full_data[i,]$intel1_s)){
+		full_data[i,]$intel1_s<-0
+	}
+	if(is.na(full_data[i,]$fun1_s)){
+		full_data[i,]$fun1_s<-0
+	}
+	if(is.na(full_data[i,]$amb1_s)){
+		full_data[i,]$amb1_s<-0
+	}
+	if(is.na(full_data[i,]$shar1_s)){
+		full_data[i,]$shar1_s<-0
+	}
+}
+
+#Clean attributes that a participant writes during the first followup after the speed dating event 
+#that distributes weights onto the 6 attributes that they thought were important to their DECISIONS
+#DURING THE EVENT
+#Relevant columns: attr7_2, sinc7_2, intl7_2, fun7_2, amb7_2, shar7_2
+
+for (i in 1:length(full_data$attr7_2)){
+	if(is.na(full_data[i,]$attr7_2)){
+		full_data[i,]$attr7_2<-0
+	}
+	if(is.na(full_data[i,]$sinc7_2)){
+		full_data[i,]$sinc7_2<-0
+	}
+	if(is.na(full_data[i,]$intel7_2)){
+		full_data[i,]$intel7_2<-0
+	}
+	if(is.na(full_data[i,]$fun7_2)){
+		full_data[i,]$fun7_2<-0
+	}
+	if(is.na(full_data[i,]$amb7_2)){
+		full_data[i,]$amb7_2<-0
+	}
+	if(is.na(full_data[i,]$shar7_2)){
+		full_data[i,]$shar7_2<-0
+	}
+}
+
+#Participants were asked during the first followup survey to weight different attributes that
+#they thought were IMPORTANT IN THE OPPOSITE SEX IN GENERAL
+#Relevant columns: attr 1_2, sinc1_2, intel1_2, fun1_2, amb1_2, shar1_2
+for (i in 1:length(full_data$attr1_2)){
+	if(is.na(full_data[i,]$attr1_2)){
+		full_data[i,]$attr1_2<-0
+	}
+	if(is.na(full_data[i,]$sinc1_2)){
+		full_data[i,]$sinc1_2<-0
+	}
+	if(is.na(full_data[i,]$intel1_2)){
+		full_data[i,]$intel1_2<-0
+	}
+	if(is.na(full_data[i,]$fun1_2)){
+		full_data[i,]$fun1_2<-0
+	}
+	if(is.na(full_data[i,]$amb1_2)){
+		full_data[i,]$amb1_2<-0
+	}
+	if(is.na(full_data[i,]$shar1_2)){
+		full_data[i,]$shar1_2<-0
+	}
+}
+
+#Participants were asked during a second followup survey to rank the importance of certain attributes in
+#the opposite sex
+#Relevant columns: attr1_3, sinc1_3, intel1_3, fun1_3, amb1_3, shar1_3
+for (i in 1:length(full_data$attr1_3)){
+	if(is.na(full_data[i,]$attr1_3)){
+		full_data[i,]$attr1_3<-0
+	}
+	if(is.na(full_data[i,]$sinc1_3)){
+		full_data[i,]$sinc1_3<-0
+	}
+	if(is.na(full_data[i,]$intel1_3)){
+		full_data[i,]$intel1_3<-0
+	}
+	if(is.na(full_data[i,]$fun1_3)){
+		full_data[i,]$fun1_3<-0
+	}
+	if(is.na(full_data[i,]$amb1_3)){
+		full_data[i,]$amb1_3<-0
+	}
+	if(is.na(full_data[i,]$shar1_3)){
+		full_data[i,]$shar1_3<-0
+	}
+}
+
+#During the second follow up survey, they were asked to think back on the traits that
+#they thought were the most important but we need to clean these values as well for NA's
+#Relevant columns: attr7_3, sinc7_3, intel7_3, fun7_3, amb7_3,shar7_3
+for(i in 1:length(full_data$attr7_3)){
+	if(is.na(full_data[i,]$attr7_3)){
+		full_data[i,]$attr7_3<-0
+	}
+	if(is.na(full_data[i,]$sinc7_3)){
+		full_data[i,]$sinc7_3<-0
+	}
+	if(is.na(full_data[i,]$intel7_3)){
+		full_data[i,]$intel7_3<-0
+	}
+	if(is.na(full_data[i,]$fun7_3)){
+		full_data[i,]$fun7_3<-0
+	}
+	if(is.na(full_data[i,]$amb7_3)){
+		full_data[i,]$amb7_3<-0
+	}
+	if(is.na(full_data[i,]$shar7_3)){
+		full_data[i,]$shar7_3<-0
+	}
+}
+
 
 #Since we are considering using race as a predictor, we also want to know the breakdown
 #of the number of people in race overall and by gender

@@ -288,3 +288,135 @@ num_same_field_vector
 #then we can use the 2-norm, squared or the 1-norm between the two vectors so that it will be a measure
 #of the difference in two people's interests.  The hypothesis is, if two people have similar interests,
 #then they are more likely to match with each other and have followup conversations
+
+#The ratings for their interests are in the "Time 1" or signup time so we can consider those views
+#to be independent of the people that they meet (a guy may pretend to love cats if he's talking to
+#an attractive woman who likes cats as a way to pique her interest as well)
+
+#Can use the "which" to figure out the column number from column name
+#The first column name in the activity vector is "sports"
+first_col<-which(colnames(full_data)=="sports")
+#The last column name int he activity vector is "yoga"
+last_col<-which(colnames(full_data)=="yoga")
+
+#For each wave, for each female, if she matches with a male, then we want to look at 
+#the norm of the difference between their activity vectors. 
+
+#Have to make sure to look at the matches just for one gender so we don't double
+#count the data
+
+#Making a matrix of the vectors and the match decision then fit a linear model using least squares
+#Use the total_interactions calculation from the data import to initialize the matrix
+#There are 17 different activities for each person so the number of columns is 34
+activity_matrix<-matrix(rep(0,34*total_interactions),ncol=34,nrow=total_interactions)
+result<-rep(0,total_interactions)
+counter<-1
+for (w in 1:num_waves){
+	#Figure out the ids in each wave
+	female_id<-unique(full_data[full_data$wave==w & full_data$gender==0,]$id)
+	male_id<-unique(full_data[full_data$wave==w & full_data$gender==1,]$id)
+	
+	for (i in 1:length(female_id)){
+		#Assign the activity vector for the female
+		f_vector<-full_data[full_data$wave==w & full_data$gender==0 & 
+			full_data$id==female_id[i],first_col:last_col][1,]
+		for (j in 1:length(male_id)){
+			#Assign the activity vector for the male
+			m_vector<-full_data[full_data$wave==w & full_data$gender==1 & 
+				full_data$id==male_id[j],first_col:last_col][1,]
+			
+			#Determine whether or ot there's a match
+			match_value<-full_data[full_data$wave==w & full_data$gender==0 & 
+				full_data$id==female_id[i] & full_data$partner==male_id[j], ]$"match"
+			
+			#Append the activity vectors
+			activity_matrix[counter,1:17]<-t(f_vector)
+			activity_matrix[counter,18:34]<-t(m_vector)
+			result[counter]<-match_value
+			counter<-counter+1
+			
+			# #Take the difference between the two vectors
+			# difference_vector<-abs(f_vector-m_vector)
+			
+			# #Calculate the 1-norm of the difference_vector
+			# one_norm<-sum(difference_vector)
+			
+			# #Calculate the 2-norm of the difference vector
+			# two_norm<-sqrt(sum(difference_vector^2))
+			
+		}
+	}	
+}
+
+#Now that we have the data, we want to find a least squares solution to the model
+#To use lm we need to have a data frame--thankfully simple to convert
+lm_fit<-lm(result~.,data=data.frame(activity_matrix))
+summary(lm_fit)
+
+# Call:
+# lm(formula = result ~ ., data = data.frame(activity_matrix))
+
+# Residuals:
+    # Min      1Q  Median      3Q     Max 
+# -0.3374 -0.1931 -0.1476 -0.0836  1.0252 
+
+# Coefficients:
+              # Estimate Std. Error t value Pr(>|t|)    
+# (Intercept) -0.0113703  0.0647975  -0.175  0.86072    
+# X1           0.0054704  0.0029655   1.845  0.06516 .  
+# X2          -0.0076275  0.0027297  -2.794  0.00523 ** 
+# X3          -0.0034318  0.0028146  -1.219  0.22281    
+# X4          -0.0015785  0.0043810  -0.360  0.71863    
+# X5          -0.0013749  0.0061779  -0.223  0.82389    
+# X6           0.0101790  0.0053005   1.920  0.05488 .  
+# X7          -0.0001508  0.0026907  -0.056  0.95532    
+# X8           0.0022679  0.0026681   0.850  0.39536    
+# X9           0.0094641  0.0025049   3.778  0.00016 ***
+# X10          0.0006501  0.0032385   0.201  0.84091    
+# X11          0.0064402  0.0029041   2.218  0.02664 *  
+# X12          0.0023265  0.0038183   0.609  0.54236    
+# X13         -0.0127717  0.0046052  -2.773  0.00557 ** 
+# X14          0.0124699  0.0044441   2.806  0.00504 ** 
+# X15         -0.0072423  0.0046838  -1.546  0.12213    
+# X16         -0.0034914  0.0030029  -1.163  0.24503    
+# X17          0.0020476  0.0023193   0.883  0.37736    
+# X18          0.0025646  0.0030094   0.852  0.39416    
+# X19         -0.0002179  0.0025596  -0.085  0.93217    
+# X20          0.0019555  0.0026971   0.725  0.46848    
+# X21          0.0093401  0.0036152   2.584  0.00981 ** 
+# X22         -0.0176741  0.0058068  -3.044  0.00235 ** 
+# X23          0.0115802  0.0050767   2.281  0.02260 *  
+# X24          0.0018752  0.0024852   0.755  0.45058    
+# X25         -0.0007061  0.0024549  -0.288  0.77364    
+# X26          0.0059778  0.0025464   2.348  0.01894 *  
+# X27          0.0085530  0.0030643   2.791  0.00528 ** 
+# X28         -0.0015935  0.0031107  -0.512  0.60850    
+# X29         -0.0039732  0.0037038  -1.073  0.28345    
+# X30         -0.0078766  0.0041468  -1.899  0.05758 .  
+# X31         -0.0007684  0.0036884  -0.208  0.83498    
+# X32          0.0060899  0.0041221   1.477  0.13965    
+# X33         -0.0025406  0.0029085  -0.874  0.38243    
+# X34          0.0042254  0.0024585   1.719  0.08575 .  
+# ---
+# Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+# Residual standard error: 0.3671 on 4075 degrees of freedom
+  # (79 observations deleted due to missingness)
+# Multiple R-squared:  0.02648,   Adjusted R-squared:  0.01836 
+# F-statistic:  3.26 on 34 and 4075 DF,  p-value: 6.58e-10
+
+#Significant predictors at 0.05 are:
+#X2, X9, X13, X14, X21, X22, X23, X26, X27 but there are many other correlated variables in the model
+
+#Also want to use forward and backward selection and the AIC to determine which predictors should be in the model
+library(MASS)
+step_lm<-stepAIC(lm_fit,direction="both")
+
+#Partial output:
+# result ~ X1 + X2 + X6 + X9 + X11 + X13 + X14 + X15 + X18 + X21 + 
+    # X22 + X23 + X26 + X27 + X30 + X32 + X33 + X34
+#The coefficients for these variables are
+#Female:
+	#Sports, TV Sports, Art, Dancing/Clubbing, Watching TV, Theater, Movies, Going to concerts
+#Male:
+	#Sports, Dining Out, Museums, Art, Dancing/Clubbing, Reading, Movies, Music,Shopping, Yoga
