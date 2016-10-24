@@ -94,37 +94,49 @@ amb1=amb1_1*amb
 shar1=shar1_1*shar
 race1=imprace*samerace
 actshare1=shar1_1*int_corr
-actual_corr<-lm(dec~attr1+sinc1+intel1+fun1+amb1+shar1+race1+actshare1, family=binomial)
+actual_corr<-glm(dec~attr1+sinc1+intel1+fun1+amb1+shar1+race1+actshare1, family=binomial)
+dec_predict<-predict(actual_corr,full_data, type=response)
+
 summary(actual_corr)
+#
 #Call:
-#lm(formula = dec ~ attr1 + sinc1 + intel1 + fun1 + amb1 + shar1 + 
+#glm(formula = dec ~ attr1 + sinc1 + intel1 + fun1 + amb1 + shar1 + 
 #    race1 + actshare1, family = binomial)
 
-#Residuals:
-#     Min       1Q   Median       3Q      Max 
-#-1.11658 -0.37464 -0.08696  0.40561  1.24289 
+#Deviance Residuals: 
+#    Min       1Q   Median       3Q      Max  
+#-2.6406  -0.9010  -0.4322   0.9591   2.8742  
 
 #Coefficients:
-#              Estimate Std. Error t value Pr(>|t|)    
-#(Intercept) -5.511e-01  2.571e-02 -21.436  < 2e-16 ***
-#attr1        1.652e-03  5.995e-05  27.555  < 2e-16 ***
-#sinc1        1.133e-03  9.232e-05  12.275  < 2e-16 ***
-#intel1       1.106e-03  9.349e-05  11.834  < 2e-16 ***
-#fun1         2.032e-03  1.017e-04  19.983  < 2e-16 ***
-#amb1         3.120e-04  1.150e-04   2.712  0.00671 ** 
-#shar1        3.031e-03  1.275e-04  23.764  < 2e-16 ***
-#race1       -1.946e-04  1.901e-03  -0.102  0.91845    
-#actshare1    9.178e-04  1.300e-03   0.706  0.48024    
+#              Estimate Std. Error z value Pr(>|z|)    
+#(Intercept) -5.9196607  0.1794454 -32.989  < 2e-16 ***
+#attr1        0.0093923  0.0003851  24.390  < 2e-16 ***
+#sinc1        0.0065910  0.0005029  13.106  < 2e-16 ***
+#intel1       0.0064759  0.0005153  12.568  < 2e-16 ***
+#fun1         0.0111567  0.0005817  19.178  < 2e-16 ***
+#amb1         0.0019371  0.0006147   3.151  0.00163 ** 
+#shar1        0.0164823  0.0007357  22.405  < 2e-16 ***
+#race1       -0.0068483  0.0100916  -0.679  0.49738    
+#actshare1    0.0046008  0.0069152   0.665  0.50585    
 #---
 #Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
 
-#Residual standard error: 0.4355 on 6923 degrees of freedom
+#(Dispersion parameter for binomial family taken to be 1)
+
+#    Null deviance: 9487.3  on 6931  degrees of freedom
+#Residual deviance: 7637.8  on 6923  degrees of freedom
 #  (1446 observations deleted due to missingness)
-#Multiple R-squared:  0.2287,	Adjusted R-squared:  0.2278 
-#F-statistic: 256.6 on 8 and 6923 DF,  p-value: < 2.2e-16
+#AIC: 7655.8
+
+#Number of Fisher Scoring iterations: 4
+glm.pred=rep(0,8378)
+glm.pred[dec_predict>.5]=1
+table(glm.pred,dec)
+mean(glm.pred==dec)
 
 dec_predict<-predict(actual_corr,full_data, type=response)
 
+#Checking accuracy of prediction model
 glm.pred=rep(0,8378)
 glm.pred[dec_predict>.5]=1
 table(glm.pred,dec)
@@ -132,7 +144,7 @@ mean(glm.pred==dec)
 #> table(glm.pred,dec)
 #        dec
 #glm.pred    0    1
-       0 4033 1656
-       1  827 1862
+#       0 4033 1656
+#       1  827 1862
 #mean(glm.pred==dec)
 #[1] 0.7036286
