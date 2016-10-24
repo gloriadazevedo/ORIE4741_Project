@@ -81,3 +81,58 @@ summary(shar_corr3)
 
 race_corr<-lm(imprace~samerace, data=yesdataimp)
 summary(race_corr)
+
+#trying a different approach where we compare the weighted average of the sum of scores given by participants to partners with the decision variable
+#selecting only the columns from the entire data that we are interested in
+attach(full_data)
+dataimp<-subset(full_data, select=c(dec, attr1_1,sinc1_1,intel1_1,fun1_1,amb1_1,shar1_1,attr,sinc,intel,fun,amb,shar, imprace, samerace, int_corr))
+attr1=attr1_1*attr
+sinc1=sinc1_1*sinc
+intel1=intel1_1*intel
+fun1=fun1_1*fun
+amb1=amb1_1*amb
+shar1=shar1_1*shar
+race1=imprace*samerace
+actshare1=shar1_1*int_corr
+actual_corr<-lm(dec~attr1+sinc1+intel1+fun1+amb1+shar1+race1+actshare1, family=binomial)
+summary(actual_corr)
+#Call:
+#lm(formula = dec ~ attr1 + sinc1 + intel1 + fun1 + amb1 + shar1 + 
+#    race1 + actshare1, family = binomial)
+
+#Residuals:
+#     Min       1Q   Median       3Q      Max 
+#-1.11658 -0.37464 -0.08696  0.40561  1.24289 
+
+#Coefficients:
+#              Estimate Std. Error t value Pr(>|t|)    
+#(Intercept) -5.511e-01  2.571e-02 -21.436  < 2e-16 ***
+#attr1        1.652e-03  5.995e-05  27.555  < 2e-16 ***
+#sinc1        1.133e-03  9.232e-05  12.275  < 2e-16 ***
+#intel1       1.106e-03  9.349e-05  11.834  < 2e-16 ***
+#fun1         2.032e-03  1.017e-04  19.983  < 2e-16 ***
+#amb1         3.120e-04  1.150e-04   2.712  0.00671 ** 
+#shar1        3.031e-03  1.275e-04  23.764  < 2e-16 ***
+#race1       -1.946e-04  1.901e-03  -0.102  0.91845    
+#actshare1    9.178e-04  1.300e-03   0.706  0.48024    
+#---
+#Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+#Residual standard error: 0.4355 on 6923 degrees of freedom
+#  (1446 observations deleted due to missingness)
+#Multiple R-squared:  0.2287,	Adjusted R-squared:  0.2278 
+#F-statistic: 256.6 on 8 and 6923 DF,  p-value: < 2.2e-16
+
+dec_predict<-predict(actual_corr,full_data, type=response)
+
+glm.pred=rep(0,8378)
+glm.pred[dec_predict>.5]=1
+table(glm.pred,dec)
+mean(glm.pred==dec)
+#> table(glm.pred,dec)
+#        dec
+#glm.pred    0    1
+       0 4033 1656
+       1  827 1862
+#mean(glm.pred==dec)
+#[1] 0.7036286
