@@ -56,8 +56,6 @@ for(i in 1:length(date_vector)){
 full_data$day_num<-date_vector
 
 
-
-
 ##################General statistics##################
 #How many waves
 num_waves<-max(full_data[!is.na(full_data$wave),]$wave)
