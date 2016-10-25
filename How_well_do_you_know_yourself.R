@@ -1,6 +1,7 @@
 #How well do you know yourself?
 
 #This analysis aims to determine how much the values of what people said they were looking for in a partner correlate with the people they said 'yes' to
+
 #Import data after you change into the directory where the data is stored
 
 library(gdata)
@@ -26,64 +27,68 @@ for(i in 1:length(full_data$field_cd)){
 
 
 
-#How well do you know yourself?
+#How well do you know yourself? A preliminary analysis
 
 #This analysis aims to determine how much the values of what people said they were looking for in a partner, correlate with the attributes of the people they said 'yes' to
 
-#only considering the data where a person said yes to that partner, since this will help us see if the qualities they rate their partner highly in are the same ones they prioritize as being important to them
+#Since this is only a preliminary analysis, we start by considering only the data where a person said yes to that partner, since this will help us see if the qualities they rate their partner highly in are the same ones they prioritize as being important to them
+
 yesdata<- subset(full_data, dec==1)
 yesdataimp<-subset(yesdata, select=c(attr1_1,sinc1_1,intel1_1,fun1_1,amb1_1,shar1_1,attr,sinc,intel,fun,amb,shar, imprace, samerace, int_corr))
 
-#correlation between importance of attractiveness versus perceived attractiveness of partner
+#Calculating the correlation between the importance they assign to attractiveness versus their perceived attractiveness of partner that they said 'yes' to
 
 attr_corr<-lm(attr1_1~attr,data=yesdataimp)
 summary(attr_corr)
 
-#correlation between importance of sincerity versus perceived sincerity of partner
+#Calculating the correlation between the importance they assign to sincerity versus their perceived sincerity of partner that they said 'yes' to
 
 sinc_corr<-lm(sinc1_1~sinc, data=yesdataimp)
 summary(sinc_corr)
 
-#correlation between importance of intelligence versus perceived intelligence of partner
+#Calculating the correlation between the importance they assign to intelligence versus their perceived intelligence of partner that they said 'yes' to
 
 intel_corr<-lm(intel1_1~intel, data=yesdataimp)
 summary(intel_corr)
 
-#correlation between importance of being fun versus perceived 'fun-ness' of partner
+#Calculating the correlation between the importance they assign to being fun versus their perceived 'fun-ness' of partner that they said 'yes' to
 
 fun_corr<-lm(fun1_1~fun, data=yesdataimp)
 summary(fun_corr)
 
-#correlation between importance of ambition versus perceived ambition of partner
+#Calculating the correlation between the importance they assign to ambition versus their perceived ambition of partner that they said 'yes' to
 
 amb_corr<-lm(amb1_1~amb, data=yesdataimp)
 summary(amb_corr)
 
-#correlation between importance of shared interests versus perceived shared interests of partner
+#Calculating the correlation between the importance they assign to shared interests versus their perceived shared interests with the partner that they said 'yes' to
 
 shar_corr<-lm(shar1_1~shar,data=yesdataimp)
 summary(shar_corr)
 
-#correlation between importance of shared interests versus actual shared interests
-#the actual shared interests is given by the variable int_corr, which gives the actual correlation between the interests of the two people, using the data filled out by them before the speed dating event, assigning scores to various activities and interests 
+#Calculating the correlation between the importance they assign to shared interests versus actual shared interests between them and the partner
+#The actual shared interests is given by the variable int_corr, which gives the actual correlation between the interests of the two people, using the data filled out by them before the speed dating event, assigning scores to various activities and interests 
 
 shar_corr2<-lm(shar1_1~int_corr, data=yesdataimp)
 summary(shar_corr2)
 
-#correlation between perceived shared interests and actual shared interests
+#Calculating the correlation between their perceived shared interests and actual shared interests
 #this assessment gives us an understanding of the accuracy with which a person can tell if a partner has the same interests as them after the 4 minute speed date
-#this can be considered an overall reflection of the speed dating system
+#this can be considered an overall reflection of the speed dating system, and whether it gives enough time for people to really identify the characteristics of the person that they are talking to
 
 shar_corr3<-lm(shar~int_corr, data=yesdataimp)
 summary(shar_corr3)
 
-#correlation between importance of same race and partner actually being of same race
+#Calculating the correlation between importance of same race and partner they said 'yes' to actually being of the same race
 
 race_corr<-lm(imprace~samerace, data=yesdataimp)
 summary(race_corr)
 
-#trying a different approach where we compare the weighted average of the sum of scores given by participants to partners with the decision variable
-#selecting only the columns from the entire data that we are interested in
+#Now we try a different approach where we compare the weighted sum of scores given by participants to partners with the decision variable
+#If people are able to correc
+
+#From this, selecting only the columns from the entire data that we are interested in
+
 attach(full_data)
 dataimp<-subset(full_data, select=c(dec, attr1_1,sinc1_1,intel1_1,fun1_1,amb1_1,shar1_1,attr,sinc,intel,fun,amb,shar, imprace, samerace, int_corr))
 attr1=attr1_1*attr
