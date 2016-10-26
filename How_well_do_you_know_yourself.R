@@ -41,6 +41,8 @@ yesdataimp<-subset(yesdata, select=c(attr1_1,sinc1_1,intel1_1,fun1_1,amb1_1,shar
 attr_corr<-lm(attr1_1~attr,data=yesdataimp)
 summary(attr_corr)
 
+plot(attr_corr)
+
 #Calculating the correlation between the importance they assign to sincerity versus their perceived sincerity of partner that they said 'yes' to
 
 sinc_corr<-lm(sinc1_1~sinc, data=yesdataimp)
