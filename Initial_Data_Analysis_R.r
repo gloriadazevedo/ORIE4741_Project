@@ -316,6 +316,7 @@ for (w in 1:num_waves){
 	female_id<-unique(full_data[full_data$wave==w & full_data$gender==0,]$id)
 	male_id<-unique(full_data[full_data$wave==w & full_data$gender==1,]$id)
 	
+	#Loop through all the pairs in the wave
 	for (i in 1:length(female_id)){
 		#Assign the activity vector for the female
 		f_vector<-full_data[full_data$wave==w & full_data$gender==0 & 
@@ -325,9 +326,13 @@ for (w in 1:num_waves){
 			m_vector<-full_data[full_data$wave==w & full_data$gender==1 & 
 				full_data$id==male_id[j],first_col:last_col][1,]
 			
-			#Determine whether or ot there's a match
+			#Determine whether or not there's a match and what the decisions were
 			match_value<-full_data[full_data$wave==w & full_data$gender==0 & 
 				full_data$id==female_id[i] & full_data$partner==male_id[j], ]$"match"
+			female_dec_value<-full_data[full_data$wave==w & full_data$gender==0 & 
+				full_data$id==female_id[i] & full_data$partner==male_id[j], ]$"dec"
+			male_dec_value<-full_data[full_data$wave==w & full_data$gender==1 & 
+				full_data$id==male_id[j] & full_data$partner==female_id[i], ]$"dec"	
 			
 			#Append the activity vectors
 			activity_matrix[counter,1:17]<-t(f_vector)
