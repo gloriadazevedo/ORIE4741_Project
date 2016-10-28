@@ -122,60 +122,23 @@ full_data[full_data$undergra==""]<="Other"
 #Section to clean activity columns to change NA's to 0's and say that the person had no interest in the activities
 #Relevant columns:
 #sports, tvsports, exercise, dining, museums, art, hiking, gaming, clubbing, reading, tv, theater, movies, concerts, music, shopping, and yoga
-# for (i in 1:length(full_data$sports)){
-	# if(is.na(full_data[i,]$sports)){
-		# full_data[i,]$sports<-0
-	# }
-	# if(is.na(full_data[i,]$tvsports)){
-		# full_data[i,]$tvsports<-0
-	# }
-	# if(is.na(full_data[i,]$exercise)){
-		# full_data[i,]$exercise<-0
-	# }
-	# if(is.na(full_data[i,]$dining)){
-		# full_data[i,]$dining<-0
-	# }
-	# if(is.na(full_data[i,]$museums)){
-		# full_data[i,]$museums<-0
-	# }
-	# if(is.na(full_data[i,]$art)){
-		# full_data[i,]$art<-0
-	# }
-	# if(is.na(full_data[i,]$hiking)){
-		# full_data[i,]$hiking<-0
-	# }
-	# if(is.na(full_data[i,]$gaming)){
-		# full_data[i,]$gaming<-0
-	# }
-	# if(is.na(full_data[i,]$clubbing)){
-		# full_data[i,]$clubbing<-0
-	# }
-	# if(is.na(full_data[i,]$reading)){
-		# full_data[i,]$reading<-0
-	# }
-	# if(is.na(full_data[i,]$tv)){
-		# full_data[i,]$tv<-0
-	# }
-	# if(is.na(full_data[i,]$theater)){
-		# full_data[i,]$theater<-0
-	# }
-	# if(is.na(full_data[i,]$movies)){
-		# full_data[i,]$movies<-0
-	# }
-	# if(is.na(full_data[i,]$concerts)){
-		# full_data[i,]$concerts<-0
-	# }
-	# if(is.na(full_data[i,]$music)){
-		# full_data[i,]$music<-0
-	# }
-	# if(is.na(full_data[i,]$shopping)){
-		# full_data[i,]$shopping<-0
-	# }
-	# if(is.na(full_data[i,]$yoga)){
-		# full_data[i,]$yoga<-0
-	# }
-# }
-
+full_data[is.na(full_data$sports),]$sports<-0
+full_data[is.na(full_data$tvsports),]$tvsports<-0
+full_data[is.na(full_data$exercise),]$exercise<-0
+full_data[is.na(full_data$dining),]$dining<-0
+full_data[is.na(full_data$museums),]$museums<-0
+full_data[is.na(full_data$art),]$art<-0
+full_data[is.na(full_data$hiking),]$hiking<-0
+full_data[is.na(full_data$gaming),]$gaming<-0
+full_data[is.na(full_data$clubbing),]$clubbing<-0
+full_data[is.na(full_data$reading),]$reading<-0
+full_data[is.na(full_data$tv),]$tv<-0
+full_data[is.na(full_data$theater),]$theater<-0
+full_data[is.na(full_data$movies),]$movies<-0
+full_data[is.na(full_data$concerts),]$concerts<-0
+full_data[is.na(full_data$music),]$music<-0
+full_data[is.na(full_data$shopping),]$shopping<-0
+full_data[is.na(full_data$yoga),]$yoga<-0
 
 ##Section of code to normalize the different rankings of categories that either a male or female prefers in a partner##
 #For waves 1-5 and 10-21, the participant is asked to reassign weights that add up to 100 into 6 different categories
@@ -185,334 +148,73 @@ full_data[full_data$undergra==""]<="Other"
 #Suspect that for waves 6-9 they have weighted their values by 100
 
 #Clean all the first section at the same time
-# for (i in 1:length(full_data$attr1_1)){	
-	# #Also need a check for NA values
-	# #Change the original one and also change it in the temporary vector
-	# if(is.na(full_data[i,]$attr1_1)){
-		# full_data[i,]$attr1_1<-0
-	# }
-	# if(is.na(full_data[i,]$sinc1_1)){
-		# full_data[i,]$sinc1_1<-0
-	# }
-	# if(is.na(full_data[i,]$intel1_1)){
-		# full_data[i,]$intel1_1<-0
-	# }
-	# if(is.na(full_data[i,]$fun1_1)){
-		# full_data[i,]$fun1_1<-0
-	# }
-	# if(is.na(full_data[i,]$amb1_1)){
-		# full_data[i,]$amb1_1<-0
-	# }
-	# if(is.na(full_data[i,]$shar1_1)){
-		# full_data[i,]$shar1_1<-0
-	# }
-# }
+full_data[is.na(full_data$attr1_1),]$attr1_1<-0
+full_data[is.na(full_data$sinc1_1),]$sinc1_1<-0
+full_data[is.na(full_data$intel1_1),]$intel1_1<-0
+full_data[is.na(full_data$fun1_1),]$fun1_1<-0
+full_data[is.na(full_data$amb1_1),]$amb1_1<-0
+full_data[is.na(full_data$shar1_1),]$shar1_1<-0
 
 #Clean the attributes that a participant assigns to a partner on their scorecard to remove NAs
 #relevant columns: attr, sinc, intel, fun, amb, shar
-# for (i in 1:length(full_data$"attr")){
-	# if(is.na(full_data[i,]$"attr")){
-		# full_data[i,]$"attr"<-0
-	# }
-	# if(is.na(full_data[i,]$sinc)){
-		# full_data[i,]$sinc<-0
-	# }
-	# if(is.na(full_data[i,]$intel)){
-		# full_data[i,]$intel<-0
-	# }
-	# if(is.na(full_data[i,]$fun)){
-		# full_data[i,]$fun<-0
-	# }
-	# if(is.na(full_data[i,]$amb)){
-		# full_data[i,]$amb<-0
-	# }
-	# if(is.na(full_data[i,]$shar)){
-		# full_data[i,]$shar<-0
-	# }
-# }
+full_data[is.na(full_data$"attr"),]$"attr"<-0
+full_data[is.na(full_data$sinc),]$sinc<-0
+full_data[is.na(full_data$intel),]$intel<-0
+full_data[is.na(full_data$fun),]$fun<-0
+full_data[is.na(full_data$amb),]$amb<-0
+full_data[is.na(full_data$shar),]$shar<-0
 
 #Clean attributes that a participant writes halfway through the speed dating event
 #that weights their views of importance of the attribute in a partner (similar to the 1_1 attributes)
 #Relevant columns: attr1_s, sinc1_s, intel1_s, fun1_s,amb1_s, shar1_s
-
-# for (i in 1:length(full_data$attr1_s)){
-	# if (is.na(full_data[i,]$attr1_s)){
-		# full_data[i,]$attr1_s<-0
-	# }
-	# if(is.na(full_data[i,]$sinc1_s)){
-		# full_data[i,]$sinc1_s<-0
-	# }
-	# if(is.na(full_data[i,]$intel1_s)){
-		# full_data[i,]$intel1_s<-0
-	# }
-	# if(is.na(full_data[i,]$fun1_s)){
-		# full_data[i,]$fun1_s<-0
-	# }
-	# if(is.na(full_data[i,]$amb1_s)){
-		# full_data[i,]$amb1_s<-0
-	# }
-	# if(is.na(full_data[i,]$shar1_s)){
-		# full_data[i,]$shar1_s<-0
-	# }
-# }
+full_data[is.na(full_data$attr1_s),]$attr1_s<-0
+full_data[is.na(full_data$sinc1_s),]$sinc1_s<-0
+full_data[is.na(full_data$intel1_s),]$intel1_s<-0
+full_data[is.na(full_data$fun1_s),]$fun1_s<-0
+full_data[is.na(full_data$amb1_s),]$amb1_s<-0
+full_data[is.na(full_data$shar1_s),]$shar1_s<-0
 
 #Clean attributes that a participant writes during the first followup after the speed dating event 
 #that distributes weights onto the 6 attributes that they thought were important to their DECISIONS
 #DURING THE EVENT
-#Relevant columns: attr7_2, sinc7_2, intl7_2, fun7_2, amb7_2, shar7_2
-
-for (i in 1:length(full_data$attr7_2)){
-	if(is.na(full_data[i,]$sports)){
-		full_data[i,]$sports<-0
-	}
-	if(is.na(full_data[i,]$tvsports)){
-		full_data[i,]$tvsports<-0
-	}
-	if(is.na(full_data[i,]$exercise)){
-		full_data[i,]$exercise<-0
-	}
-	if(is.na(full_data[i,]$dining)){
-		full_data[i,]$dining<-0
-	}
-	if(is.na(full_data[i,]$museums)){
-		full_data[i,]$museums<-0
-	}
-	if(is.na(full_data[i,]$art)){
-		full_data[i,]$art<-0
-	}
-	if(is.na(full_data[i,]$hiking)){
-		full_data[i,]$hiking<-0
-	}
-	if(is.na(full_data[i,]$gaming)){
-		full_data[i,]$gaming<-0
-	}
-	if(is.na(full_data[i,]$clubbing)){
-		full_data[i,]$clubbing<-0
-	}
-	if(is.na(full_data[i,]$reading)){
-		full_data[i,]$reading<-0
-	}
-	if(is.na(full_data[i,]$tv)){
-		full_data[i,]$tv<-0
-	}
-	if(is.na(full_data[i,]$theater)){
-		full_data[i,]$theater<-0
-	}
-	if(is.na(full_data[i,]$movies)){
-		full_data[i,]$movies<-0
-	}
-	if(is.na(full_data[i,]$concerts)){
-		full_data[i,]$concerts<-0
-	}
-	if(is.na(full_data[i,]$music)){
-		full_data[i,]$music<-0
-	}
-	if(is.na(full_data[i,]$shopping)){
-		full_data[i,]$shopping<-0
-	}
-	if(is.na(full_data[i,]$yoga)){
-		full_data[i,]$yoga<-0
-	}
-	if(is.na(full_data[i,]$attr1_1)){
-		full_data[i,]$attr1_1<-0
-	}
-	if(is.na(full_data[i,]$sinc1_1)){
-		full_data[i,]$sinc1_1<-0
-	}
-	if(is.na(full_data[i,]$intel1_1)){
-		full_data[i,]$intel1_1<-0
-	}
-	if(is.na(full_data[i,]$fun1_1)){
-		full_data[i,]$fun1_1<-0
-	}
-	if(is.na(full_data[i,]$amb1_1)){
-		full_data[i,]$amb1_1<-0
-	}
-	if(is.na(full_data[i,]$shar1_1)){
-		full_data[i,]$shar1_1<-0
-	}
-	if(is.na(full_data[i,]$"attr")){
-		full_data[i,]$"attr"<-0
-	}
-	if(is.na(full_data[i,]$sinc)){
-		full_data[i,]$sinc<-0
-	}
-	if(is.na(full_data[i,]$intel)){
-		full_data[i,]$intel<-0
-	}
-	if(is.na(full_data[i,]$fun)){
-		full_data[i,]$fun<-0
-	}
-	if(is.na(full_data[i,]$amb)){
-		full_data[i,]$amb<-0
-	}
-	if(is.na(full_data[i,]$shar)){
-		full_data[i,]$shar<-0
-	}
-	if (is.na(full_data[i,]$attr1_s)){
-		full_data[i,]$attr1_s<-0
-	}
-	if(is.na(full_data[i,]$sinc1_s)){
-		full_data[i,]$sinc1_s<-0
-	}
-	if(is.na(full_data[i,]$intel1_s)){
-		full_data[i,]$intel1_s<-0
-	}
-	if(is.na(full_data[i,]$fun1_s)){
-		full_data[i,]$fun1_s<-0
-	}
-	if(is.na(full_data[i,]$amb1_s)){
-		full_data[i,]$amb1_s<-0
-	}
-	if(is.na(full_data[i,]$shar1_s)){
-		full_data[i,]$shar1_s<-0
-	}
-	if(is.na(full_data[i,]$attr7_2)){
-		full_data[i,]$attr7_2<-0
-	}
-	if(is.na(full_data[i,]$sinc7_2)){
-		full_data[i,]$sinc7_2<-0
-	}
-	if(is.na(full_data[i,]$intel7_2)){
-		full_data[i,]$intel7_2<-0
-	}
-	if(is.na(full_data[i,]$fun7_2)){
-		full_data[i,]$fun7_2<-0
-	}
-	if(is.na(full_data[i,]$amb7_2)){
-		full_data[i,]$amb7_2<-0
-	}
-	if(is.na(full_data[i,]$shar7_2)){
-		full_data[i,]$shar7_2<-0
-	}
-	if(is.na(full_data[i,]$attr1_2)){
-		full_data[i,]$attr1_2<-0
-	}
-	if(is.na(full_data[i,]$sinc1_2)){
-		full_data[i,]$sinc1_2<-0
-	}
-	if(is.na(full_data[i,]$intel1_2)){
-		full_data[i,]$intel1_2<-0
-	}
-	if(is.na(full_data[i,]$fun1_2)){
-		full_data[i,]$fun1_2<-0
-	}
-	if(is.na(full_data[i,]$amb1_2)){
-		full_data[i,]$amb1_2<-0
-	}
-	if(is.na(full_data[i,]$shar1_2)){
-		full_data[i,]$shar1_2<-0
-	}
-	if(is.na(full_data[i,]$attr1_3)){
-		full_data[i,]$attr1_3<-0
-	}
-	if(is.na(full_data[i,]$sinc1_3)){
-		full_data[i,]$sinc1_3<-0
-	}
-	if(is.na(full_data[i,]$intel1_3)){
-		full_data[i,]$intel1_3<-0
-	}
-	if(is.na(full_data[i,]$fun1_3)){
-		full_data[i,]$fun1_3<-0
-	}
-	if(is.na(full_data[i,]$amb1_3)){
-		full_data[i,]$amb1_3<-0
-	}
-	if(is.na(full_data[i,]$shar1_3)){
-		full_data[i,]$shar1_3<-0
-	}
-	if(is.na(full_data[i,]$attr7_3)){
-		full_data[i,]$attr7_3<-0
-	}
-	if(is.na(full_data[i,]$sinc7_3)){
-		full_data[i,]$sinc7_3<-0
-	}
-	if(is.na(full_data[i,]$intel7_3)){
-		full_data[i,]$intel7_3<-0
-	}
-	if(is.na(full_data[i,]$fun7_3)){
-		full_data[i,]$fun7_3<-0
-	}
-	if(is.na(full_data[i,]$amb7_3)){
-		full_data[i,]$amb7_3<-0
-	}
-	if(is.na(full_data[i,]$shar7_3)){
-		full_data[i,]$shar7_3<-0
-	}
-}
+#Relevant columns: attr7_2, sinc7_2, intel7_2, fun7_2, amb7_2, shar7_2
+full_data[is.na(full_data$attr7_2),]$attr7_2<-0
+full_data[is.na(full_data$sinc7_2),]$sinc7_2<-0
+full_data[is.na(full_data$intel7_2),]$intel7_2<-0
+full_data[is.na(full_data$fun7_2),]$fun7_2<-0
+full_data[is.na(full_data$amb7_2),]$amb7_2<-0
+full_data[is.na(full_data$shar7_2),]$shar7_2<-0
 
 #Participants were asked during the first followup survey to weight different attributes that
 #they thought were IMPORTANT IN THE OPPOSITE SEX IN GENERAL
-#Relevant columns: attr 1_2, sinc1_2, intel1_2, fun1_2, amb1_2, shar1_2
-# for (i in 1:length(full_data$attr1_2)){
-	# if(is.na(full_data[i,]$attr1_2)){
-		# full_data[i,]$attr1_2<-0
-	# }
-	# if(is.na(full_data[i,]$sinc1_2)){
-		# full_data[i,]$sinc1_2<-0
-	# }
-	# if(is.na(full_data[i,]$intel1_2)){
-		# full_data[i,]$intel1_2<-0
-	# }
-	# if(is.na(full_data[i,]$fun1_2)){
-		# full_data[i,]$fun1_2<-0
-	# }
-	# if(is.na(full_data[i,]$amb1_2)){
-		# full_data[i,]$amb1_2<-0
-	# }
-	# if(is.na(full_data[i,]$shar1_2)){
-		# full_data[i,]$shar1_2<-0
-	# }
-# }
+#Relevant columns: attr1_2, sinc1_2, intel1_2, fun1_2, amb1_2, shar1_2
+full_data[is.na(full_data$attr1_2),]$attr1_2<-0
+full_data[is.na(full_data$sinc1_2),]$sinc1_2<-0
+full_data[is.na(full_data$intel1_2),]$intel1_2<-0
+full_data[is.na(full_data$fun1_2),]$fun1_2<-0
+full_data[is.na(full_data$amb1_2),]$amb1_2<-0
+full_data[is.na(full_data$shar1_2),]$shar1_2<-0
 
 #Participants were asked during a second followup survey to rank the importance of certain attributes in
 #the opposite sex
 #Relevant columns: attr1_3, sinc1_3, intel1_3, fun1_3, amb1_3, shar1_3
-# for (i in 1:length(full_data$attr1_3)){
-	# if(is.na(full_data[i,]$attr1_3)){
-		# full_data[i,]$attr1_3<-0
-	# }
-	# if(is.na(full_data[i,]$sinc1_3)){
-		# full_data[i,]$sinc1_3<-0
-	# }
-	# if(is.na(full_data[i,]$intel1_3)){
-		# full_data[i,]$intel1_3<-0
-	# }
-	# if(is.na(full_data[i,]$fun1_3)){
-		# full_data[i,]$fun1_3<-0
-	# }
-	# if(is.na(full_data[i,]$amb1_3)){
-		# full_data[i,]$amb1_3<-0
-	# }
-	# if(is.na(full_data[i,]$shar1_3)){
-		# full_data[i,]$shar1_3<-0
-	# }
-# }
+
+full_data[is.na(full_data$attr1_3),]$attr1_3<-0
+full_data[is.na(full_data$sinc1_3),]$sinc1_3<-0
+full_data[is.na(full_data$intel1_3),]$intel1_3<-0
+full_data[is.na(full_data$fun1_3),]$fun1_3<-0
+full_data[is.na(full_data$amb1_3),]$amb1_3<-0
+full_data[is.na(full_data$shar1_3),]$shar1_3<-0
 
 #During the second follow up survey, they were asked to think back on the traits that
 #they thought were the most important but we need to clean these values as well for NA's
 #Relevant columns: attr7_3, sinc7_3, intel7_3, fun7_3, amb7_3,shar7_3
-# for(i in 1:length(full_data$attr7_3)){
-	# if(is.na(full_data[i,]$attr7_3)){
-		# full_data[i,]$attr7_3<-0
-	# }
-	# if(is.na(full_data[i,]$sinc7_3)){
-		# full_data[i,]$sinc7_3<-0
-	# }
-	# if(is.na(full_data[i,]$intel7_3)){
-		# full_data[i,]$intel7_3<-0
-	# }
-	# if(is.na(full_data[i,]$fun7_3)){
-		# full_data[i,]$fun7_3<-0
-	# }
-	# if(is.na(full_data[i,]$amb7_3)){
-		# full_data[i,]$amb7_3<-0
-	# }
-	# if(is.na(full_data[i,]$shar7_3)){
-		# full_data[i,]$shar7_3<-0
-	# }
-# }
-
+full_data[is.na(full_data$attr7_3),]$attr7_3<-0
+full_data[is.na(full_data$sinc7_3),]$sinc7_3<-0
+full_data[is.na(full_data$intel7_3),]$intel7_3<-0
+full_data[is.na(full_data$fun7_3),]$fun7_3<-0
+full_data[is.na(full_data$amb7_3),]$amb7_3<-0
+full_data[is.na(full_data$shar7_3),]$shar7_3<-0
 
 #Since we are considering using race as a predictor, we also want to know the breakdown
 #of the number of people in race overall and by gender
