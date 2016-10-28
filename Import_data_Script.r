@@ -84,64 +84,40 @@ for (w in 1:num_waves){
 total_interactions<-check
 
 #Need to recode values of "NA" in male or female race to be 6
-for (i in 1:length(full_data$race)){
-	if (is.na(full_data$race[i])){
-			full_data$race[i]<-6
-	}
-}
+full_data[is.na(full_data$race),]$race<-6
+
 
 #First we need to recode the values that have an "NA" in their field_cd to have a field_cd of 
 #18 which corresponds to the Other field
-for(i in 1:length(full_data$field_cd)){
-	if(is.na(full_data$field_cd[i])){
-		full_data$field_cd[i]<-18
-	}
-}
+full_data[is.na(full_data$field_cd),]$field_cd<-18
+
 
 #Need to recode NA values in some of the importance rankings and also in 
 #the goals [of the speed dating event], how often they go out, and how often they go on dates
 #Relevant columns:
 #imprace, imprelig, goal, date, go_out
-for(i in 1:length(full_data$imprace)){
-	if (is.na(full_data[i,]$imprace)){
-		full_data[i,]$imprace<-0
-	}
-	if (is.na(full_data[i,]$imprelig)){
-		full_data[i,]$imprelig<-0
-	}
-	if (is.na(full_data[i,]$goal)){
-		full_data[i,]$goal<-6
-	}
-	if (is.na(full_data[i,]$"date")){
-		full_data[i,]$"date"<-7
-	}
-	if (is.na(full_data[i,]$go_out)){
-		full_data[i,]$go_out<-7
-	}
-}
+full_data[is.na(full_data$imprace),]$imprace<-0
+full_data[is.na(full_data$imprelig),]$imprelig<-0
+full_data[is.na(full_data$goal),]$goal<-6
+full_data[is.na(full_data$"date"),]$"date"<-7
+full_data[is.na(full_data$go_out),]$go_out<-7
 
 #Consider adding a field denoting whether or not the school that they went to 
 #for undergraduate is an Ivy League school or other classification
 #First get a unique list of the schools that they went to for undergraduate
 undergraduate<-unique(full_data$undergra)
 
-#First change all NA values to "Other"
-for (i in 1:length(full_data$undergra)){
-	if (is.na(full_data$undergra[i])){
-		full_data$undergra[i]<-"Other"
-		}
-}
+#Proportion of blanks
+sum(full_data$undergra=="")/length(full_data$undergra)
+#Output = 0.4134638
 
-#Then change all blanks to "Other"
-for (i in 1:length(full_data$undergra)){
-	if (full_data$undergra[i]==""){
-		full_data$undergra[i]<-"Other"
-		}
-}
+#Change all blanks to "Other"
+full_data[full_data$undergra==""]<="Other"
 
 #Then we get a list of 242 universities although note that some of them are the same but typed in differently
 #i.e. "GW" could mean "George Washington University"
-#Still have a lot of blanks or "Other" so we don't think that this is a reliable predictor for compatibility
+#Still have a lot of blanks or "Other" values so we 
+#don't think that this is a reliable predictor for compatibility
 
 #Section to clean activity columns to change NA's to 0's and say that the person had no interest in the activities
 #Relevant columns:
