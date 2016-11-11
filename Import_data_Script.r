@@ -83,14 +83,15 @@ for (w in 1:num_waves){
 }
 total_interactions<-check
 
+#Want to define all the reassigning to be an option instead of a mandatory reassignment
+#this just covers all the "other" categories
+reassign_all_data<-function(){
 #Need to recode values of "NA" in male or female race to be 6
 full_data[is.na(full_data$race),]$race<-6
-
 
 #First we need to recode the values that have an "NA" in their field_cd to have a field_cd of 
 #18 which corresponds to the Other field
 full_data[is.na(full_data$field_cd),]$field_cd<-18
-
 
 #Need to recode NA values in some of the importance rankings and also in 
 #the goals [of the speed dating event], how often they go out, and how often they go on dates
@@ -101,6 +102,7 @@ full_data[is.na(full_data$imprelig),]$imprelig<-0
 full_data[is.na(full_data$goal),]$goal<-6
 full_data[is.na(full_data$"date"),]$"date"<-7
 full_data[is.na(full_data$go_out),]$go_out<-7
+} #End of the reassign_all_data function
 
 #Consider adding a field denoting whether or not the school that they went to 
 #for undergraduate is an Ivy League school or other classification
@@ -119,9 +121,10 @@ full_data[full_data$undergra==""]<="Other"
 #Still have a lot of blanks or "Other" values so we 
 #don't think that this is a reliable predictor for compatibility
 
-#Section to clean activity columns to change NA's to 0's and say that the person had no interest in the activities
+#Function to clean activity columns to change NA's to 0's and say that the person had no interest in the activities
 #Relevant columns:
 #sports, tvsports, exercise, dining, museums, art, hiking, gaming, clubbing, reading, tv, theater, movies, concerts, music, shopping, and yoga
+clean_NA_data<-function(){
 full_data[is.na(full_data$sports),]$sports<-0
 full_data[is.na(full_data$tvsports),]$tvsports<-0
 full_data[is.na(full_data$exercise),]$exercise<-0
@@ -198,7 +201,6 @@ full_data[is.na(full_data$shar1_2),]$shar1_2<-0
 #Participants were asked during a second followup survey to rank the importance of certain attributes in
 #the opposite sex
 #Relevant columns: attr1_3, sinc1_3, intel1_3, fun1_3, amb1_3, shar1_3
-
 full_data[is.na(full_data$attr1_3),]$attr1_3<-0
 full_data[is.na(full_data$sinc1_3),]$sinc1_3<-0
 full_data[is.na(full_data$intel1_3),]$intel1_3<-0
@@ -215,6 +217,7 @@ full_data[is.na(full_data$intel7_3),]$intel7_3<-0
 full_data[is.na(full_data$fun7_3),]$fun7_3<-0
 full_data[is.na(full_data$amb7_3),]$amb7_3<-0
 full_data[is.na(full_data$shar7_3),]$shar7_3<-0
+} #End of the clean_NA_data function
 
 #Since we are considering using race as a predictor, we also want to know the breakdown
 #of the number of people in race overall and by gender
