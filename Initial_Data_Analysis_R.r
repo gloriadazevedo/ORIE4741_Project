@@ -446,9 +446,33 @@ first_followup_survey_response_matrix<-full_data[,120:156]
 first_followup_survey_na_num<-rowSums(is.na(first_followup_survey_response_matrix))
 first_followup_survey_response_rate<-(first_followup_num_questions-first_followup_survey_na_num)/first_followup_num_questions
 
+#Want to determine the number of questions that females answered
+#Define a new subset of the data for readability
+first_followup_survey_female_response_matrix<-first_followup_survey_response_matrix[full_data$gender==0,]
+#Want to determine the number of questions that a female answered
+#Returns a vector of response rates for the first followup survey that was done by females
+first_followup_survey_na_num_female<-rowSums(is.na(first_followup_survey_female_response_matrix))
+first_followup_survey_female_response_rate<-(first_followup_num_questions-first_followup_survey_na_num_female)/first_followup_num_questions
+
+#Want to determine the number of questions that males answered
+#Define a new subset of the data for readability
+first_followup_survey_male_response_matrix<-first_followup_survey_response_matrix[full_data$gender==1,]
+#Want to determine the number of questions that a male answered
+#Returns a vector of response rates for the first survey that was done by males
+first_followup_survey_na_num_male<-rowSums(is.na(first_followup_survey_male_response_matrix))
+first_followup_survey_male_response_rate<-(first_followup_num_questions-first_followup_survey_na_num_male)/first_followup_num_questions
+
 #Note that the histogram is the response rates for both genders
 #Plot a histogram of the distribution of the response rates for the first followup survey
-hist(first_followup_survey_response_rate,main = "Histogram of response rates for first followup survey",xlab="Response Rate",ylab="Number of participants")
+hist(first_followup_survey_response_rate,main = "Response rates for first followup survey (both genders)",xlab="Response Rate",ylab="Number of participants")
+
+#Note that the histogram is the response rates for females only
+#Plot a histogram of the distribution of the response rates for the first followup survey
+hist(first_followup_survey_female_response_rate,main = "Response rates for first followup survey (females only)",xlab="Response Rate",ylab="Number of participants")
+
+#Note that the histogram is the response rates for males only
+#Plot a histogram of the distribution of the response rates for the first followup survey
+hist(first_followup_survey_male_response_rate,main = "Response rates for first followup survey (males only)",xlab="Response Rate",ylab="Number of participants")
 ###################################################################
 #Second follow up survey that asks whether or not they met up with their matches
 #Sent 3-4 weeks after their matches
@@ -460,12 +484,33 @@ second_followup_survey_response_matrix<-full_data[,157:195]
 second_followup_survey_na_num<-rowSums(is.na(second_followup_survey_response_matrix))
 second_followup_survey_response_rate<-(second_followup_num_questions-second_followup_survey_na_num)/second_followup_num_questions
 
+#Want to determine the number of questions that females answered
+#Define a new subset of the data for readability
+second_followup_survey_female_response_matrix<-second_followup_survey_response_matrix[full_data$gender==0,]
+#Want to determine the number of questions that a female answered
+#Returns a vector of response rates for the second followup survey that was done by females
+second_followup_survey_na_num_female<-rowSums(is.na(second_followup_survey_female_response_matrix))
+second_followup_survey_female_response_rate<-(second_followup_num_questions-second_followup_survey_na_num_female)/second_followup_num_questions
+
+#Want to determine the number of questions that males answered
+#Define a new subset of the data for readability
+second_followup_survey_male_response_matrix<-second_followup_survey_response_matrix[full_data$gender==1,]
+#Want to determine the number of questions that a male answered
+#Returns a vector of response rates for the second followup survey that was done by males
+second_followup_survey_na_num_male<-rowSums(is.na(second_followup_survey_male_response_matrix))
+second_followup_survey_male_response_rate<-(second_followup_num_questions-second_followup_survey_na_num_male)/second_followup_num_questions
+
 #Note that the histogram is the response rates for both genders
 #Plot a histogram of the distribution of the response rates for the second followup survey
-hist(second_followup_survey_response_rate,main = "Histogram of response rates for second followup survey",xlab="Response Rate",ylab="Number of participants")
+hist(second_followup_survey_response_rate,main = "Response rates for second followup survey (both genders)",xlab="Response Rate",ylab="Number of participants")
 
+#Note that the histogram is the response rates for females only
+#Plot a histogram of the distribution of the response rates for the second followup survey
+hist(second_followup_survey_female_response_rate,main = "Response rates for second followup survey (females only)",xlab="Response Rate",ylab="Number of participants")
 
-
+#Note that the histogram is the response rates for males only
+#Plot a histogram of the distribution of the response rates for the second followup survey
+hist(second_followup_survey_male_response_rate,main = "Response rates for second followup survey (males only)",xlab="Response Rate",ylab="Number of participants")
 
 
 
