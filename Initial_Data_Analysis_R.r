@@ -412,9 +412,30 @@ halfway_survey_response_matrix<-full_data[,109:119]
 halfway_survey_na_num<-rowSums(is.na(halfway_survey_response_matrix))
 halfway_survey_response_rate<-(halfway_survey_num_questions-halfway_survey_na_num)/halfway_survey_num_questions
 
-#Plot a histogram of the distribution of the response rates for the survey halfway through the speed dating event
-#Note that the histogram is the response rates for both genders
-hist(halfway_survey_response_rate,main = "Histogram of response rates for survey halfway through event",xlab="Response Rate",ylab="Number of participants")
+#Want to determine the number of questions that females answered
+#Define a new subset of the data for readability
+halfway_survey_female_response_matrix<-halfway_survey_response_matrix[full_data$gender==0,]
+#Want to determine the number of questions that a female answered
+#Returns a vector of response rates for the halfway survey that was done by females
+halfway_survey_na_num_female<-rowSums(is.na(halfway_survey_female_response_matrix))
+halfway_survey_female_response_rate<-(halfway_survey_num_questions-halfway_survey_na_num_female)/halfway_survey_num_questions
+
+#Want to determine the number of questions that males answered
+#Define a new subset of the data for readability
+halfway_survey_male_response_matrix<-halfway_survey_response_matrix[full_data$gender==1,]
+#Want to determine the number of questions that a male answered
+#Returns a vector of response rates for the first survey that was done by males
+halfway_survey_na_num_male<-rowSums(is.na(halfway_survey_male_response_matrix))
+halfway_survey_male_response_rate<-(halfway_survey_num_questions-halfway_survey_na_num_male)/halfway_survey_num_questions
+
+#Plot a histogram of the distribution of the response rates for the survey halfway through the speed dating event for both genders
+hist(halfway_survey_response_rate,main = "Response rates for survey halfway through event (both genders)",xlab="Response Rate",ylab="Number of participants")
+
+#Plot a histogram of the distribution of the response rates for the survey halfway through the speed dating event for females only
+hist(halfway_survey_female_response_rate,main = "Response rates for survey halfway through event (females_only)",xlab="Response Rate",ylab="Number of participants")
+
+#Plot a histogram of the distribution of the response rates for the survey halfway through the speed dating event for males only
+hist(halfway_survey_male_response_rate,main = "Response rates for survey halfway through event (males_only)",xlab="Response Rate",ylab="Number of participants")
 ###################################################################
 #First followup to get their matches survey (day after their speed dating)
 first_followup_num_questions<-37
