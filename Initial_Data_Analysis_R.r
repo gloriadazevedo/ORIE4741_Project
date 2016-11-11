@@ -27,73 +27,6 @@ for (w in 1:num_waves){
 	}
 }
 
-#Bootstrap function that creates training data and test data from the data, given a wave and gender
-#Note that we can subset data as so: full_data[full_data$wave==1&full_data$gender==0,][1,]
-#This will return the first row of the females in wave 1.
-#For each individual in the wave-gender pair they see all of the people in the opposite gender in that wave 
-#so in general for each wave-gender pair, there are num_males*num_females number of rows.
-#However, we have on exception, in Wave 5 where there's a note that they're all undergrads, we have different
-#numbers of rows between the wave 5 females and males.  Thus we predict that one of the females did not 
-#have her data recorded for the 10 males.
-bootstrap_wave_gender<-function(w,g,type=c("training","test")){
-	#Determine the number of people in this wave_gender pair
-	#Need to get the list of training or test vertices from the indices_list
-	#Need to define the name that we use to pull from the list
-	name<-paste(w,paste(g,type,sep="_"),sep="_")
-	indices_sample<-indices_list[[name]]
-	
-	#For the best bootstrapping technique, we need to resample the data the same number of times as the number we have
-	#First we need to divide the data into training and test
-	range_total<-1:length(indices_sample)
-	sampling<-sample(range_total, length(indices_sample), replace=TRUE,prob=NULL)
-	
-	return_data<-full_data[full_data$wave==w & full_data$gender==g,][indices_sample[sampling]]
-	
-	return (return_data)
-}
-
-#Test function
-wave_1_gender_0_train<-bootstrap_wave_gender(1,0,"training")
-wave_1_gender_0_test<-bootstrap_wave_gender(1,0,"test")
-
-#To ensure a "match" where two people like each other, each person has to fill out a "yes" for the ID of the other person
-#on their scorecard within that wave.
-#i.e. for persons 1 and 2 to like each other, person 1 has to circle "yes" for person 2 and person 2 has to circle "yes" for person 1
-#The person filling it out has their id within the wave in column "id" while their partner is in "pid"
-#Creating a function that, when given a wave, and the ids, determine if it's a match, the male said they would date and the 
-#female did not, and if the male said they would not and female said that they would.
-
-#Turns out there's a match column that says whether or not the two people have matched
-match_results<-function(w,p1,p2,data_source){
-
-	#figure out gender--only have to do this for one and then the other one is expected to the the other gender.
-	p1_gender<-data_source[data_source$wave==w & data_source$id==p1 & !is.na(data_source$iid) & data_source$pid==p2,]$gender
-
-	p1_decision<-data_source[data_source$wave==w & data_source$id==p1 & !is.na(data_source$iid) & data_source$pid==p2,]$dec
-	p2_decision<-data_source[data_source$wave==w & data_source$id==p2 & !is.na(data_source$iid) & data_source$pid==p1,]$dec
-	
-	both_match<-p1_decision & p2_decision
-	
-	if(p1_gender==0){
-		female_decision<-p1_decision
-		male_decision<-p2_decision
-	}else{
-		male_decision<-p1_decision
-		female_decision<-p2_decision
-	}
-	
-	return_list<-list("both_match"=both_match,"female_decision"=female_decision,"male_decision"=male_decision)
-	
-	return (return_list)
-}
-
-#Test function
-return_list<-match_results(1,1,11,full_data)
-return_list$both_match #Returns False or 0 since both of them did not put true
-return_list$female_decision #Returns True or 1
-return_list$male_decision #Returns False or 0
-
-
 #Looking at initial percentiles to answer questions like:
 #1. What percentage of matches are between same ethnicity couples? (Aggregated by wave)
 #2. What percentage of matches have the same field of study?
@@ -425,3 +358,29 @@ step_lm<-stepAIC(lm_fit,direction="both")
 	#Sports, TV Sports, Art, Dancing/Clubbing, Watching TV, Theater, Movies, Going to concerts
 #Male:
 	#Sports, Dining Out, Museums, Art, Dancing/Clubbing, Reading, Movies, Music,Shopping, Yoga
+	
+	
+############################
+#Want to investigate response rates for surveys
+############################
+#Number of questions for all surveysis determined from the key
+
+#Initial survey
+initial_survey_num_questions<-47
+#for each person and for field in the intiial survey we want to know
+#if they answered the question or not (not blank or na)
+#The corrrelated columns are 21-68 (?)
+#Pull out the relevant columns of the matrix as the exact size then reassign those values
+initial_survey_response_matrix<-full_data[,21:68]
+
+#Halfway through survey (not including scorecard)
+halfway_survey_num_questions<-12
+
+#First followup to get their matches survey (day after their speed dating)
+first_followup_num_questions<-39
+
+#Second follow up survey that asks whether or not they met up with their matches
+#Sent 3-4 weeks after their matches
+second_followup_num_questions<-41
+
+#Third follow up survey
