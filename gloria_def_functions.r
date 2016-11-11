@@ -214,4 +214,24 @@ return_list$both_match #Returns False or 0 since both of them did not put true
 return_list$female_decision #Returns True or 1
 return_list$male_decision #Returns False or 0
 
-
+#We want to create a function that takes in a column name and returns the response rate
+#thus we can see how reliable a column name is, on the fly
+#type is a string denoting the gender or if it's not included then it'll default to the
+#overall response rate
+check_col_response_rate<-function(column_name,type){
+	#Count the number of NA's first with the specifed other parameter which is gender
+	if(type=="female"){
+		how_many_na<-sum(is.na(full_data[full_data$gender==0,column_name]))
+	}
+	else if(type=="male"){
+		how_many_na<-sum(is.na(full_data[full_data$gender==1,column_name]))
+	}
+	else{
+	how_many_na<-sum(is.na(full_data[,column_name]))
+	}
+	
+	#Define the response rate
+	response_rate<-1-(how_many_na/length(full_data[,column_name]))
+	
+	return (response_rate)
+}
