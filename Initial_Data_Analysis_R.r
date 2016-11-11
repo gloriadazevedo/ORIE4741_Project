@@ -366,21 +366,56 @@ step_lm<-stepAIC(lm_fit,direction="both")
 #Number of questions for all surveysis determined from the key
 
 #Initial survey
-initial_survey_num_questions<-47
+initial_survey_num_questions<-48
 #for each person and for field in the intiial survey we want to know
-#if they answered the question or not (not blank or na)
-#The corrrelated columns are 21-68 (?)
-#Pull out the relevant columns of the matrix as the exact size then reassign those values
-initial_survey_response_matrix<-full_data[,21:68]
+#if they answered the question or not (not NA)
+#The correlated columns are 34 to 81
+#Pull out the relevant columns of the matrix for the initial survey
+initial_survey_response_matrix<-full_data[,34:81]
+#Want to determine the number of questions that a person answered
+#Returns a vector of response rates for the first survey
+first_survey_na_num<-rowSums(is.na(initial_survey_response_matrix))
+first_survey_response_rate<-(initial_survey_num_questions-first_survey_na_num)/initial_survey_num_questions
 
 #Halfway through survey (not including scorecard)
-halfway_survey_num_questions<-12
+halfway_survey_num_questions<-11
+#Pull out the relevant columns of the matrix for the survey that's halfway through 
+halfway_survey_response_matrix<-full_data[,109:119]
+#Want to determine the number of questions that a person answered
+#Returns a vector of response rates for the survey halfway through the event
+halfway_survey_na_num<-rowSums(is.na(halfway_survey_response_matrix))
+halfway_survey_response_rate<-(halfway_survey_num_questions-halfway_survey_na_num<-)/halfway_survey_num_questions
 
 #First followup to get their matches survey (day after their speed dating)
-first_followup_num_questions<-39
+first_followup_num_questions<-37
+#Pull out the relevant columns of the matrix for the first followup survey 
+first_followup_survey_response_matrix<-full_data[,120:156]
+#Want to determine the number of questions that a person answered
+#Returns a vector of response rates for the first follow up survey
+first_followup_survey_na_num<-rowSums(is.na(first_followup_survey_response_matrix))
+first_followup_survey_response_rate<-(first_followup_num_questions-first_followup_survey_na_num)/first_followup_num_questions
 
 #Second follow up survey that asks whether or not they met up with their matches
 #Sent 3-4 weeks after their matches
-second_followup_num_questions<-41
+second_followup_num_questions<-39
+#Pull out the relevant columns of the matrix for the first followup survey 
+second_followup_survey_response_matrix<-full_data[,157:195]
+#Want to determine the number of questions that a person answered
+#Returns a vector of response rates for the second follow up survey
+second_followup_survey_na_num<-rowSums(is.na(second_followup_survey_response_matrix))
+second_followup_survey_response_rate<-(second_followup_num_questions-second_followup_survey_na_num)/second_followup_num_questions
 
-#Third follow up survey
+
+
+
+
+
+
+
+
+
+
+
+
+
+
