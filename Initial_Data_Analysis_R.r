@@ -363,7 +363,7 @@ step_lm<-stepAIC(lm_fit,direction="both")
 ############################
 #Want to investigate response rates for surveys
 ############################
-#Number of questions for all surveysis determined from the key
+#Number of questions for each survey is determined from the key
 
 #Initial survey
 initial_survey_num_questions<-48
@@ -376,9 +376,33 @@ initial_survey_response_matrix<-full_data[,34:81]
 #Returns a vector of response rates for the first survey
 first_survey_na_num<-rowSums(is.na(initial_survey_response_matrix))
 first_survey_response_rate<-(initial_survey_num_questions-first_survey_na_num)/initial_survey_num_questions
-#Plot a histogram of the distribution of the response rates for the first survey
-hist(first_survey_response_rate,main = "Histogram of response rates for initial survey",xlab="Response Rate",ylab="Number of participants")
 
+#Want to determine the number of questions that females answered
+#Define a new subset of the data for readability
+first_survey_female_response_matrix<-initial_survey_response_matrix[full_data$gender==0,]
+#Want to determine the number of questions that a female answered
+#Returns a vector of response rates for the first survey that was done by females
+first_survey_na_num_female<-rowSums(is.na(first_survey_female_response_matrix))
+first_survey_female_response_rate<-(initial_survey_num_questions-first_survey_na_num_female)/initial_survey_num_questions
+
+#Want to determine the number of questions that males answered
+#Define a new subset of the data for readability
+first_survey_male_response_matrix<-initial_survey_response_matrix[full_data$gender==1,]
+#Want to determine the number of questions that a male answered
+#Returns a vector of response rates for the first survey that was done by males
+first_survey_na_num_male<-rowSums(is.na(first_survey_male_response_matrix))
+first_survey_male_response_rate<-(initial_survey_num_questions-first_survey_na_num_male)/initial_survey_num_questions
+
+#Plot a histogram of the distribution of the response rates for the first survey for both genders
+hist(first_survey_response_rate,main = "Response rates for initial survey (both genders)",xlab="Response Rate",ylab="Number of participants")
+
+#Plot a histogram of the distribution of the response rates for the first survey for females only 
+hist(first_survey_female_response_rate,main = "Response rates for initial survey (female only)",xlab="Response Rate",ylab="Number of participants")
+
+#Plot a histogram of the distribution of the response rates for the first survey for males only 
+hist(first_survey_male_response_rate,main = "Response rates for initial survey (male only)",xlab="Response Rate",ylab="Number of participants")
+
+###################################################################
 #Halfway through survey (not including scorecard)
 halfway_survey_num_questions<-11
 #Pull out the relevant columns of the matrix for the survey that's halfway through 
@@ -387,9 +411,11 @@ halfway_survey_response_matrix<-full_data[,109:119]
 #Returns a vector of response rates for the survey halfway through the event
 halfway_survey_na_num<-rowSums(is.na(halfway_survey_response_matrix))
 halfway_survey_response_rate<-(halfway_survey_num_questions-halfway_survey_na_num)/halfway_survey_num_questions
-#Plot a histogram of the distribution of the response rates for the survey halfway through the speed dating event
-hist(halfway_survey_response_rate,main = "Histogram of response rates for survey halfway through event",xlab="Response Rate",ylab="Number of participants")
 
+#Plot a histogram of the distribution of the response rates for the survey halfway through the speed dating event
+#Note that the histogram is the response rates for both genders
+hist(halfway_survey_response_rate,main = "Histogram of response rates for survey halfway through event",xlab="Response Rate",ylab="Number of participants")
+###################################################################
 #First followup to get their matches survey (day after their speed dating)
 first_followup_num_questions<-37
 #Pull out the relevant columns of the matrix for the first followup survey 
@@ -398,9 +424,11 @@ first_followup_survey_response_matrix<-full_data[,120:156]
 #Returns a vector of response rates for the first follow up survey
 first_followup_survey_na_num<-rowSums(is.na(first_followup_survey_response_matrix))
 first_followup_survey_response_rate<-(first_followup_num_questions-first_followup_survey_na_num)/first_followup_num_questions
+
+#Note that the histogram is the response rates for both genders
 #Plot a histogram of the distribution of the response rates for the first followup survey
 hist(first_followup_survey_response_rate,main = "Histogram of response rates for first followup survey",xlab="Response Rate",ylab="Number of participants")
-
+###################################################################
 #Second follow up survey that asks whether or not they met up with their matches
 #Sent 3-4 weeks after their matches
 second_followup_num_questions<-39
@@ -410,6 +438,8 @@ second_followup_survey_response_matrix<-full_data[,157:195]
 #Returns a vector of response rates for the second follow up survey
 second_followup_survey_na_num<-rowSums(is.na(second_followup_survey_response_matrix))
 second_followup_survey_response_rate<-(second_followup_num_questions-second_followup_survey_na_num)/second_followup_num_questions
+
+#Note that the histogram is the response rates for both genders
 #Plot a histogram of the distribution of the response rates for the second followup survey
 hist(second_followup_survey_response_rate,main = "Histogram of response rates for second followup survey",xlab="Response Rate",ylab="Number of participants")
 
