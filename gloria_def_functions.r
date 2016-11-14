@@ -31,23 +31,26 @@ for (i in 1:21){
 
 #Want to define all the reassigning to be an option instead of a mandatory reassignment
 #this just covers all the "other" categories
-reassign_all_data<-function(){
+#need to assign the output to something
+#Call the function with full_data<-reassign_all_data(full_data)
+reassign_all_data<-function(full_data){
 #Need to recode values of "NA" in male or female race to be 6
-full_data[is.na(full_data$race),]$race<-6
+full_data[is.na(full_data[["race"]]),][["race"]]<-6
 
 #First we need to recode the values that have an "NA" in their field_cd to have a field_cd of 
 #18 which corresponds to the Other field
-full_data[is.na(full_data$field_cd),]$field_cd<-18
+full_data[is.na(full_data$field_cd),][["field_cd"]]<-18
 
 #Need to recode NA values in some of the importance rankings and also in 
 #the goals [of the speed dating event], how often they go out, and how often they go on dates
 #Relevant columns:
 #imprace, imprelig, goal, date, go_out
-full_data[is.na(full_data$imprace),]$imprace<-0
-full_data[is.na(full_data$imprelig),]$imprelig<-0
-full_data[is.na(full_data$goal),]$goal<-6
-full_data[is.na(full_data$"date"),]$"date"<-7
-full_data[is.na(full_data$go_out),]$go_out<-7
+full_data[is.na(full_data[["imprace"]]),][["imprace"]]<-0
+full_data[is.na(full_data[["imprelig"]]),][["imprelig"]]<-0
+full_data[is.na(full_data[["goal"]]),][["goal"]]<-6
+full_data[is.na(full_data[["date"]]),][["date"]]<-7
+full_data[is.na(full_data[["go_out"]]),][["go_out"]]<-7
+full_data
 } #End of the reassign_all_data function
 
 #Function to clean activity columns to change NA's to 0's and say that the person had no interest in the activities

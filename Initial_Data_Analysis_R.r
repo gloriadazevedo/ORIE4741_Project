@@ -511,10 +511,37 @@ hist(second_followup_survey_female_response_rate,main = "Response rates for seco
 #Note that the histogram is the response rates for males only
 #Plot a histogram of the distribution of the response rates for the second followup survey
 hist(second_followup_survey_male_response_rate,main = "Response rates for second followup survey (males only)",xlab="Response Rate",ylab="Number of participants")
+###################################################################
+#What are the questions that have the lowest response rates?
+
+#Include interaction effect with response rate and model coefficients to predict match or decision, i.e. figure out how to include/exclude the data points with missing variables
+
+#Need to make sure that when we make linear models that we don't exclude the data that we don't want to
+#For example, if we are using variables 1-5 to fit a regression but a data point doesn't have variable 6, then we would still want to fit or predict for this point.
+#Looking back at the activity matrix example since I took out the routine that 
+#converts NA values to be 0, there are a total of 79 observations that were not included
+#in the model--looks like 59 from the females and 20 from the males.
+#Thus I think that observations are deleted if the data is not all there.  
+#Either we need to have smaller but complete models or if we include more variables,
+#maybe include an indicator function so that the rest of the data can be used.
+
+###################################################################
+#Also want to implement KNN (with k=3, 5, 7) to see if that is a good algorithm for prediction
+library(class)
+
+#First try KNN with k=3 and all the variables
+#the problem is, no missing variables are allowed!
+#Still have to use the cleaning techniques
+
+#Make a copy of the original data set
+orignal_full_data<-full_data
+
+#Run the cleaning routine that will clean the full_data dataset
+full_data<-reassign_all_data()
+knn_3_model<-knn.cv(full_data[,-full_data$"match"],full_data$"match",3)
 
 
-
-
+#Also need to implement some sort of resampling technique for training the model and testing it on new data since we only have ~8k rows of information
 
 
 
