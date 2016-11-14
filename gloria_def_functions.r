@@ -57,23 +57,23 @@ full_data
 #Relevant columns:
 #sports, tvsports, exercise, dining, museums, art, hiking, gaming, clubbing, reading, tv, theater, movies, concerts, music, shopping, and yoga
 clean_NA_data<-function(){
-full_data[is.na(full_data$sports),]$sports<-0
-full_data[is.na(full_data$tvsports),]$tvsports<-0
-full_data[is.na(full_data$exercise),]$exercise<-0
-full_data[is.na(full_data$dining),]$dining<-0
-full_data[is.na(full_data$museums),]$museums<-0
-full_data[is.na(full_data$art),]$art<-0
-full_data[is.na(full_data$hiking),]$hiking<-0
-full_data[is.na(full_data$gaming),]$gaming<-0
-full_data[is.na(full_data$clubbing),]$clubbing<-0
-full_data[is.na(full_data$reading),]$reading<-0
-full_data[is.na(full_data$tv),]$tv<-0
-full_data[is.na(full_data$theater),]$theater<-0
-full_data[is.na(full_data$movies),]$movies<-0
-full_data[is.na(full_data$concerts),]$concerts<-0
-full_data[is.na(full_data$music),]$music<-0
-full_data[is.na(full_data$shopping),]$shopping<-0
-full_data[is.na(full_data$yoga),]$yoga<-0
+full_data[is.na(full_data[["sports"]]),][["sports"]]<-0
+full_data[is.na(full_data[["tvsports"]]),][["tvsports"]]<-0
+full_data[is.na(full_data[["exercise"]]),][["exercise"]]<-0
+full_data[is.na(full_data[["dining"]]),][["dining"]]<-0
+full_data[is.na(full_data[["museums"]]),][["museums"]]<-0
+full_data[is.na(full_data[["art"]]),][["art"]]<-0
+full_data[is.na(full_data[["hiking"]]),][["hiking"]]<-0
+full_data[is.na(full_data[["gaming"]]),][["gaming"]]<-0
+full_data[is.na(full_data[["clubbing"]]),][["clubbing"]]<-0
+full_data[is.na(full_data[["reading"]]),][["reading"]]<-0
+full_data[is.na(full_data[["tv"]]),][["tv"]]<-0
+full_data[is.na(full_data[["theater"]]),][["theater"]]<-0
+full_data[is.na(full_data[["movies"]]),][["movies"]]<-0
+full_data[is.na(full_data[["concerts"]]),][["concerts"]]<-0
+full_data[is.na(full_data[["music"]]),][["music"]]<-0
+full_data[is.na(full_data[["shopping"]]),][["shopping"]]<-0
+full_data[is.na(full_data[["yoga"]]),][["yoga"]]<-0
 
 ##Section of code to normalize the different rankings of categories that either a male or female prefers in a partner##
 #For waves 1-5 and 10-21, the participant is asked to reassign weights that add up to 100 into 6 different categories
@@ -83,72 +83,72 @@ full_data[is.na(full_data$yoga),]$yoga<-0
 #Suspect that for waves 6-9 they have weighted their values by 100
 
 #Clean all the first section at the same time
-full_data[is.na(full_data$attr1_1),]$attr1_1<-0
-full_data[is.na(full_data$sinc1_1),]$sinc1_1<-0
-full_data[is.na(full_data$intel1_1),]$intel1_1<-0
-full_data[is.na(full_data$fun1_1),]$fun1_1<-0
-full_data[is.na(full_data$amb1_1),]$amb1_1<-0
-full_data[is.na(full_data$shar1_1),]$shar1_1<-0
+full_data[is.na(full_data[["attr1_1"]]),][["attr1_1"]]<-0
+full_data[is.na(full_data[["sinc1_1"]]),][["sinc1_1"]]<-0
+full_data[is.na(full_data[["intel1_1"]]),][["intel1_1"]]<-0
+full_data[is.na(full_data[["fun1_1"]]),][["fun1_1"]]<-0
+full_data[is.na(full_data[["amb1_1"]]),][["amb1_1"]]<-0
+full_data[is.na(full_data[["shar1_1"]]),][["shar1_1"]]<-0
 
 #Clean the attributes that a participant assigns to a partner on their scorecard to remove NAs
 #relevant columns: attr, sinc, intel, fun, amb, shar
-full_data[is.na(full_data$"attr"),]$"attr"<-0
-full_data[is.na(full_data$sinc),]$sinc<-0
-full_data[is.na(full_data$intel),]$intel<-0
-full_data[is.na(full_data$fun),]$fun<-0
-full_data[is.na(full_data$amb),]$amb<-0
-full_data[is.na(full_data$shar),]$shar<-0
+full_data[is.na(full_data[["attr"]]),][["attr"]]<-0
+full_data[is.na(full_data[["sinc"]]),][["sinc"]]<-0
+full_data[is.na(full_data[["intel"]]),][["intel"]]<-0
+full_data[is.na(full_data[["fun"]]),][["fun"]]<-0
+full_data[is.na(full_data[["amb"]]),][["amb"]]<-0
+full_data[is.na(full_data[["shar"]]),][["shar"]]<-0
 
 #Clean attributes that a participant writes halfway through the speed dating event
 #that weights their views of importance of the attribute in a partner (similar to the 1_1 attributes)
 #Relevant columns: attr1_s, sinc1_s, intel1_s, fun1_s,amb1_s, shar1_s
-full_data[is.na(full_data$attr1_s),]$attr1_s<-0
-full_data[is.na(full_data$sinc1_s),]$sinc1_s<-0
-full_data[is.na(full_data$intel1_s),]$intel1_s<-0
-full_data[is.na(full_data$fun1_s),]$fun1_s<-0
-full_data[is.na(full_data$amb1_s),]$amb1_s<-0
-full_data[is.na(full_data$shar1_s),]$shar1_s<-0
+full_data[is.na(full_data[["attr1_s"]]),][["attr1_s"]]<-0
+full_data[is.na(full_data[["sinc1_s"]]),][["sinc1_s"]]<-0
+full_data[is.na(full_data[["intel1_s"]]),][["intel1_s"]]<-0
+full_data[is.na(full_data[["fun1_s"]]),][["fun1_s"]]<-0
+full_data[is.na(full_data[["amb1_s"]]),][["amb1_s"]]<-0
+full_data[is.na(full_data[["shar1_s"]]),][["shar1_s"]]<-0
 
 #Clean attributes that a participant writes during the first followup after the speed dating event 
 #that distributes weights onto the 6 attributes that they thought were important to their DECISIONS
 #DURING THE EVENT
 #Relevant columns: attr7_2, sinc7_2, intel7_2, fun7_2, amb7_2, shar7_2
-full_data[is.na(full_data$attr7_2),]$attr7_2<-0
-full_data[is.na(full_data$sinc7_2),]$sinc7_2<-0
-full_data[is.na(full_data$intel7_2),]$intel7_2<-0
-full_data[is.na(full_data$fun7_2),]$fun7_2<-0
-full_data[is.na(full_data$amb7_2),]$amb7_2<-0
-full_data[is.na(full_data$shar7_2),]$shar7_2<-0
+full_data[is.na(full_data[["attr7_2"]]),][["attr7_2"]]<-0
+full_data[is.na(full_data[["sinc7_2"]]),][["sinc7_2"]]<-0
+full_data[is.na(full_data[["intel7_2"]]),][["intel7_2"]]<-0
+full_data[is.na(full_data[["fun7_2"]]),][["fun7_2"]]<-0
+full_data[is.na(full_data[["amb7_2"]]),][["amb7_2"]]<-0
+full_data[is.na(full_data[["shar7_2"]]),][["shar7_2"]]<-0
 
 #Participants were asked during the first followup survey to weight different attributes that
 #they thought were IMPORTANT IN THE OPPOSITE SEX IN GENERAL
 #Relevant columns: attr1_2, sinc1_2, intel1_2, fun1_2, amb1_2, shar1_2
-full_data[is.na(full_data$attr1_2),]$attr1_2<-0
-full_data[is.na(full_data$sinc1_2),]$sinc1_2<-0
-full_data[is.na(full_data$intel1_2),]$intel1_2<-0
-full_data[is.na(full_data$fun1_2),]$fun1_2<-0
-full_data[is.na(full_data$amb1_2),]$amb1_2<-0
-full_data[is.na(full_data$shar1_2),]$shar1_2<-0
+full_data[is.na(full_data[["attr1_2"]]),][["attr1_2"]]<-0
+full_data[is.na(full_data[["sinc1_2"]]),][["sinc1_2"]]<-0
+full_data[is.na(full_data[["intel1_2"]]),][["intel1_2"]]<-0
+full_data[is.na(full_data[["fun1_2"]]),][["fun1_2"]]<-0
+full_data[is.na(full_data[["amb1_2"]]),][["amb1_2"]]<-0
+full_data[is.na(full_data[["shar1_2"]]),][["shar1_2"]]<-0
 
 #Participants were asked during a second followup survey to rank the importance of certain attributes in
 #the opposite sex
 #Relevant columns: attr1_3, sinc1_3, intel1_3, fun1_3, amb1_3, shar1_3
-full_data[is.na(full_data$attr1_3),]$attr1_3<-0
-full_data[is.na(full_data$sinc1_3),]$sinc1_3<-0
-full_data[is.na(full_data$intel1_3),]$intel1_3<-0
-full_data[is.na(full_data$fun1_3),]$fun1_3<-0
-full_data[is.na(full_data$amb1_3),]$amb1_3<-0
-full_data[is.na(full_data$shar1_3),]$shar1_3<-0
+full_data[is.na(full_data[["attr1_3"]]),][["attr1_3"]]<-0
+full_data[is.na(full_data[["sinc1_3"]]),][["sinc1_3"]]<-0
+full_data[is.na(full_data[["intel1_3"]]),][["intel1_3"]]<-0
+full_data[is.na(full_data[["fun1_3"]]),][["fun1_3"]]<-0
+full_data[is.na(full_data[["amb1_3"]]),][["amb1_3"]]<-0
+full_data[is.na(full_data[["shar1_3"]]),][["shar1_3"]]<-0
 
 #During the second follow up survey, they were asked to think back on the traits that
 #they thought were the most important but we need to clean these values as well for NA's
 #Relevant columns: attr7_3, sinc7_3, intel7_3, fun7_3, amb7_3,shar7_3
-full_data[is.na(full_data$attr7_3),]$attr7_3<-0
-full_data[is.na(full_data$sinc7_3),]$sinc7_3<-0
-full_data[is.na(full_data$intel7_3),]$intel7_3<-0
-full_data[is.na(full_data$fun7_3),]$fun7_3<-0
-full_data[is.na(full_data$amb7_3),]$amb7_3<-0
-full_data[is.na(full_data$shar7_3),]$shar7_3<-0
+full_data[is.na(full_data[["attr7_3"]]),][["attr7_3"]]<-0
+full_data[is.na(full_data[["sinc7_3"]]),][["sinc7_3"]]<-0
+full_data[is.na(full_data[["intel7_3"]]),][["intel7_3"]]<-0
+full_data[is.na(full_data[["fun7_3"]]),][["fun7_3"]]<-0
+full_data[is.na(full_data[["amb7_3"]]),][["amb7_3"]]<-0
+full_data[is.na(full_data[["shar7_3"]]),][["shar7_3"]]<-0
 } #End of the clean_NA_data function
 
 #Bootstrap function that creates training data and test data from the data, given a wave and gender
