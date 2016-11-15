@@ -34,12 +34,22 @@ for (i in 1:21){
 #need to assign the output to something
 #Call the function with full_data<-reassign_all_data(full_data)
 reassign_all_data<-function(full_data){
-#Need to recode values of "NA" in male or female race to be 6
+#Need to recode values of "NA" in male or female race and the race of their partner to be 6
 full_data[is.na(full_data[["race"]]),][["race"]]<-6
+full_data[is.na(full_data[["race_o"]]),][["race_o"]]<-6
+
+#Need to input a value for age_o and age
+mean_age_o<-mean(full_data[["age_o"]])
+full_data[is.na(full_data[["age_o"]]),][["age_o"]]<-mean_age_o
+mean_age<-mean(full_data[["age"]])
+full_data[is.na(full_data[["age"]]),][["age"]]<-mean_age
 
 #First we need to recode the values that have an "NA" in their field_cd to have a field_cd of 
 #18 which corresponds to the Other field
-full_data[is.na(full_data$field_cd),][["field_cd"]]<-18
+#For career_c there is no predefined career code of 18 but assigning it that value to be consistent
+full_data[is.na(full_data[["field_cd"]]),][["field_cd"]]<-18
+#Similarly for career_c
+full_data[is.na(full_data[["career_c"]]),][["career_c"]]<-18
 
 #Need to recode NA values in some of the importance rankings and also in 
 #the goals [of the speed dating event], how often they go out, and how often they go on dates
@@ -56,17 +66,46 @@ full_data[is.na(full_data[["go_out"]]),][["go_out"]]<-7
 #The way it's set up is kind of stupid if you ask me
 full_data[is.na(full_data[["length"]]),][["length"]]<-3
 
-#How did you think the number of speed dates that you had was?
+#How did you think the number of speed dates that you had was on first follow up survey?
 #Scale of 1 to 3 where 1 is too little, 2 is too much, 3 is just right
-full_data[is.na(full_data[["numdat_3"]]),][["numdat_3"]]<-3
+full_data[is.na(full_data[["numdat_2"]]),][["numdat_2"]]<-3
 
 full_data
 } #End of the reassign_all_data function
 
 #Function to clean activity columns to change NA's to 0's and say that the person had no interest in the activities
+clean_NA_data<-function(full_data){
+#Need to clean the participants preferences at time 1 for each of the 6 attributes
+#Relevant columns: pf_o_att, pf_o_sinc, pf_o_int,pf_o_fun, pf_o_amb, pf_o_sha
+full_data[is.na(full_data[["pf_o_att"]]),][["pf_o_att"]]<-0
+full_data[is.na(full_data[["pf_o_sinc"]]),][["pf_o_sinc"]]<-0
+full_data[is.na(full_data[["pf_o_int"]]),][["pf_o_int"]]<-0
+full_data[is.na(full_data[["pf_o_fun"]]),][["pf_o_fun"]]<-0
+full_data[is.na(full_data[["pf_o_amb"]]),][["pf_o_amb"]]<-0
+full_data[is.na(full_data[["pf_o_sha"]]),][["pf_o_sha"]]<-0
+
+#Rating of the partner by the end of the night, for all 6 attributes
+#Relevant columns: attr_o, sinc_o, intel_o, fun_o, amb_o, shar_o, like_o, prob_o, met_o
+full_data[is.na(full_data[["attr_o"]]),][["attr_o"]]<-0
+full_data[is.na(full_data[["sinc_o"]]),][["sinc_o"]]<-0
+full_data[is.na(full_data[["intel_o"]]),][["intel_o"]]<-0
+full_data[is.na(full_data[["fun_o"]]),][["fun_o"]]<-0
+full_data[is.na(full_data[["amb_o"]]),][["amb_o"]]<-0
+full_data[is.na(full_data[["shar_o"]]),][["shar_o"]]<-0
+full_data[is.na(full_data[["like_o"]]),][["like_o"]]<-0
+full_data[is.na(full_data[["prob_o"]]),][["prob_o"]]<-0
+full_data[is.na(full_data[["met_o"]]),][["met_o"]]<-0
+
+#Participants were asked how happy they expected to be with the people they met in the speed
+#dating event and how many that the participant expected would be interested in dating them
+#Relevant columns: exphappy, expnum
+full_data[is.na(full_data[["exphappy"]]),][["exphappy"]]<-0
+full_data[is.na(full_data[["expnum"]]),][["expnum"]]<-0
+
+
+#Cleaning the activity portion of the participant's preferences
 #Relevant columns:
 #sports, tvsports, exercise, dining, museums, art, hiking, gaming, clubbing, reading, tv, theater, movies, concerts, music, shopping, and yoga
-clean_NA_data<-function(full_data){
 full_data[is.na(full_data[["sports"]]),][["sports"]]<-0
 full_data[is.na(full_data[["tvsports"]]),][["tvsports"]]<-0
 full_data[is.na(full_data[["exercise"]]),][["exercise"]]<-0
@@ -100,14 +139,59 @@ full_data[is.na(full_data[["fun1_1"]]),][["fun1_1"]]<-0
 full_data[is.na(full_data[["amb1_1"]]),][["amb1_1"]]<-0
 full_data[is.na(full_data[["shar1_1"]]),][["shar1_1"]]<-0
 
+#Participants are asked in the initial survey what they think that their fellow men and 
+#women look for in a partner
+#Relevant columns: attr4_1, sinc4_1, intel4_1, fun4_1, amb4_1, shar4_1
+full_data[is.na(full_data[["attr4_1"]]),][["attr4_1"]]<-0
+full_data[is.na(full_data[["sinc4_1"]]),][["sinc4_1"]]<-0
+full_data[is.na(full_data[["intel4_1"]]),][["intel4_1"]]<-0
+full_data[is.na(full_data[["fun4_1"]]),][["fun4_1"]]<-0
+full_data[is.na(full_data[["amb4_1"]]),][["amb4_1"]]<-0
+full_data[is.na(full_data[["shar4_1"]]),][["shar4_1"]]<-0
+
+#Partipants are asked in the intial survey what they think that the opposite sex 
+#looks for in a date/potential partner
+#Relevant columns: attr2_1, sinc2_1, intel2_1, fun2_1, amb2_1, shar2_1
+full_data[is.na(full_data[["attr2_1"]]),][["attr2_1"]]<-0
+full_data[is.na(full_data[["sinc2_1"]]),][["sinc2_1"]]<-0
+full_data[is.na(full_data[["intel2_1"]]),][["intel2_1"]]<-0
+full_data[is.na(full_data[["fun2_1"]]),][["fun2_1"]]<-0
+full_data[is.na(full_data[["amb2_1"]]),][["amb2_1"]]<-0
+full_data[is.na(full_data[["shar2_1"]]),][["shar2_1"]]<-0
+
+#Partipants are asked how they think that they measure up in the intial survey
+#Relevant columns: attr3_1, sinc3_1, intel3_1, fun3_1, amb3_1, shar3_1
+full_data[is.na(full_data[["attr3_1"]]),][["attr3_1"]]<-0
+full_data[is.na(full_data[["sinc3_1"]]),][["sinc3_1"]]<-0
+full_data[is.na(full_data[["intel3_1"]]),][["intel3_1"]]<-0
+full_data[is.na(full_data[["fun3_1"]]),][["fun3_1"]]<-0
+full_data[is.na(full_data[["amb3_1"]]),][["amb3_1"]]<-0
+full_data[is.na(full_data[["shar3_1"]]),][["shar3_1"]]<-0
+
+#Partipants are asked how they think that others perceive them in initial survey
+#Relevant columns: attr5_1, sinc5_1, intel5_1, fun5_1, amb5_1, shar5_1
+full_data[is.na(full_data[["attr5_1"]]),][["attr5_1"]]<-0
+full_data[is.na(full_data[["sinc5_1"]]),][["sinc5_1"]]<-0
+full_data[is.na(full_data[["intel5_1"]]),][["intel5_1"]]<-0
+full_data[is.na(full_data[["fun5_1"]]),][["fun5_1"]]<-0
+full_data[is.na(full_data[["amb5_1"]]),][["amb5_1"]]<-0
+full_data[is.na(full_data[["shar5_1"]]),][["shar5_1"]]<-0
+
 #Clean the attributes that a participant assigns to a partner on their scorecard to remove NAs
-#relevant columns: attr, sinc, intel, fun, amb, shar
+#relevant columns: attr, sinc, intel, fun, amb, shar, like, prob, met
 full_data[is.na(full_data[["attr"]]),][["attr"]]<-0
 full_data[is.na(full_data[["sinc"]]),][["sinc"]]<-0
 full_data[is.na(full_data[["intel"]]),][["intel"]]<-0
 full_data[is.na(full_data[["fun"]]),][["fun"]]<-0
 full_data[is.na(full_data[["amb"]]),][["amb"]]<-0
 full_data[is.na(full_data[["shar"]]),][["shar"]]<-0
+full_data[is.na(full_data[["like"]]),][["like"]]<-0
+full_data[is.na(full_data[["prob"]]),][["prob"]]<-0
+full_data[is.na(full_data[["met"]]),][["met"]]<-0
+
+#Participants are asked how many matches they expect to get
+#Relevant column: match_es
+full_data[is.na(full_data[["match_es"]]),][["match_es"]]<-0
 
 #Clean attributes that a participant writes halfway through the speed dating event
 #that weights their views of importance of the attribute in a partner (similar to the 1_1 attributes)
@@ -198,6 +282,7 @@ full_data[is.na(full_data[["amb5_2"]]),][["amb5_2"]]<-0
 full_data[is.na(full_data[["you_call"]]),][["you_call"]]<-0
 full_data[is.na(full_data[["them_cal"]]),][["them_cal"]]<-0
 full_data[is.na(full_data[["date_3"]]),][["date_3"]]<-0
+full_data[is.na(full_data[["numdat_3"]]),][["numdat_3"]]<-0
 full_data[is.na(full_data[["num_in_3"]]),][["num_in_3"]]<-0
 
 #Participants were asked during a second followup survey to rank the importance of certain attributes in
