@@ -78,3 +78,4 @@ summary(regsubsets.out)
 #12  ( 1 ) "*"  "*"  " "   "*" "*" "*"  "*"  "*"  "*" "*"  "*"  "*"    "*"     
 #13  ( 1 ) "*"  "*"  "*"   "*" "*" "*"  "*"  "*"  "*" "*"  "*"  "*"    "*"   
 plot(regsubsets.out)
+#Output for this can be found in BestModelSubsetPlot.pdf
