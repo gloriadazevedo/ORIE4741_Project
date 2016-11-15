@@ -58,7 +58,7 @@ full_data[is.na(full_data[["length"]]),][["length"]]<-3
 
 #How did you think the number of speed dates that you had was?
 #Scale of 1 to 3 where 1 is too little, 2 is too much, 3 is just right
-full_data[is.na(full_data[["num_dat2"]]),][["num_dat2"]]<-3
+full_data[is.na(full_data[["numdat_3"]]),][["numdat_3"]]<-3
 
 full_data
 } #End of the reassign_all_data function
@@ -126,7 +126,7 @@ full_data[is.na(full_data[["sinc3_s"]]),][["sinc3_s"]]<-0
 full_data[is.na(full_data[["intel3_s"]]),][["intel3_s"]]<-0
 full_data[is.na(full_data[["fun3_s"]]),][["fun3_s"]]<-0
 full_data[is.na(full_data[["amb3_s"]]),][["amb3_s"]]<-0
-full_data[is.na(full_data[["shar3_s"]]),][["shar3_s"]]<-0
+#full_data[is.na(full_data[["shar3_s"]]),][["shar3_s"]]<-0
 
 #Clean attributes that a participant writes during the first followup after the speed dating event 
 #that distributes weights onto the 6 attributes that they thought were important to their DECISIONS
@@ -179,7 +179,8 @@ full_data[is.na(full_data[["sinc3_2"]]),][["sinc3_2"]]<-0
 full_data[is.na(full_data[["intel3_2"]]),][["intel3_2"]]<-0
 full_data[is.na(full_data[["fun3_2"]]),][["fun3_2"]]<-0
 full_data[is.na(full_data[["amb3_2"]]),][["amb3_2"]]<-0
-full_data[is.na(full_data[["shar3_2"]]),][["shar3_2"]]<-0
+#For some reason this is not recorded
+#full_data[is.na(full_data[["shar3_2"]]),][["shar3_2"]]<-0
 
 #Participants were asked how they think that others perceived 
 #them during the first followup survey
@@ -189,14 +190,14 @@ full_data[is.na(full_data[["sinc5_2"]]),][["sinc5_2"]]<-0
 full_data[is.na(full_data[["intel5_2"]]),][["intel5_2"]]<-0
 full_data[is.na(full_data[["fun5_2"]]),][["fun5_2"]]<-0
 full_data[is.na(full_data[["amb5_2"]]),][["amb5_2"]]<-0
-full_data[is.na(full_data[["shar5_2"]]),][["shar5_2"]]<-0
+#For some reason this is not recorded
+#full_data[is.na(full_data[["shar5_2"]]),][["shar5_2"]]<-0
 
 #Participants were asked how many of their matches that they called, how many have called them, and how many dates they've been on
 #Relevant columns: you_call, them_call, date_3, numdat_3, num_in_3
 full_data[is.na(full_data[["you_call"]]),][["you_call"]]<-0
-full_data[is.na(full_data[["them_call"]]),][["them_call"]]<-0
+full_data[is.na(full_data[["them_cal"]]),][["them_cal"]]<-0
 full_data[is.na(full_data[["date_3"]]),][["date_3"]]<-0
-full_data[is.na(full_data[["numdat_3"]]),][["numdat_3"]]<-0
 full_data[is.na(full_data[["num_in_3"]]),][["num_in_3"]]<-0
 
 #Participants were asked during a second followup survey to rank the importance of certain attributes in
@@ -247,7 +248,8 @@ full_data[is.na(full_data[["sinc3_3"]]),][["sinc3_3"]]<-0
 full_data[is.na(full_data[["intel3_3"]]),][["intel3_3"]]<-0
 full_data[is.na(full_data[["fun3_3"]]),][["fun3_3"]]<-0
 full_data[is.na(full_data[["amb3_3"]]),][["amb3_3"]]<-0
-full_data[is.na(full_data[["shar3_3"]]),][["shar3_3"]]<-0
+#This is not recorded for some reason
+#full_data[is.na(full_data[["shar3_3"]]),][["shar3_3"]]<-0
 
 #Participants were asked in the second followup survey to weight how they think
 #that others perceived them
@@ -257,7 +259,8 @@ full_data[is.na(full_data[["sinc5_3"]]),][["sinc5_3"]]<-0
 full_data[is.na(full_data[["intel5_3"]]),][["intel5_3"]]<-0
 full_data[is.na(full_data[["fun5_3"]]),][["fun5_3"]]<-0
 full_data[is.na(full_data[["amb5_3"]]),][["amb5_3"]]<-0
-full_data[is.na(full_data[["shar5_3"]]),][["shar5_3"]]<-0
+#For some reason this is not recorded
+#full_data[is.na(full_data[["shar5_3"]]),][["shar5_3"]]<-0
 
 full_data
 } #End of the clean_NA_data function
@@ -270,26 +273,26 @@ full_data
 #However, we have on exception, in Wave 5 where there's a note that they're all undergrads, we have different
 #numbers of rows between the wave 5 females and males.  Thus we predict that one of the females did not 
 #have her data recorded for the 10 males.
-bootstrap_wave_gender<-function(w,g,type=c("training","test")){
-	#Determine the number of people in this wave_gender pair
-	#Need to get the list of training or test vertices from the indices_list
-	#Need to define the name that we use to pull from the list
-	name<-paste(w,paste(g,type,sep="_"),sep="_")
-	indices_sample<-indices_list[[name]]
+# bootstrap_wave_gender<-function(w,g,type=c("training","test"),indices_list){
+	# #Determine the number of people in this wave_gender pair
+	# #Need to get the list of training or test vertices from the indices_list
+	# #Need to define the name that we use to pull from the list
+	# name<-paste(w,paste(g,type,sep="_"),sep="_")
+	# indices_sample<-indices_list[[name]]
 	
-	#For the best bootstrapping technique, we need to resample the data the same number of times as the number we have
-	#First we need to divide the data into training and test
-	range_total<-1:length(indices_sample)
-	sampling<-sample(range_total, length(indices_sample), replace=TRUE,prob=NULL)
+	# #For the best bootstrapping technique, we need to resample the data the same number of times as the number we have
+	# #First we need to divide the data into training and test
+	# range_total<-1:length(indices_sample)
+	# sampling<-sample(range_total, length(indices_sample), replace=TRUE,prob=NULL)
 	
-	return_data<-full_data[full_data$wave==w & full_data$gender==g,][indices_sample[sampling]]
+	# return_data<-full_data[full_data$wave==w & full_data$gender==g,][indices_sample[sampling]]
 	
-	return (return_data)
-}
+	# return (return_data)
+# }
 
 #Test function
-wave_1_gender_0_train<-bootstrap_wave_gender(1,0,"training")
-wave_1_gender_0_test<-bootstrap_wave_gender(1,0,"test")
+# wave_1_gender_0_train<-bootstrap_wave_gender(1,0,"training","age")
+# wave_1_gender_0_test<-bootstrap_wave_gender(1,0,"test","age")
 
 #To ensure a "match" where two people like each other, each person has to fill out a "yes" for the ID of the other person
 #on their scorecard within that wave.
