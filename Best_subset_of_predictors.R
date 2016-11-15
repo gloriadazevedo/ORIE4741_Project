@@ -41,4 +41,40 @@ regsubsets.out <-
                force.in = NULL, force.out = NULL,
                method = "exhaustive")
 summary(regsubsets.out)
+#Subset selection object
+#Call: regsubsets.formula(dec ~ attr + sinc + intel + fun + amb + shar + 
+#    like + prob + met + goal + date + go_out + exphappy, data = dataimp, 
+#    nbest = 1, nvmax = NULL, force.in = NULL, force.out = NULL, 
+#    method = "exhaustive")
+#13 Variables  (and intercept)
+#         Forced in Forced out
+#attr         FALSE      FALSE
+#sinc         FALSE      FALSE
+#intel        FALSE      FALSE
+#fun          FALSE      FALSE
+#amb          FALSE      FALSE
+#shar         FALSE      FALSE
+#like         FALSE      FALSE
+#prob         FALSE      FALSE
+#met          FALSE      FALSE
+#goal         FALSE      FALSE
+#date         FALSE      FALSE
+#go_out       FALSE      FALSE
+#exphappy     FALSE      FALSE
+#1 subsets of each size up to 13
+#Selection Algorithm: exhaustive
+#          attr sinc intel fun amb shar like prob met goal date go_out exphappy
+#1  ( 1 )  " "  " "  " "   " " " " " "  "*"  " "  " " " "  " "  " "    " "     
+#2  ( 1 )  "*"  " "  " "   " " " " " "  "*"  " "  " " " "  " "  " "    " "     
+#3  ( 1 )  "*"  "*"  " "   " " " " " "  "*"  " "  " " " "  " "  " "    " "     
+#4  ( 1 )  "*"  "*"  " "   " " " " " "  "*"  "*"  " " " "  " "  " "    " "     
+#5  ( 1 )  "*"  "*"  " "   " " "*" " "  "*"  "*"  " " " "  " "  " "    " "     
+#6  ( 1 )  "*"  "*"  " "   " " "*" "*"  "*"  "*"  " " " "  " "  " "    " "     
+#7  ( 1 )  "*"  "*"  " "   "*" "*" "*"  "*"  "*"  " " " "  " "  " "    " "     
+#8  ( 1 )  "*"  "*"  " "   "*" "*" "*"  "*"  "*"  " " " "  " "  " "    "*"     
+#9  ( 1 )  "*"  "*"  " "   "*" "*" "*"  "*"  "*"  " " " "  " "  "*"    "*"     
+#10  ( 1 ) "*"  "*"  " "   "*" "*" "*"  "*"  "*"  " " " "  "*"  "*"    "*"     
+#11  ( 1 ) "*"  "*"  " "   "*" "*" "*"  "*"  "*"  " " "*"  "*"  "*"    "*"     
+#12  ( 1 ) "*"  "*"  " "   "*" "*" "*"  "*"  "*"  "*" "*"  "*"  "*"    "*"     
+#13  ( 1 ) "*"  "*"  "*"   "*" "*" "*"  "*"  "*"  "*" "*"  "*"  "*"    "*"   
 plot(regsubsets.out)
