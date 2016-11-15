@@ -39,9 +39,9 @@ full_data[is.na(full_data[["race"]]),][["race"]]<-6
 full_data[is.na(full_data[["race_o"]]),][["race_o"]]<-6
 
 #Need to input a value for age_o and age
-mean_age_o<-mean(full_data[["age_o"]])
+mean_age_o<-mean(full_data[!is.na(full_data[["age_o"]]),][["age_o"]])
 full_data[is.na(full_data[["age_o"]]),][["age_o"]]<-mean_age_o
-mean_age<-mean(full_data[["age"]])
+mean_age<-mean(full_data[!is.na(full_data[["age"]]),][["age"]])
 full_data[is.na(full_data[["age"]]),][["age"]]<-mean_age
 
 #First we need to recode the values that have an "NA" in their field_cd to have a field_cd of 
@@ -76,9 +76,9 @@ full_data
 #Function to clean activity columns to change NA's to 0's and say that the person had no interest in the activities
 clean_NA_data<-function(full_data){
 #Need to clean the participants preferences at time 1 for each of the 6 attributes
-#Relevant columns: pf_o_att, pf_o_sinc, pf_o_int,pf_o_fun, pf_o_amb, pf_o_sha
+#Relevant columns: pf_o_att, pf_o_sin, pf_o_int,pf_o_fun, pf_o_amb, pf_o_sha
 full_data[is.na(full_data[["pf_o_att"]]),][["pf_o_att"]]<-0
-full_data[is.na(full_data[["pf_o_sinc"]]),][["pf_o_sinc"]]<-0
+full_data[is.na(full_data[["pf_o_sin"]]),][["pf_o_sin"]]<-0
 full_data[is.na(full_data[["pf_o_int"]]),][["pf_o_int"]]<-0
 full_data[is.na(full_data[["pf_o_fun"]]),][["pf_o_fun"]]<-0
 full_data[is.na(full_data[["pf_o_amb"]]),][["pf_o_amb"]]<-0
@@ -166,7 +166,8 @@ full_data[is.na(full_data[["sinc3_1"]]),][["sinc3_1"]]<-0
 full_data[is.na(full_data[["intel3_1"]]),][["intel3_1"]]<-0
 full_data[is.na(full_data[["fun3_1"]]),][["fun3_1"]]<-0
 full_data[is.na(full_data[["amb3_1"]]),][["amb3_1"]]<-0
-full_data[is.na(full_data[["shar3_1"]]),][["shar3_1"]]<-0
+#This is not recorded for whatever reason
+#full_data[is.na(full_data[["shar3_1"]]),][["shar3_1"]]<-0
 
 #Partipants are asked how they think that others perceive them in initial survey
 #Relevant columns: attr5_1, sinc5_1, intel5_1, fun5_1, amb5_1, shar5_1
@@ -175,7 +176,8 @@ full_data[is.na(full_data[["sinc5_1"]]),][["sinc5_1"]]<-0
 full_data[is.na(full_data[["intel5_1"]]),][["intel5_1"]]<-0
 full_data[is.na(full_data[["fun5_1"]]),][["fun5_1"]]<-0
 full_data[is.na(full_data[["amb5_1"]]),][["amb5_1"]]<-0
-full_data[is.na(full_data[["shar5_1"]]),][["shar5_1"]]<-0
+#This is not recorded for whatever reason
+#full_data[is.na(full_data[["shar5_1"]]),][["shar5_1"]]<-0
 
 #Clean the attributes that a participant assigns to a partner on their scorecard to remove NAs
 #relevant columns: attr, sinc, intel, fun, amb, shar, like, prob, met

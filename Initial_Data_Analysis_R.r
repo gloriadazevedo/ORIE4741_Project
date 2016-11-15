@@ -537,7 +537,8 @@ library(class)
 orignal_full_data<-full_data
 
 #Run the cleaning routine that will clean the full_data dataset
-full_data<-reassign_all_data()
+full_data<-reassign_all_data(full_data)
+full_data<-clean_NA_data(full_data)
 knn_3_model<-knn.cv(full_data[,-full_data$"match"],full_data$"match",3)
 
 
