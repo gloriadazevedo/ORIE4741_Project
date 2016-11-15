@@ -539,7 +539,33 @@ orignal_full_data<-full_data
 #Run the cleaning routine that will clean the full_data dataset
 full_data<-reassign_all_data(full_data)
 full_data<-clean_NA_data(full_data)
-knn_3_model<-knn.cv(full_data[,-full_data$"match"],full_data$"match",3)
+#This runs with errors; all the NA's are fixed in the functions but may have too much data
+#Also need to exclude the categorical variables
+non_cat_variables<-colnames(full_data) #all column names
+#Define by hand the ones that are non-numeric and not the match variable
+cat_variables<-c("undergra","career","income","from","zipcode","mn_sat","tuition","field","match")
+non_cat_variables<-non_cat_variables[!non_cat_variables %in% cat_variables]
+
+#Run the KNN model with 3 neighbors
+knn_3_model<-knn.cv(full_data[non_cat_variables],full_data$"match",3)
+summary(knn_3_model)
+ # 0    1 
+# 7585  793 
+mis_classified<-sum(abs(as.numeric(knn_3_model)-full_data$"match"))
+mis_classified #Output is 7791! Wow this method is no good with only 3 neighbors
+
+#Try with 5 neighbors
+knn_5_model<-knn.cv(full_data[non_cat_variables],full_data$"match",5)
+mis_classified<-sum(abs(as.numeric(knn_5_model)-full_data$"match"))
+mis_classified #Output is 7562
+#Number of misclassifications still high but hopefully adding more neighbors to make model more flexible
+
+mis_classified_vector<-rep(0,25)
+for (i in 1:25){
+	model_fit<-knn.cv(full_data[non_cat_variables],full_data$"match",3+i)
+	mis_classified<-sum(abs(as.numeric(model_fit)-full_data$"match"))
+	mis_classified_vector[i]<-mis_classified
+}
 
 
 #Also need to implement some sort of resampling technique for training the model and testing it on new data since we only have ~8k rows of information
