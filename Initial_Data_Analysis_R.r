@@ -27,73 +27,6 @@ for (w in 1:num_waves){
 	}
 }
 
-#Bootstrap function that creates training data and test data from the data, given a wave and gender
-#Note that we can subset data as so: full_data[full_data$wave==1&full_data$gender==0,][1,]
-#This will return the first row of the females in wave 1.
-#For each individual in the wave-gender pair they see all of the people in the opposite gender in that wave 
-#so in general for each wave-gender pair, there are num_males*num_females number of rows.
-#However, we have on exception, in Wave 5 where there's a note that they're all undergrads, we have different
-#numbers of rows between the wave 5 females and males.  Thus we predict that one of the females did not 
-#have her data recorded for the 10 males.
-bootstrap_wave_gender<-function(w,g,type=c("training","test")){
-	#Determine the number of people in this wave_gender pair
-	#Need to get the list of training or test vertices from the indices_list
-	#Need to define the name that we use to pull from the list
-	name<-paste(w,paste(g,type,sep="_"),sep="_")
-	indices_sample<-indices_list[[name]]
-	
-	#For the best bootstrapping technique, we need to resample the data the same number of times as the number we have
-	#First we need to divide the data into training and test
-	range_total<-1:length(indices_sample)
-	sampling<-sample(range_total, length(indices_sample), replace=TRUE,prob=NULL)
-	
-	return_data<-full_data[full_data$wave==w & full_data$gender==g,][indices_sample[sampling]]
-	
-	return (return_data)
-}
-
-#Test function
-wave_1_gender_0_train<-bootstrap_wave_gender(1,0,"training")
-wave_1_gender_0_test<-bootstrap_wave_gender(1,0,"test")
-
-#To ensure a "match" where two people like each other, each person has to fill out a "yes" for the ID of the other person
-#on their scorecard within that wave.
-#i.e. for persons 1 and 2 to like each other, person 1 has to circle "yes" for person 2 and person 2 has to circle "yes" for person 1
-#The person filling it out has their id within the wave in column "id" while their partner is in "pid"
-#Creating a function that, when given a wave, and the ids, determine if it's a match, the male said they would date and the 
-#female did not, and if the male said they would not and female said that they would.
-
-#Turns out there's a match column that says whether or not the two people have matched
-match_results<-function(w,p1,p2,data_source){
-
-	#figure out gender--only have to do this for one and then the other one is expected to the the other gender.
-	p1_gender<-data_source[data_source$wave==w & data_source$id==p1 & !is.na(data_source$iid) & data_source$pid==p2,]$gender
-
-	p1_decision<-data_source[data_source$wave==w & data_source$id==p1 & !is.na(data_source$iid) & data_source$pid==p2,]$dec
-	p2_decision<-data_source[data_source$wave==w & data_source$id==p2 & !is.na(data_source$iid) & data_source$pid==p1,]$dec
-	
-	both_match<-p1_decision & p2_decision
-	
-	if(p1_gender==0){
-		female_decision<-p1_decision
-		male_decision<-p2_decision
-	}else{
-		male_decision<-p1_decision
-		female_decision<-p2_decision
-	}
-	
-	return_list<-list("both_match"=both_match,"female_decision"=female_decision,"male_decision"=male_decision)
-	
-	return (return_list)
-}
-
-#Test function
-return_list<-match_results(1,1,11,full_data)
-return_list$both_match #Returns False or 0 since both of them did not put true
-return_list$female_decision #Returns True or 1
-return_list$male_decision #Returns False or 0
-
-
 #Looking at initial percentiles to answer questions like:
 #1. What percentage of matches are between same ethnicity couples? (Aggregated by wave)
 #2. What percentage of matches have the same field of study?
@@ -316,6 +249,7 @@ for (w in 1:num_waves){
 	female_id<-unique(full_data[full_data$wave==w & full_data$gender==0,]$id)
 	male_id<-unique(full_data[full_data$wave==w & full_data$gender==1,]$id)
 	
+	#Loop through all the pairs in the wave
 	for (i in 1:length(female_id)){
 		#Assign the activity vector for the female
 		f_vector<-full_data[full_data$wave==w & full_data$gender==0 & 
@@ -325,9 +259,13 @@ for (w in 1:num_waves){
 			m_vector<-full_data[full_data$wave==w & full_data$gender==1 & 
 				full_data$id==male_id[j],first_col:last_col][1,]
 			
-			#Determine whether or ot there's a match
+			#Determine whether or not there's a match and what the decisions were
 			match_value<-full_data[full_data$wave==w & full_data$gender==0 & 
 				full_data$id==female_id[i] & full_data$partner==male_id[j], ]$"match"
+			female_dec_value<-full_data[full_data$wave==w & full_data$gender==0 & 
+				full_data$id==female_id[i] & full_data$partner==male_id[j], ]$"dec"
+			male_dec_value<-full_data[full_data$wave==w & full_data$gender==1 & 
+				full_data$id==male_id[j] & full_data$partner==female_id[i], ]$"dec"	
 			
 			#Append the activity vectors
 			activity_matrix[counter,1:17]<-t(f_vector)
@@ -420,3 +358,222 @@ step_lm<-stepAIC(lm_fit,direction="both")
 	#Sports, TV Sports, Art, Dancing/Clubbing, Watching TV, Theater, Movies, Going to concerts
 #Male:
 	#Sports, Dining Out, Museums, Art, Dancing/Clubbing, Reading, Movies, Music,Shopping, Yoga
+	
+	
+############################
+#Want to investigate response rates for surveys
+############################
+#Number of questions for each survey is determined from the key
+
+#Initial survey
+initial_survey_num_questions<-48
+#for each person and for field in the intiial survey we want to know
+#if they answered the question or not (not NA)
+#The correlated columns are 34 to 81
+#Pull out the relevant columns of the matrix for the initial survey
+initial_survey_response_matrix<-full_data[,34:81]
+#Want to determine the number of questions that a person answered
+#Returns a vector of response rates for the first survey
+first_survey_na_num<-rowSums(is.na(initial_survey_response_matrix))
+first_survey_response_rate<-(initial_survey_num_questions-first_survey_na_num)/initial_survey_num_questions
+
+#Want to determine the number of questions that females answered
+#Define a new subset of the data for readability
+first_survey_female_response_matrix<-initial_survey_response_matrix[full_data$gender==0,]
+#Want to determine the number of questions that a female answered
+#Returns a vector of response rates for the first survey that was done by females
+first_survey_na_num_female<-rowSums(is.na(first_survey_female_response_matrix))
+first_survey_female_response_rate<-(initial_survey_num_questions-first_survey_na_num_female)/initial_survey_num_questions
+
+#Want to determine the number of questions that males answered
+#Define a new subset of the data for readability
+first_survey_male_response_matrix<-initial_survey_response_matrix[full_data$gender==1,]
+#Want to determine the number of questions that a male answered
+#Returns a vector of response rates for the first survey that was done by males
+first_survey_na_num_male<-rowSums(is.na(first_survey_male_response_matrix))
+first_survey_male_response_rate<-(initial_survey_num_questions-first_survey_na_num_male)/initial_survey_num_questions
+
+#Plot a histogram of the distribution of the response rates for the first survey for both genders
+hist(first_survey_response_rate,main = "Response rates for initial survey (both genders)",xlab="Response Rate",ylab="Number of participants")
+
+#Plot a histogram of the distribution of the response rates for the first survey for females only 
+hist(first_survey_female_response_rate,main = "Response rates for initial survey (female only)",xlab="Response Rate",ylab="Number of participants")
+
+#Plot a histogram of the distribution of the response rates for the first survey for males only 
+hist(first_survey_male_response_rate,main = "Response rates for initial survey (male only)",xlab="Response Rate",ylab="Number of participants")
+
+###################################################################
+#Halfway through survey (not including scorecard)
+halfway_survey_num_questions<-11
+#Pull out the relevant columns of the matrix for the survey that's halfway through 
+halfway_survey_response_matrix<-full_data[,109:119]
+#Want to determine the number of questions that a person answered
+#Returns a vector of response rates for the survey halfway through the event
+halfway_survey_na_num<-rowSums(is.na(halfway_survey_response_matrix))
+halfway_survey_response_rate<-(halfway_survey_num_questions-halfway_survey_na_num)/halfway_survey_num_questions
+
+#Want to determine the number of questions that females answered
+#Define a new subset of the data for readability
+halfway_survey_female_response_matrix<-halfway_survey_response_matrix[full_data$gender==0,]
+#Want to determine the number of questions that a female answered
+#Returns a vector of response rates for the halfway survey that was done by females
+halfway_survey_na_num_female<-rowSums(is.na(halfway_survey_female_response_matrix))
+halfway_survey_female_response_rate<-(halfway_survey_num_questions-halfway_survey_na_num_female)/halfway_survey_num_questions
+
+#Want to determine the number of questions that males answered
+#Define a new subset of the data for readability
+halfway_survey_male_response_matrix<-halfway_survey_response_matrix[full_data$gender==1,]
+#Want to determine the number of questions that a male answered
+#Returns a vector of response rates for the first survey that was done by males
+halfway_survey_na_num_male<-rowSums(is.na(halfway_survey_male_response_matrix))
+halfway_survey_male_response_rate<-(halfway_survey_num_questions-halfway_survey_na_num_male)/halfway_survey_num_questions
+
+#Plot a histogram of the distribution of the response rates for the survey halfway through the speed dating event for both genders
+hist(halfway_survey_response_rate,main = "Response rates for survey halfway through event (both genders)",xlab="Response Rate",ylab="Number of participants")
+
+#Plot a histogram of the distribution of the response rates for the survey halfway through the speed dating event for females only
+hist(halfway_survey_female_response_rate,main = "Response rates for survey halfway through event (females_only)",xlab="Response Rate",ylab="Number of participants")
+
+#Plot a histogram of the distribution of the response rates for the survey halfway through the speed dating event for males only
+hist(halfway_survey_male_response_rate,main = "Response rates for survey halfway through event (males_only)",xlab="Response Rate",ylab="Number of participants")
+###################################################################
+#First followup to get their matches survey (day after their speed dating)
+first_followup_num_questions<-37
+#Pull out the relevant columns of the matrix for the first followup survey 
+first_followup_survey_response_matrix<-full_data[,120:156]
+#Want to determine the number of questions that a person answered
+#Returns a vector of response rates for the first follow up survey
+first_followup_survey_na_num<-rowSums(is.na(first_followup_survey_response_matrix))
+first_followup_survey_response_rate<-(first_followup_num_questions-first_followup_survey_na_num)/first_followup_num_questions
+
+#Want to determine the number of questions that females answered
+#Define a new subset of the data for readability
+first_followup_survey_female_response_matrix<-first_followup_survey_response_matrix[full_data$gender==0,]
+#Want to determine the number of questions that a female answered
+#Returns a vector of response rates for the first followup survey that was done by females
+first_followup_survey_na_num_female<-rowSums(is.na(first_followup_survey_female_response_matrix))
+first_followup_survey_female_response_rate<-(first_followup_num_questions-first_followup_survey_na_num_female)/first_followup_num_questions
+
+#Want to determine the number of questions that males answered
+#Define a new subset of the data for readability
+first_followup_survey_male_response_matrix<-first_followup_survey_response_matrix[full_data$gender==1,]
+#Want to determine the number of questions that a male answered
+#Returns a vector of response rates for the first survey that was done by males
+first_followup_survey_na_num_male<-rowSums(is.na(first_followup_survey_male_response_matrix))
+first_followup_survey_male_response_rate<-(first_followup_num_questions-first_followup_survey_na_num_male)/first_followup_num_questions
+
+#Note that the histogram is the response rates for both genders
+#Plot a histogram of the distribution of the response rates for the first followup survey
+hist(first_followup_survey_response_rate,main = "Response rates for first followup survey (both genders)",xlab="Response Rate",ylab="Number of participants")
+
+#Note that the histogram is the response rates for females only
+#Plot a histogram of the distribution of the response rates for the first followup survey
+hist(first_followup_survey_female_response_rate,main = "Response rates for first followup survey (females only)",xlab="Response Rate",ylab="Number of participants")
+
+#Note that the histogram is the response rates for males only
+#Plot a histogram of the distribution of the response rates for the first followup survey
+hist(first_followup_survey_male_response_rate,main = "Response rates for first followup survey (males only)",xlab="Response Rate",ylab="Number of participants")
+###################################################################
+#Second follow up survey that asks whether or not they met up with their matches
+#Sent 3-4 weeks after their matches
+second_followup_num_questions<-39
+#Pull out the relevant columns of the matrix for the first followup survey 
+second_followup_survey_response_matrix<-full_data[,157:195]
+#Want to determine the number of questions that a person answered
+#Returns a vector of response rates for the second follow up survey
+second_followup_survey_na_num<-rowSums(is.na(second_followup_survey_response_matrix))
+second_followup_survey_response_rate<-(second_followup_num_questions-second_followup_survey_na_num)/second_followup_num_questions
+
+#Want to determine the number of questions that females answered
+#Define a new subset of the data for readability
+second_followup_survey_female_response_matrix<-second_followup_survey_response_matrix[full_data$gender==0,]
+#Want to determine the number of questions that a female answered
+#Returns a vector of response rates for the second followup survey that was done by females
+second_followup_survey_na_num_female<-rowSums(is.na(second_followup_survey_female_response_matrix))
+second_followup_survey_female_response_rate<-(second_followup_num_questions-second_followup_survey_na_num_female)/second_followup_num_questions
+
+#Want to determine the number of questions that males answered
+#Define a new subset of the data for readability
+second_followup_survey_male_response_matrix<-second_followup_survey_response_matrix[full_data$gender==1,]
+#Want to determine the number of questions that a male answered
+#Returns a vector of response rates for the second followup survey that was done by males
+second_followup_survey_na_num_male<-rowSums(is.na(second_followup_survey_male_response_matrix))
+second_followup_survey_male_response_rate<-(second_followup_num_questions-second_followup_survey_na_num_male)/second_followup_num_questions
+
+#Note that the histogram is the response rates for both genders
+#Plot a histogram of the distribution of the response rates for the second followup survey
+hist(second_followup_survey_response_rate,main = "Response rates for second followup survey (both genders)",xlab="Response Rate",ylab="Number of participants")
+
+#Note that the histogram is the response rates for females only
+#Plot a histogram of the distribution of the response rates for the second followup survey
+hist(second_followup_survey_female_response_rate,main = "Response rates for second followup survey (females only)",xlab="Response Rate",ylab="Number of participants")
+
+#Note that the histogram is the response rates for males only
+#Plot a histogram of the distribution of the response rates for the second followup survey
+hist(second_followup_survey_male_response_rate,main = "Response rates for second followup survey (males only)",xlab="Response Rate",ylab="Number of participants")
+###################################################################
+#What are the questions that have the lowest response rates?
+
+#Include interaction effect with response rate and model coefficients to predict match or decision, i.e. figure out how to include/exclude the data points with missing variables
+
+#Need to make sure that when we make linear models that we don't exclude the data that we don't want to
+#For example, if we are using variables 1-5 to fit a regression but a data point doesn't have variable 6, then we would still want to fit or predict for this point.
+#Looking back at the activity matrix example since I took out the routine that 
+#converts NA values to be 0, there are a total of 79 observations that were not included
+#in the model--looks like 59 from the females and 20 from the males.
+#Thus I think that observations are deleted if the data is not all there.  
+#Either we need to have smaller but complete models or if we include more variables,
+#maybe include an indicator function so that the rest of the data can be used.
+
+###################################################################
+#Also want to implement KNN (with k=3, 5, 7) to see if that is a good algorithm for prediction
+library(class)
+
+#First try KNN with k=3 and all the variables
+#the problem is, no missing variables are allowed!
+#Still have to use the cleaning techniques
+
+#Make a copy of the original data set
+orignal_full_data<-full_data
+
+#Run the cleaning routine that will clean the full_data dataset
+full_data<-reassign_all_data(full_data)
+full_data<-clean_NA_data(full_data)
+#This runs with errors; all the NA's are fixed in the functions but may have too much data
+#Also need to exclude the categorical variables
+non_cat_variables<-colnames(full_data) #all column names
+#Define by hand the ones that are non-numeric and not the match variable
+cat_variables<-c("undergra","career","income","from","zipcode","mn_sat","tuition","field","match")
+non_cat_variables<-non_cat_variables[!non_cat_variables %in% cat_variables]
+
+#Run the KNN model with 3 neighbors
+knn_3_model<-knn.cv(full_data[non_cat_variables],full_data$"match",3)
+summary(knn_3_model)
+ # 0    1 
+# 7585  793 
+mis_classified<-sum(abs(as.numeric(knn_3_model)-full_data$"match"))
+mis_classified #Output is 7791! Wow this method is no good with only 3 neighbors
+
+#Try with 5 neighbors
+knn_5_model<-knn.cv(full_data[non_cat_variables],full_data$"match",5)
+mis_classified<-sum(abs(as.numeric(knn_5_model)-full_data$"match"))
+mis_classified #Output is 7562
+#Number of misclassifications still high but hopefully adding more neighbors to make model more flexible
+
+mis_classified_vector<-rep(0,50)
+for (i in 1:length(mis_classified_vector)){
+	model_fit<-knn.cv(full_data[non_cat_variables],full_data$"match",3+2i)
+	mis_classified<-sum(abs(as.numeric(model_fit)-full_data$"match"))
+	mis_classified_vector[i]<-mis_classified
+}
+
+
+#Also need to implement some sort of resampling technique for training the model and testing it on new data since we only have ~8k rows of information
+
+
+
+
+
+
+
+
