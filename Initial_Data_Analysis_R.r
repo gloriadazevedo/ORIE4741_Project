@@ -560,13 +560,23 @@ mis_classified<-sum(abs(as.numeric(knn_5_model)-full_data$"match"))
 mis_classified #Output is 7562
 #Number of misclassifications still high but hopefully adding more neighbors to make model more flexible
 
-mis_classified_vector<-rep(0,50)
+mis_classified_vector<-rep(0,25)
 for (i in 1:length(mis_classified_vector)){
-	model_fit<-knn.cv(full_data[non_cat_variables],full_data$"match",3+2i)
+	model_fit<-knn.cv(full_data[non_cat_variables],full_data$"match",3+2*i)
 	mis_classified<-sum(abs(as.numeric(model_fit)-full_data$"match"))
 	mis_classified_vector[i]<-mis_classified
 }
 
+#Try using the same technique but also excluding gender
+cat_variables<-c(cat_variables,"gender")
+non_cat_variables<-non_cat_variables[!non_cat_variables %in% cat_variables]
+
+mis_classified_vector<-rep(0,25)
+for (i in 1:length(mis_classified_vector)){
+	model_fit<-knn.cv(full_data[non_cat_variables],full_data$"match",3+2*i)
+	mis_classified<-sum(abs(as.numeric(model_fit)-full_data$"match"))
+	mis_classified_vector[i]<-mis_classified
+}
 
 #Also need to implement some sort of resampling technique for training the model and testing it on new data since we only have ~8k rows of information
 
