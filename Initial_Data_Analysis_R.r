@@ -607,7 +607,22 @@ x_vector<-3+x_vector
 plot(x_vector,mis_classified_vector,main="Num of Misclassifications for KNN")
 
 #Also want to try the KNN algorithm including the partner's activity
+#For each participant, we know their gender and their partner's id (that's the col name)
+#so then we can look up that partner as the participant to get their activity interests
+activities<-c("sports","tvsports","exercise", "dining","museums","art","hiking","gaming","clubbing","reading","tv","theater","movies",  "concerts","music","shopping","yoga")
 
+activity_matrix_col<-append(activities, c("wave","gender","id"))
+#Make an activity matrix separately; unique gets rid of all the duplicates
+#For each participant, this activity information is repeated for each of their partners
+activity_matrix<-full_data[,activity_matrix_col]
+activity_matrix<-unique(activity_matrix)
+
+#Use nice properties of data frames to merge the two together
+full_data<-merge(full_data,activity_matrix,by.x=c("gender","wave","id"),by.y=c("gender","wave","id"),all.x=TRUE)
+#Problem is, the columns of the activity_matrix are all ending in .y
+#Use the rename function
+library(plyr)
+full_data<-rename(full_data,c("sports.y"="partner_sports","tvsports.y"="partner_tvsports","exercise.y"="partner_exercise","dining.y"="partner_dining","museums.y"="partner_museums","art.y"="partner_art", "hiking.y"="partner_hiking","gaming.y"="partner_gaming","clubbing.y"="partner_clubbing","reading.y"="partner_reading","tv.y"="partner_tv","theater.y"="partner_theater","movies.y"="partner_movies","concerts.y"="partner_concerts","music.y"="partner_music","shopping.y"="partner_shopping","yoga.y"="partner_yoga"))
 
 
 #Also need to implement some sort of resampling technique for training the model and testing it on new data since we only have ~8k rows of information
