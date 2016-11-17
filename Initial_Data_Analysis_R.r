@@ -355,7 +355,8 @@ step_lm<-stepAIC(lm_fit,direction="both")
     # X22 + X23 + X26 + X27 + X30 + X32 + X33 + X34
 #The coefficients for these variables are
 #Female:
-	#Sports, TV Sports, Art, Dancing/Clubbing, Watching TV, Theater, Movies, Going to concerts
+	#Sports, 
+	Sports, Art, Dancing/Clubbing, Watching TV, Theater, Movies, Going to concerts
 #Male:
 	#Sports, Dining Out, Museums, Art, Dancing/Clubbing, Reading, Movies, Music,Shopping, Yoga
 	
@@ -558,7 +559,7 @@ mis_classified #Output is 7791! Wow this method is no good with only 3 neighbors
 knn_5_model<-knn.cv(full_data[non_cat_variables],full_data$"match",5)
 mis_classified<-sum(abs(as.numeric(knn_5_model)-full_data$"match"))
 mis_classified #Output is 7562
-#Number of misclassifications still high but hopefully adding more neighbors to make model more flexible
+#Number of misclassifications still high but hopefully adding more neighbors to make model less flexible and more robust
 
 mis_classified_vector<-rep(0,25)
 for (i in 1:length(mis_classified_vector)){
@@ -567,8 +568,8 @@ for (i in 1:length(mis_classified_vector)){
 	mis_classified_vector[i]<-mis_classified
 }
 
-#Try using the same technique but also excluding gender
-cat_variables<-c(cat_variables,"gender")
+#Try using the same technique but also excluding gender and other person-identifying traits
+cat_variables<-c(cat_variables,"gender","iid","id","idg","condtn","wave","round","position","position1","order","partner","pid")
 non_cat_variables<-non_cat_variables[!non_cat_variables %in% cat_variables]
 
 mis_classified_vector<-rep(0,25)
@@ -577,13 +578,36 @@ for (i in 1:length(mis_classified_vector)){
 	mis_classified<-sum(abs(as.numeric(model_fit)-full_data$"match"))
 	mis_classified_vector[i]<-mis_classified
 }
+#Plot the output
+x_vector<-1:25
+x_vector<-3+2*x_vector
+plot(x_vector,mis_classified_vector,main="Num of Misclassifications for KNN")
+
+#Try running KNN with gender but also only on the complete cases
+#Reassign all the data back to "full_data"
+full_data<-orignal_full_data
+
+#complete.cases() is a function that returns true IFF all the columns of a row
+#in a data frame don't have missing values
+#Unfortunately the following command yields a data frame with no rows
+#In other words, nobody answered every single question of the survey
+dim(complete.cases(full_data)) 
+
+#Thus we need to identify some of the most important columns that have relatively
+#high response rates then use KNN for them
+imp_variables<-c("dec","attr","sinc","intel","fun","amb","shar","like","prob","met","goal","date","go_out","exphappy","samerace","imprace","imprelig","sports","tvsports","exercise", "dining","museums","art","hiking","gaming","clubbing","reading","tv","theater","movies",  "concerts","music","shopping","yoga")
+mis_classified_vector<-rep(0,80)
+for (i in 1:length(mis_classified_vector)){
+	model_fit<-knn.cv(full_data[imp_variables],full_data$"dec",3+i)
+	mis_classified<-sum(abs(as.numeric(model_fit)-full_data$"dec"))
+	mis_classified_vector[i]<-mis_classified
+}
+x_vector<-1:80
+x_vector<-3+x_vector
+plot(x_vector,mis_classified_vector,main="Num of Misclassifications for KNN")
+
+#Also want to try the KNN algorithm including the partner's activity
+
+
 
 #Also need to implement some sort of resampling technique for training the model and testing it on new data since we only have ~8k rows of information
-
-
-
-
-
-
-
-
