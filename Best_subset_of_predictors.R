@@ -79,3 +79,10 @@ summary(regsubsets.out)
 #13  ( 1 ) "*"  "*"  "*"   "*" "*" "*"  "*"  "*"  "*" "*"  "*"  "*"    "*"   
 plot(regsubsets.out)
 #Output for this can be found in BestModelSubsetPlot.pdf
+#From the plot we see that the best model (lowest BIC) is the one with nine variables
+#Coefficients of the model with nine variables are below
+coef(regsubsets.out, 9)
+#(Intercept)        attr        sinc         fun         amb        shar 
+#-0.48931702  0.06591967 -0.03003476  0.01641642 -0.02306307  0.01451100 
+#       like        prob      go_out    exphappy 
+# 0.08065556  0.02311936  0.01392134  0.01022608 
