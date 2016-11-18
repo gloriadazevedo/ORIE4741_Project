@@ -347,7 +347,7 @@ summary(lm_fit)
 #X2, X9, X13, X14, X21, X22, X23, X26, X27 but there are many other correlated variables in the model
 
 #Also want to use forward and backward selection and the AIC to determine which predictors should be in the model
-library(MASS)
+
 step_lm<-stepAIC(lm_fit,direction="both")
 
 #Partial output:
@@ -528,7 +528,6 @@ hist(second_followup_survey_male_response_rate,main = "Response rates for second
 
 ###################################################################
 #Also want to implement KNN (with k=3, 5, 7) to see if that is a good algorithm for prediction
-library(class)
 
 #First try KNN with k=3 and all the variables
 #the problem is, no missing variables are allowed!
@@ -563,7 +562,7 @@ mis_classified #Output is 7562
 
 mis_classified_vector<-rep(0,25)
 for (i in 1:length(mis_classified_vector)){
-	model_fit<-knn.cv(full_data[non_cat_variables],full_data$"match",3+2*i)
+	model_fit<-knn.cv(full_data[non_cat_variables,],full_data$"match",3+2*i)
 	mis_classified<-sum(abs(as.numeric(model_fit)-full_data$"match"))
 	mis_classified_vector[i]<-mis_classified
 }
@@ -574,7 +573,7 @@ non_cat_variables<-non_cat_variables[!non_cat_variables %in% cat_variables]
 
 mis_classified_vector<-rep(0,25)
 for (i in 1:length(mis_classified_vector)){
-	model_fit<-knn.cv(full_data[non_cat_variables],full_data$"match",3+2*i)
+	model_fit<-knn.cv(full_data[non_cat_variables,],full_data$"match",3+2*i)
 	mis_classified<-sum(abs(as.numeric(model_fit)-full_data$"match"))
 	mis_classified_vector[i]<-mis_classified
 }
@@ -595,7 +594,7 @@ dim(complete.cases(full_data))
 
 #Thus we need to identify some of the most important columns that have relatively
 #high response rates then use KNN for them
-imp_variables<-c("dec","attr","sinc","intel","fun","amb","shar","like","prob","met","goal","date","go_out","exphappy","samerace","imprace","imprelig","sports","tvsports","exercise", "dining","museums","art","hiking","gaming","clubbing","reading","tv","theater","movies",  "concerts","music","shopping","yoga")
+imp_variables<-c("attr","sinc","intel","fun","amb","shar","like","prob","met","goal","date","go_out","exphappy","samerace","imprace","imprelig","sports","tvsports","exercise", "dining","museums","art","hiking","gaming","clubbing","reading","tv","theater","movies",  "concerts","music","shopping","yoga")
 mis_classified_vector<-rep(0,80)
 for (i in 1:length(mis_classified_vector)){
 	model_fit<-knn.cv(full_data[imp_variables],full_data$"dec",3+i)
@@ -619,10 +618,36 @@ activity_matrix<-unique(activity_matrix)
 
 #Use nice properties of data frames to merge the two together
 full_data<-merge(full_data,activity_matrix,by.x=c("gender","wave","id"),by.y=c("gender","wave","id"),all.x=TRUE)
-#Problem is, the columns of the activity_matrix are all ending in .y
+#Problem is, the columns of the activity_matrix are all ending in .y and the original ones end in .x
 #Use the rename function
-library(plyr)
 full_data<-rename(full_data,c("sports.y"="partner_sports","tvsports.y"="partner_tvsports","exercise.y"="partner_exercise","dining.y"="partner_dining","museums.y"="partner_museums","art.y"="partner_art", "hiking.y"="partner_hiking","gaming.y"="partner_gaming","clubbing.y"="partner_clubbing","reading.y"="partner_reading","tv.y"="partner_tv","theater.y"="partner_theater","movies.y"="partner_movies","concerts.y"="partner_concerts","music.y"="partner_music","shopping.y"="partner_shopping","yoga.y"="partner_yoga"))
 
+full_data<-rename(full_data,c("sports.x"="sports","tvsports.x"="tvsports","exercise.x"="exercise","dining.x"="dining","museums.x"="museums","art.x"="art", "hiking.x"="hiking","gaming.x"="gaming","clubbing.x"="clubbing","reading.x"="reading","tv.x"="tv","theater.x"="theater","movies.x"="movies","concerts.x"="concerts","music.x"="music","shopping.x"="shopping","yoga.x"="yoga"))
+
+#New set of important variables
+imp_variables<-c(imp_variables,"partner_sports","partner_tvsports","partner_exercise", "partner_dining","partner_museums","partner_art","partner_hiking","partner_gaming","partner_clubbing","partner_reading","partner_tv","partner_theater","partner_movies",  "partner_concerts","partner_music","partner_shopping","partner_yoga")
+
+#Run KNN with activities and information from both the participant and the partner
+mis_classified_vector<-rep(0,80)
+for (i in 1:length(mis_classified_vector)){
+	model_fit<-knn.cv(full_data[imp_variables],full_data$"dec",3+i)
+	mis_classified<-sum(abs(as.numeric(model_fit)-full_data$"dec"))
+	mis_classified_vector[i]<-mis_classified
+}
+x_vector<-1:80
+x_vector<-3+x_vector
+plot(x_vector,mis_classified_vector,main="Num of Misclassifications for KNN (With Partner Activities)")
+
+#Run KNN with activities from the partner and the other information from the participant
+imp_variables<-c("attr","sinc","intel","fun","amb","shar","like","prob","met","goal","date","go_out","exphappy","samerace","imprace","imprelig","partner_sports","partner_tvsports","partner_exercise", "partner_dining","partner_museums","partner_art","partner_hiking","partner_gaming","partner_clubbing","partner_reading","partner_tv","partner_theater","partner_movies",  "partner_concerts","partner_music","partner_shopping","partner_yoga")
+mis_classified_vector<-rep(0,80)
+for (i in 1:length(mis_classified_vector)){
+	model_fit<-knn.cv(full_data[imp_variables],full_data$"dec",3+i)
+	mis_classified<-sum(abs(as.numeric(model_fit)-full_data$"dec"))
+	mis_classified_vector[i]<-mis_classified
+}
+x_vector<-1:80
+x_vector<-3+x_vector
+plot(x_vector,mis_classified_vector,main="Num of Misclassifications for KNN (With Partner Activities Only)")
 
 #Also need to implement some sort of resampling technique for training the model and testing it on new data since we only have ~8k rows of information
