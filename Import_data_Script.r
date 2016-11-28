@@ -4,6 +4,12 @@ setwd("/Users/glori/Documents/GitHub/ORIE4741_Project")
 full_data<-read.table("data_excel.csv",header=TRUE,sep=",",stringsAsFactors=FALSE)
 #When importing we ran into a few issues such as some lines not having the correct number of elements, so added fill=TRUE for the blanks.
 
+#Libraries Used
+library(MASS)
+library(class)
+library(plyr)
+
+
 #Data editing
 #For ease of use and not using the Fill in feature which seems to be adding NA's everywhere, 
 #we are going to edit the data by hand in Excel just so there are no blanks in the csv.
