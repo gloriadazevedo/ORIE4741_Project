@@ -1,4 +1,6 @@
-
+library(gdata)
+setwd("/Users/pihu_yadav/Downloads/ORIE4741_Project-master")
+speeddating=read.csv("data_excel.csv")
 
 sapply(speeddating, function(x) sum(is.na(x)))
 dataimp<-subset(speeddating, select=c(dec,attr,sinc,intel,fun,amb,shar,like,prob,met,goal,date,go_out,exphappy))
