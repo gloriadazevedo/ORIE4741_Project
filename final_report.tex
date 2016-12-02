@@ -115,17 +115,31 @@ For this model our input parameters remain the same as the ones used in the Best
 In the glmnet package in the R coding language, the best value of $\lambda$ (the coefficient of the lasso regularizer) is calculated by training the model on a subset of data with a number of different values of $\lambda$.  Then, on the remaining testing data, the test error is calculated and the $\lambda$ of the model that yields the minimizes the cross validation error is used. Hence, with all the above details we are able to implement our model, and get a good classification model.
 %
 \subsection{K-Nearest-Neighbors (KNN)}
-In order to implement the K-Nearest-Neighbors (KNN) algorithm to predict a match between two people, the data must not have any missing values nor can it use categorical variables.  Thus, some cleaning scripts were applied and some fields that had NA values were inputed to an ``Other" category or the field was some form of weights or rankings, the values were imputed to be 0 instead of missing, just for the application of this algorithm.  In addition, since there is relatively little data, a cross validation method is used to train and test the model on disjoint sections of data.\\
+In order to implement the K-Nearest-Neighbors (KNN) algorithm to predict a match between two people, the data must not have any missing values nor can it use variables with text.  Thus, some cleaning scripts were applied and some fields that had NA values were inputed to an ``Other" category or if the missing field had some form of weights or rankings, the values were imputed to be 0 instead of missing (just for the application of this algorithm).  In addition, since there is relatively little data, a cross validation method with 10 folds is used to train and test the model on disjoint sections of data.  This method of reassigning or imputing may cause some bias in the data so we do not draw significant conclusions from this estimate.  However, it is important that we do not skew the other results by imputing an average or a most common value into some of the fields since it is possible that people who do not answer surveys have inherent traits in common so we want to try and bucket them together.  In addition, it may be the case that the algorithm does not yield the same result for a match depending on the view (male or female as the participant) which has a skewed interpretation so we also try to fit whether or not the participant ``likes" their partner.  Another thing to note is that since their partner has to have a different gender than the participant, currently we have gender included in the KNN model fit, but that should never be the same for the participant and the partner so better results may be achieved if that field was not included.\\
 \null\\
-This method of reassigning or imputing may cause some bias in the data so we do not draw significant conclusions from this estimate.  However, it is important that we do not skew the other results by imputing an average or a most common value into some of the fields since it is possible that peopel who do not answer surveys have inherent traits in common so we want to try and bucket them together.  In addition, it may be the case that the algorithm does not yield the same result for a match depending on the view (male or female as the participant) which has a skewed interpretation so we also try to fit whether or not the participant ``likes" their partner.  In addition, another thing to note is that since their partner has to have a different gender than the participant, currently we have gender included in the KNN model fit, but that should never be the same for the participant and the partner so better results may be achieved if that field was not included.\\
-\null\\
-Initial trials of KNN showed that a few number of nearest neighbors to implement KNN is too flexible and we have a high misclassification rate.  More tests are done to lower this number by increasing the number of nearest neighbors used and also using less fields in the algorithm.
+Initial trials of KNN showed that a few number of nearest neighbors to implement KNN is too flexible and we have a high misclassification rate with the best case scenario having a misclassification rate of around 85\%.  More tests can be done to lower this rate by increasing the number of nearest neighbors used, also using less fields in the algorithm, and using only complete data so there's no bias from imputing variables.
 %
 \section{Results and Key Findings}
+\begin{table}[!htbp] \centering 
+	\caption{Summary table of models and corresponding misclassification rates} 
+	\label{table:results} 
+	\begin{tabular}{@{\extracolsep{5pt}}ccc} 
+		\\[-1.8ex]\hline 
+		\hline \\[-1.8ex] 
+		Model Name & Model Variables & Misclassification Rate \\ 
+		\hline \\[-1.8ex] 
+		K-Nearest Neighbors & 6 Main Characteristics, Participant's Activities, Event Expectations & 85\% \\ 
+		Logistic Regression & Rik, Pik3r3, Rac1*, Nfat5 & 0.4998 \\ 
+		Best Subset for Linear Regression& Pik3r3*, Rac1* & 0.4777 \\ 
+		\hline \\[-1.8ex] 
+	\end{tabular} 
+\end{table} 
+
 
 \section{Next Steps}
 In the future we can utilize the information from follow-up surveys to the participant (a survey from the day after the speed dating event and another survey a few weeks after the first follow-up survey) as another measure of confirmation of the matches from the event, despite their low response rates and potential bias.  However, when there are responses, they may give a lot of insight into what drives initial dates and calls.\\
 \null\\
 In addition, so far when casually determining what predictors to use in the model, we have been using the full data set.  However, in practice it is best to divide up the data that we have into disjoint training and test data so that we can train different models on the training data and then test the model on new data to get a more accurate estimate of test error.  We have already developed a function to use the boostrap method for resampling but that can also create biases and overfit the data.  Another method that we will use for the linear or logisitic models is the k-fold cross validation method to compute the error rate or number of misclassifications.  This method begins by randomly divides the data into $k$ equally sized, disjoint partitions.  Then each fold is taken in turn to be the test data set evaluated on the model that was calculated on the other $k-1$ folds as the training set.  In addition since there are only around 8,000 data points in total, the Leave-One-Out-Cross-Validation (LOOCV) method which is a special case of k-fold cross validation where $k$ is equal to the total number of data points.\\
-
+\null\\
+Another way to utilize our current data is to incorporate more interaction effects of different variables.  For example, if a participant assigns high importance (above some threshold to be determined) to a partner having shared interests as them, then we would compare the activites that the participant and their partner like.  This can be implemented using a variation of decision trees so that if the threshold of shared interests priority is not met, the model may not need to incorporate more data to make a prediction for a positive decision or match.  
 \end{document}

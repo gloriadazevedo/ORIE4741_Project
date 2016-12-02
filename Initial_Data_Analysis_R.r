@@ -534,7 +534,7 @@ hist(second_followup_survey_male_response_rate,main = "Response rates for second
 #Still have to use the cleaning techniques
 
 #Make a copy of the original data set
-orignal_full_data<-full_data
+original_full_data<-full_data
 
 #Run the cleaning routine that will clean the full_data dataset
 full_data<-reassign_all_data(full_data)
@@ -562,7 +562,7 @@ mis_classified #Output is 7562
 
 mis_classified_vector<-rep(0,25)
 for (i in 1:length(mis_classified_vector)){
-	model_fit<-knn.cv(full_data[non_cat_variables,],full_data$"match",3+2*i)
+	model_fit<-knn.cv(full_data[non_cat_variables],full_data$"match",3+2*i)
 	mis_classified<-sum(abs(as.numeric(model_fit)-full_data$"match"))
 	mis_classified_vector[i]<-mis_classified
 }
