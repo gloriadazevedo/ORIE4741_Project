@@ -120,6 +120,9 @@ num_misclassifications
 
 #Get all BIC values for the top 13 models:
 summary(regsubsets.out)$bic
+#Plot for clarity
+ plot(sort(summary(regsubsets.out)$bic),ylab="BIC Values",xlab="Rank",main="BIC Values for best subsets")
+
 # -2090.250 -2422.045 -2489.608 -2577.021 -2595.057 -2618.180 -2628.115
  # [8] -2632.345 -2633.231 -2629.828 -2624.306 -2615.868 -2607.113
 summary(summary(regsubsets.out)$bic)
