@@ -27,10 +27,10 @@ for(i in 1:length(full_data$field_cd)){
 
 #Performing mixed selection to determine the most important factors in determining the decision of the individual
 #
-sapply(full_data, function(x) sum(is.na(x)))
+full_data_non_na<-sapply(full_data, function(x) sum(is.na(x)))
 
-dataimp<-subset(full_data, select=c(dec,attr,sinc,intel,fun,amb,shar,like,prob,met,goal,date,go_out,exphappy))
- install.packages("leaps")
+dataimp<-subset(full_data_non_na, select=c(dec,attr,sinc,intel,fun,amb,shar,like,prob,met,goal,date,go_out,exphappy))
+# install.packages("leaps")
 library(leaps)
 attach(dataimp)
 regsubsets.out <-
@@ -86,3 +86,40 @@ coef(regsubsets.out, 9)
 #-0.48931702  0.06591967 -0.03003476  0.01641642 -0.02306307  0.01451100 
 #       like        prob      go_out    exphappy 
 # 0.08065556  0.02311936  0.01392134  0.01022608 
+
+#Now we need to calculate the misclassification rate for each of the models 
+#so that we have a standard measure of predicting power for alll models.
+#Basically estimating the training error rate
+num_misclassifications<-rep(0,13)
+for(i in 1:13){
+	coef_i<-coef(regsubsets.out,id=i)
+	#Returns a bunch of real values almost between 0 and 1
+	#Use a 0.5 threshold to determine 1 or 0
+	pred<-as.matrix(dataimp[,names(coef_i[-1])])%*%as.matrix(coef_i[-1])+coef_i[1]
+	
+	#Iterate through and determine whether it's a yes or no
+	sum_predictions<-0
+	for(j in 1:length(pred)){
+		if(!is.na(pred[j])){
+			result<-0
+			if(pred[j]>0.5){
+				result<-1
+				}
+			sum_predictions<-sum_predictions+abs(result-dataimp[j,]$dec)
+			}
+		}
+	
+	num_misclassifications[i]<-sum_predictions
+}
+num_misclassifications
+ #2118 1998 1930 1872 1775 1632 1623 1600 1586 1571 1568 1531 1527
+ plot(num_misclassifications)
+
+
+#Get all BIC values for the top 13 models:
+summary(regsubsets.out)$bic
+# -2090.250 -2422.045 -2489.608 -2577.021 -2595.057 -2618.180 -2628.115
+ # [8] -2632.345 -2633.231 -2629.828 -2624.306 -2615.868 -2607.113
+summary(summary(regsubsets.out)$bic)
+   # Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  # -2633   -2628   -2616   -2551   -2577   -2090 

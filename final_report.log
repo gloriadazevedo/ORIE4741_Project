@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6100 64-bit) (preloaded format=pdflatex 2016.11.18)  2 DEC 2016 14:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6100 64-bit) (preloaded format=pdflatex 2016.11.18)  2 DEC 2016 20:56
 entering extended mode
 **./final_report.tex
 (final_report.tex
@@ -362,7 +362,7 @@ sors. (https://www.kaggle.com/annavictoria/speed-
 [1
 
 {C:/Users/glori/AppData/Local/MiKTeX/2.9/pdftex/config/pdftex.map}]
-Underfull \hbox (badness 10000) in paragraph at lines 38--56
+Underfull \hbox (badness 10000) in paragraph at lines 39--57
 
  []
 
@@ -370,36 +370,37 @@ Underfull \hbox (badness 10000) in paragraph at lines 38--56
 File: AttractivenessScores.png Graphic file (type png)
 
 <use AttractivenessScores.png>
-Package pdftex.def Info: AttractivenessScores.png used on input line 87.
+Package pdftex.def Info: AttractivenessScores.png used on input line 88.
 (pdftex.def)             Requested size: 289.07928pt x 201.75325pt.
- [3] [4 <./AttractivenessScores.png>] [5]
-[6]
-Overfull \hbox (97.27632pt too wide) in paragraph at lines 126--136
- [][] 
- []
+ [3] [4 <./AttractivenessScores.png>]
+<bestsubsets.png, id=24, 412.54124pt x 388.95313pt>
+File: bestsubsets.png Graphic file (type png)
+ <use bestsubsets.png>
+Package pdftex.def Info: bestsubsets.png used on input line 112.
+(pdftex.def)             Requested size: 247.52666pt x 233.37366pt.
 
-[7] [8] (final_report.aux) ) 
+[5] [6 <./bestsubsets.png>] [7] [8] (final_report.aux) ) 
 Here is how much of TeX's memory you used:
- 4294 strings out of 493333
- 61347 string characters out of 3130142
- 135423 words of memory out of 3000000
- 7761 multiletter control sequences out of 15000+200000
+ 4301 strings out of 493333
+ 61472 string characters out of 3130142
+ 135439 words of memory out of 3000000
+ 7767 multiletter control sequences out of 15000+200000
  11364 words of font info for 45 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 40i,9n,32p,1668b,238s stack positions out of 5000i,500n,10000p,200000b,50000s
-<C:/Users/glori/AppData/Local/Programs/MiKTeX 2.9/f
-onts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/glori/AppData/Local/Programs
-/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/glori/AppData/L
-ocal/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/glo
-ri/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr12.pfb><
-C:/Users/glori/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm
-/cmr17.pfb><C:/Users/glori/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public
-/amsfonts/cm/cmr7.pfb><C:/Users/glori/AppData/Local/Programs/MiKTeX 2.9/fonts/t
-ype1/public/amsfonts/cm/cmsy10.pfb><C:/Users/glori/AppData/Local/Programs/MiKTe
-X 2.9/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on final_report.pdf (8 pages, 158045 bytes).
+ 40i,9n,32p,1596b,238s stack positions out of 5000i,500n,10000p,200000b,50000s
+<C:/Users/glori/AppData
+/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/Users/
+glori/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmmi10.p
+fb><C:/Users/glori/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfont
+s/cm/cmr10.pfb><C:/Users/glori/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/pu
+blic/amsfonts/cm/cmr12.pfb><C:/Users/glori/AppData/Local/Programs/MiKTeX 2.9/fo
+nts/type1/public/amsfonts/cm/cmr17.pfb><C:/Users/glori/AppData/Local/Programs/M
+iKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Users/glori/AppData/Local
+/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/glori/
+AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
+Output written on final_report.pdf (8 pages, 186080 bytes).
 PDF statistics:
- 64 PDF objects out of 1000 (max. 8388607)
+ 66 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 

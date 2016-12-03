@@ -573,7 +573,7 @@ non_cat_variables<-non_cat_variables[!non_cat_variables %in% cat_variables]
 
 mis_classified_vector<-rep(0,25)
 for (i in 1:length(mis_classified_vector)){
-	model_fit<-knn.cv(full_data[non_cat_variables,],full_data$"match",3+2*i)
+	model_fit<-knn.cv(full_data[non_cat_variables],full_data$"match",3+2*i)
 	mis_classified<-sum(abs(as.numeric(model_fit)-full_data$"match"))
 	mis_classified_vector[i]<-mis_classified
 }
