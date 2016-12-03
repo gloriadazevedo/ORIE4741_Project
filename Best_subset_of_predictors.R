@@ -115,6 +115,8 @@ num_misclassifications
  #2118 1998 1930 1872 1775 1632 1623 1600 1586 1571 1568 1531 1527
  plot(num_misclassifications)
 
+ #Find misclassification rate for size 9
+ num_misclassifications[9]/sum(!is.na(pred))
 
 #Get all BIC values for the top 13 models:
 summary(regsubsets.out)$bic
