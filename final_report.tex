@@ -24,7 +24,7 @@
 \maketitle
 
 \section{Executive Summary}
-The goal of this analysis is to create a model that identifies whether or not a male and a female are a match in the speed dating context. The expectation of the project is to develop a model, that will identify important traits people look for in a partner so that effective onboarding surveys for speed dating events or online dating will have high accuracy rates in predicting matches.  The data has several types of formats including ordinal variables, open ended text variables, and binary variables.  The 3 types of models that are tested are a nonregularized linear model with best subset selection, a logistic model, a regularized model using lasso with cross-validation, and a K-Nearest-Neighbors model.  In the future we hope to incorporate other variables indicative of a ``match" such as one person calling the other or the two people going on a date.  These fields, that were asked in surveys taken after the speed dating exercise, have low response rates and a high bias so they may not be completely reliable but could still give good insights about the data if there were more responses. 
+The goal of this analysis is to create a model that identifies whether or not a male and a female are a match in the speed dating context. The expectation of the project is to develop a model, that will identify important traits people look for in a partner so that effective onboarding surveys for speed dating events or online dating will have high accuracy rates in predicting matches.  The data has several types of formats including ordinal variables, open ended text variables, and binary variables.  The 3 types of models that are tested are a nonregularized linear model with best subset selection, logistic models, a regularized model using lasso with cross-validation, and a K-Nearest-Neighbors model.  Out of these models, the model obtained using cross-validation and a lasso regularizer has the lowest misclassification rate without overfitting the data nor having too many variables.  In the future we hope to incorporate other variables indicative of a ``match" such as one person calling the other or the two people going on a date.  These fields, that were asked in surveys taken after the speed dating exercise, have low response rates and a high bias so they may not be completely reliable but could still give good insights about the data if there were more responses. 
 
 \section{Introduction}
 %Problem: 
@@ -155,7 +155,7 @@ In order to implement the K-Nearest-Neighbors (KNN) algorithm to predict a match
 \null\\
 Initial trials of KNN showed that a few number of nearest neighbors to implement KNN is too flexible and we have a high misclassification rate with the best case scenario having a misclassification rate of around 85\%.  More tests can be done to lower this rate by increasing the number of nearest neighbors used, also using less fields in the algorithm, and using only complete data so there's no bias from imputing variables.
 %
-\section{Results and Key Findings}
+\section{Results and Conclusions}
 A summary table of the models and their results are as follows.
 \begin{table}[!htbp] \centering 
 	\caption{Summary table of models and corresponding misclassification rates} 
@@ -165,15 +165,15 @@ A summary table of the models and their results are as follows.
 		\hline \\[-1.8ex] 
 		Model Name & Model Size & Misclassification Rate \\ 
 		\hline \\[-1.8ex] 
-		Logistic Regression for Men & 5 + Intercept & 23\% \\ 
-		Logistic Regression for Women &6 + Intercept & 22\% \\ 
+		Logistic Regression for Men & 5 & 23\% \\ 
+		Logistic Regression for Women &6 & 22\% \\ 
 		Best Subset for Linear Regression& 9 & 24\% \\
 		Cross-Validation with Lasso Regularizer & 9 & 23\% \\
 		K-Nearest Neighbors & 33 & 85\% \\  
 		\hline \\[-1.8ex] 
 	\end{tabular} 
 \end{table} 
-
+The models with lowest misclassification rates are the logistic regressions for each male (Logistic Male) and female (Logistic Female)and also the linear models that included cross-validation and lasso regularization (Cross-Validated Lasso).  Each of these types of models has advantages and disadvantages.  The logistic regressions are smaller models yielding a similar misclassification rates as Cross-Validated Lasso but the data was the same for both training and making predictions so there's a high probability that the model is overfit to the data.  In addition, the number of variables that were made available to the respective lasso regressions was less than the number for the Cross-Validated Lasso method so there is a possibility that the logistics models underfit the data.  The best model that we recommend from the aforementioned list of models is the Cross-Validated Lasso since it is tested on new data and minimizes the BIC to optimize fit and model size.
 \section{Next Steps}
 In the future we can utilize the information from follow-up surveys to the participant (a survey from the day after the speed dating event and another survey a few weeks after the first follow-up survey) as another measure of confirmation of the matches from the event, despite their low response rates and potential bias.  However, when there are responses, they may give a lot of insight into what drives initial dates and calls.\\
 \null\\

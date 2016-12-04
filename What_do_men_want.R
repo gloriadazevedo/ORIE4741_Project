@@ -264,3 +264,24 @@ summary(women_pref_logistic_2)
 # AIC: 3489.9
 
 # Number of Fisher Scoring iterations: 5
+
+#Want to estimate the misclassification rate
+predictions<-predict(women_pref_logistic_2,womendata)
+
+#Filter out the NA values and count
+#Number of Non NA's
+num_1<-sum(!is.na(predictions))
+
+#assign binary variables
+predictions[!is.na(predictions) & (predictions>0.5)]<-1
+predictions[!is.na(predictions) & (predictions<=0.5)]<-0
+
+#Count number of misclassifications
+num_misclassifications<-0
+for(i in 1:length(predictions)){
+	if(!is.na(predictions[i])){
+		num_misclassifications<-num_misclassifications+abs(predictions[i]-womendata[i,]$dec)
+	}
+}
+num_misclassifications #Output is 923
+num_misclassifications/length(predictions)

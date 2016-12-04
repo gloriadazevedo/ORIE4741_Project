@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6100 64-bit) (preloaded format=pdflatex 2016.11.18)  4 DEC 2016 13:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9.6100 64-bit) (preloaded format=pdflatex 2016.11.18)  4 DEC 2016 13:28
 entering extended mode
 **./final_report.tex
 (final_report.tex
@@ -394,7 +394,7 @@ Here is how much of TeX's memory you used:
  7777 multiletter control sequences out of 15000+200000
  11364 words of font info for 45 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
- 40i,9n,32p,1231b,284s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 40i,9n,32p,1311b,284s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Users/
 glori/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.p
 fb><C:/Users/glori/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfont
@@ -408,7 +408,7 @@ i/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr17.pfb><C
 cmr7.pfb><C:/Users/glori/AppData/Local/Programs/MiKTeX 2.9/fonts/type1/public/a
 msfonts/cm/cmsy10.pfb><C:/Users/glori/AppData/Local/Programs/MiKTeX 2.9/fonts/t
 ype1/public/amsfonts/cm/cmtt12.pfb>
-Output written on final_report.pdf (8 pages, 233410 bytes).
+Output written on final_report.pdf (8 pages, 234020 bytes).
 PDF statistics:
  76 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
