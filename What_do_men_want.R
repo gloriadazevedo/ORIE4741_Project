@@ -104,3 +104,71 @@ summary(men_pref_lm)
   # (611 observations deleted due to missingness)
 # Multiple R-squared:  0.3126,    Adjusted R-squared:  0.3111 
 # F-statistic: 203.2 on 8 and 3574 DF,  p-value: < 2.2e-16
+
+
+#Actual logistic regression using the same parameters as above.
+men_pref_logistic<-glm(dec~samerace+int_corr+attr+sinc+intel+fun+amb+shar,data=mendata,family="binomial")
+
+summary(men_pref_logistic)
+# Call:
+# glm(formula = dec ~ samerace + int_corr + attr + sinc + intel + 
+    # fun + amb + shar, family = "binomial", data = mendata)
+
+# Deviance Residuals: 
+    # Min       1Q   Median       3Q      Max  
+# -2.6827  -0.8095  -0.1530   0.8376   3.0605  
+
+# Coefficients:
+            # Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -5.27812    0.27085 -19.487  < 2e-16 ***
+# samerace    -0.05702    0.08371  -0.681    0.496    
+# int_corr     0.04329    0.13670   0.317    0.752    
+# attr         0.68250    0.03287  20.764  < 2e-16 ***
+# sinc        -0.16213    0.03679  -4.407 1.05e-05 ***
+# intel       -0.03350    0.04246  -0.789    0.430    
+# fun          0.26077    0.03410   7.647 2.06e-14 ***
+# amb         -0.15315    0.03381  -4.530 5.89e-06 ***
+# shar         0.27113    0.02606  10.403  < 2e-16 ***
+# ---
+# Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+# (Dispersion parameter for binomial family taken to be 1)
+
+    # Null deviance: 4965  on 3582  degrees of freedom
+# Residual deviance: 3599  on 3574  degrees of freedom
+  # (611 observations deleted due to missingness)
+# AIC: 3617
+
+# Number of Fisher Scoring iterations: 5
+
+#Then we only use the significant predictors and refit
+men_pref_logistic_2<-glm(dec~attr+sinc+fun+amb+shar,data=mendata,family="binomial")
+summary(men_pref_logistic_2)
+# Call:
+# glm(formula = dec ~ attr + sinc + fun + amb + shar, family = "binomial", 
+    # data = mendata)
+
+# Deviance Residuals: 
+    # Min       1Q   Median       3Q      Max  
+# -2.6753  -0.8020  -0.1514   0.8340   3.0764  
+
+# Coefficients:
+            # Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -5.35443    0.25844 -20.719  < 2e-16 ***
+# attr         0.68138    0.03278  20.788  < 2e-16 ***
+# sinc        -0.17519    0.03237  -5.413 6.21e-08 ***
+# fun          0.25775    0.03385   7.615 2.64e-14 ***
+# amb         -0.16211    0.03166  -5.121 3.05e-07 ***
+# shar         0.27114    0.02602  10.422  < 2e-16 ***
+# ---
+# Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+# (Dispersion parameter for binomial family taken to be 1)
+
+    # Null deviance: 4972.0  on 3587  degrees of freedom
+# Residual deviance: 3601.8  on 3582  degrees of freedom
+  # (606 observations deleted due to missingness)
+# AIC: 3613.8
+
+# Number of Fisher Scoring iterations: 5
+
