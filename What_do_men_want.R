@@ -172,3 +172,95 @@ summary(men_pref_logistic_2)
 
 # Number of Fisher Scoring iterations: 5
 
+#Want to estimate the misclassification rate
+predictions<-predict(men_pref_logistic_2,mendata)
+
+#Filter out the NA values and count
+#Number of Non NA's
+num_1<-sum(!is.na(predictions))
+
+#assign binary variables
+predictions[!is.na(predictions) & (predictions>0.5)]<-1
+predictions[!is.na(predictions) & (predictions<=0.5)]<-0
+
+#Count number of misclassifications
+num_misclassifications<-0
+for(i in 1:length(predictions)){
+	if(!is.na(predictions[i])){
+		num_misclassifications<-num_misclassifications+abs(predictions[i]-mendata[i,]$dec)
+	}
+}
+num_misclassifications #output is 945
+#Misclassification Rate
+num_misclassifications/length(predictions) #22.5%
+
+#Doing a similar procedure for the women
+womendata<-subset(full_data,gender==0)
+
+#run the logisitic model
+women_pref_logistic<-glm(dec~samerace+int_corr+attr+sinc+intel+fun+amb+shar,data=womendata,family="binomial")
+
+summary(women_pref_logistic)
+# Call:
+# glm(formula = dec ~ samerace + int_corr + attr + sinc + intel + 
+    # fun + amb + shar, family = "binomial", data = womendata)
+
+# Deviance Residuals: 
+    # Min       1Q   Median       3Q      Max  
+# -2.3483  -0.8328  -0.3790   0.8615   3.1789  
+
+# Coefficients:
+            # Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -5.54270    0.27436 -20.202  < 2e-16 ***
+# samerace     0.01052    0.08567   0.123  0.90231    
+# int_corr    -0.07910    0.13826  -0.572  0.56724    
+# attr         0.40637    0.02936  13.840  < 2e-16 ***
+# sinc        -0.09200    0.03492  -2.635  0.00842 ** 
+# intel        0.13059    0.04472   2.920  0.00350 ** 
+# fun          0.27420    0.03353   8.177 2.90e-16 ***
+# amb         -0.17287    0.03439  -5.027 4.98e-07 ***
+# shar         0.27674    0.02676  10.344  < 2e-16 ***
+# ---
+# Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+# (Dispersion parameter for binomial family taken to be 1)
+
+    # Null deviance: 4565.4  on 3456  degrees of freedom
+# Residual deviance: 3475.6  on 3448  degrees of freedom
+  # (727 observations deleted due to missingness)
+# AIC: 3493.6
+
+# Number of Fisher Scoring iterations: 5
+
+women_pref_logistic_2<-glm(dec~attr+sinc+intel+fun+amb+shar,data=womendata,family="binomial")
+
+summary(women_pref_logistic_2)
+
+# Call:
+# glm(formula = dec ~ attr + sinc + intel + fun + amb + shar, family = "binomial", 
+    # data = womendata)
+
+# Deviance Residuals: 
+    # Min       1Q   Median       3Q      Max  
+# -2.3416  -0.8289  -0.3790   0.8634   3.1866  
+
+# Coefficients:
+            # Estimate Std. Error z value Pr(>|z|)    
+# (Intercept) -5.55076    0.27351 -20.295  < 2e-16 ***
+# attr         0.40617    0.02928  13.871  < 2e-16 ***
+# sinc        -0.09066    0.03484  -2.602  0.00927 ** 
+# intel        0.12901    0.04462   2.891  0.00384 ** 
+# fun          0.27446    0.03345   8.205 2.31e-16 ***
+# amb         -0.17270    0.03438  -5.023 5.09e-07 ***
+# shar         0.27628    0.02663  10.374  < 2e-16 ***
+# ---
+# Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+# (Dispersion parameter for binomial family taken to be 1)
+
+    # Null deviance: 4565.4  on 3456  degrees of freedom
+# Residual deviance: 3475.9  on 3450  degrees of freedom
+  # (727 observations deleted due to missingness)
+# AIC: 3489.9
+
+# Number of Fisher Scoring iterations: 5

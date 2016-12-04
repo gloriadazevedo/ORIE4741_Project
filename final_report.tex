@@ -97,11 +97,19 @@ We also plotted the scores given to partners for different characteristics, alon
 \section{Model Development}
 \subsection{Logistic Regression}
 \label{sec:logistic}
-We want to identify how men value the main 6 attributes in a partner that were identified in Sesction \ref{sec:dataclean}.  Characteristics such as whether the partner is of the same race is also included in the analysis.  Since the decision variable (of saying `yes' or `no' to a partner) is boolean we have chosen to use logistic regression for the analysis.  The results of this analysis suggested that attractiveness, sincerity, being fun, ambition, and having shared interests are significant in a man's decision and intelligence and being of the same race are not significant. Of these significant parameters, attractiveness, being fun and having shared interests are positively correlated with the final decision, but sincerity and ambition are negatively correlated with the male's decision. In this analysis all the values with missing data have been removed from the data when computing the coefficients for the logistic regression, as it would be misleading to impute the values of scores given to partners or assign the average value when the answer has been left blank by the participant. We do not expect this to create problems in our analysis since more than 75\% of the data is still available. \\
+We want to identify how men value the main 6 attributes in a partner that were identified in Sesction \ref{sec:dataclean}.  Characteristics such as whether the partner is of the same race is also included in the analysis.  Since the decision variable (of saying `yes' or `no' to a partner) is boolean we have chosen to use logistic regression for the analysis.  In this analysis all the values with missing data have been removed from the data when computing the coefficients for the logistic regression, as it would be misleading to impute the values of scores given to partners or assign the average value when the answer has been left blank by the participant. We do not expect this to create problems in our analysis since more than 85\% of the data is still available. 
+%The results of this analysis suggested that attractiveness, sincerity, being fun, ambition, and having shared interests are significant in a man's decision and intelligence and being of the same race are not significant. Of these significant parameters, attractiveness, being fun and having shared interests are positively correlated with the final decision, but sincerity and ambition are negatively correlated with the male's decision. 
+In logistic regression, instead of directly fitting the binary output to a linear model, we fit the data to the model denoted in Equation \ref{eq:logistic} where $p$ is the probability that the outcome is 1 and $j$ denotes the number of variables in the model.  An additional parameter is required as a threshold of classification, $t$.  The model outputs a probability so any output above the threshold will be classified as a success or 1 while all other values are classified as a failure or 0.
+\begin{equation}
+	\label{eq:logistic}
+	ln(\frac{p}{1-p})=\beta_0+\sum_{i=1}^d \beta_jx_j
+\end{equation}
+The model with all of the above predictors are fit first, then using only the significant variables from that one, the model is refit as the final logistic model.  The resulting model uses attractiveness, sincerity, being fun, ambition, and having the shared interests as significant variables and has a misclassification rate of about 22.5\% with a threshold of $t=0.5$.  In other words, the model correctly classifies about 77\% of men's decisions correctly.\\
 \null\\
-In another analysis with logistic regression, we incorporate the priorities assigned by participants to the weights of the 6 main characteristics as well as their interaction effects with their partner's rating of the respective characteristic.  Interaction effects in the linear regression setting refer to the product of the two variables.  In this case, multiplying the score for a parameter with its importance gives us a new value for each of the 6 attributes. There should be a direct correlation between the new scores given to a partner and the final decision (`yes' or `no').  
+A similar analysis is done for the female data.  The amount of missing data is about 17\%, skewed slightly high by one female who didn't complete any surveys.  The same 7 attributes are fit to the data at first then the resulting significant variables are refit.  The final model has 6 variables (and an intercept) which are all 6 of the main attributes as mentioned in Section \ref{sec:dataclean} and has a misclassification rate of about 22\%.  
+%In another analysis with logistic regression, we incorporate the priorities assigned by participants to the weights of the 6 main characteristics as well as their interaction effects with their partner's rating of the respective characteristic.  Interaction effects in the linear regression setting refer to the product of the two variables.  In this case, multiplying the score for a parameter with its importance gives us a new value for each of the 6 attributes. There should be a direct correlation between the new scores given to a partner and the final decision (`yes' or `no').  
 %Hence, our model is able to predict the most important factors in determining the final decision of a participant. 
-The logistic regression shows that the interaction between partner attractiveness and priority of attractiveness, sincerity, and several other factors are significant in determining a participant's decision.  Other parameters such as intelligence and being fun are not significant to the model. In the previous analysis, being of the same race was not significant, but its interaction effect (and consequently the main effect) in this analysis is significant to the model. This means that partners having the same race was not found to be significant, in cases where the participant said having a partner of the same race was important to them, it became significant.
+%The logistic regression shows that the interaction between partner attractiveness and priority of attractiveness, sincerity, and several other factors are significant in determining a participant's decision.  Other parameters such as intelligence and being fun are not significant to the model. In the previous analysis, being of the same race was not significant, but its interaction effect (and consequently the main effect) in this analysis is significant to the model. This means that partners having the same race was not found to be significant, in cases where the participant said having a partner of the same race was important to them, it became significant.
 %
 \subsection{Best Subset Selection Using Linear Models}
 \label{sec:bestsubsetsection}
@@ -148,6 +156,7 @@ In order to implement the K-Nearest-Neighbors (KNN) algorithm to predict a match
 Initial trials of KNN showed that a few number of nearest neighbors to implement KNN is too flexible and we have a high misclassification rate with the best case scenario having a misclassification rate of around 85\%.  More tests can be done to lower this rate by increasing the number of nearest neighbors used, also using less fields in the algorithm, and using only complete data so there's no bias from imputing variables.
 %
 \section{Results and Key Findings}
+A summary table of the models and their results are as follows.
 \begin{table}[!htbp] \centering 
 	\caption{Summary table of models and corresponding misclassification rates} 
 	\label{table:results} 
@@ -156,8 +165,8 @@ Initial trials of KNN showed that a few number of nearest neighbors to implement
 		\hline \\[-1.8ex] 
 		Model Name & Model Size & Misclassification Rate \\ 
 		\hline \\[-1.8ex] 
-		Logistic Regression Version 1 & Rik, Pik3r3, Rac1*, Nfat5 & 0.4998 \\ 
-		Logistic Regression Version 2 & Rik, Pik3r3, Rac1*, Nfat5 & 0.4998 \\ 
+		Logistic Regression for Men & 5 + Intercept & 23\% \\ 
+		Logistic Regression for Women &6 + Intercept & 22\% \\ 
 		Best Subset for Linear Regression& 9 & 24\% \\
 		Cross-Validation with Lasso Regularizer & 9 & 23\% \\
 		K-Nearest Neighbors & 33 & 85\% \\  
