@@ -9,8 +9,6 @@ library(gdata)
 setwd("/Users/pihu_yadav/Downloads/ORIE4741_Project-master")
 full_data<-read.table("data_excel.csv",header=TRUE,sep=",",stringsAsFactors=FALSE)
 
-
-
 #Need to recode values of "NA" in male or female race to be 6
 for (i in 1:length(full_data$race)){
 	if (is.na(full_data$race[i])){
@@ -25,8 +23,6 @@ for(i in 1:length(full_data$field_cd)){
 		full_data$field_cd[i]<-18
 	}
 }
-
-
 
 #How well do you know yourself? A preliminary analysis
 
@@ -72,8 +68,6 @@ summary(amb_corr)
 shar_corr<-lm(shar1_1~shar,data=yesdataimp)
 summary(shar_corr)
 
-
-
 #Calculating the correlation between importance of same race and partner they said 'yes' to actually being of the same race
 
 race_corr<-lm(imprace~samerace, data=yesdataimp)
@@ -84,9 +78,9 @@ summary(race_corr)
 attach(full_data)
 dataimp<-subset(full_data, select=c(dec, attr1_1,sinc1_1,intel1_1,fun1_1,amb1_1,shar1_1,attr,sinc,intel,fun,amb,shar, imprace, samerace, int_corr))
 
-actual_corr<-glm(dec~attr1_1*attr+sinc1_1*sinc+intel1_1*intel+fun1_1*fun+amb1_1*amb+shar1_1*shar+imprace*samerace, family=binomial)
+interaction_lm<-glm(dec~attr1_1*attr+sinc1_1*sinc+intel1_1*intel+fun1_1*fun+amb1_1*amb+shar1_1*shar+imprace*samerace, data=dataimp, family=binomial)
 
-> summary(actual_corr)
+ summary(interaction_lm)
 
 #Call:
 #glm(formula = dec ~ attr1_1 * attr + sinc1_1 * sinc + intel1_1 * 
