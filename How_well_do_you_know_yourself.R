@@ -127,6 +127,27 @@ interaction_lm<-glm(dec~attr1_1*attr+sinc1_1*sinc+intel1_1*intel+fun1_1*fun+amb1
 
 #Number of Fisher Scoring iterations: 5
 
+predictions<-predict(interaction_lm,dataimp)
+
+#Filter out the NA values and count
+#Number of Non NA's
+num_1<-sum(!is.na(predictions))
+
+#assign binary variables
+predictions[!is.na(predictions) & (predictions>0.5)]<-1
+predictions[!is.na(predictions) & (predictions<=0.5)]<-0
+
+#Count number of misclassifications
+num_misclassifications<-0
+for(i in 1:length(predictions)){
+	if(!is.na(predictions[i])){
+		num_misclassifications<-num_misclassifications+abs(predictions[i]-dataimp[i,]$dec)
+	}
+}
+num_misclassifications #Output is 1810
+num_misclassifications/length(predictions)
+
+
 dec_predict<-predict(actual_corr,full_data, type="response")
 dec<-dec[!is.na(dec_predict)]
 dec_predict<-dec_predict[!is.na(dec_predict)]
